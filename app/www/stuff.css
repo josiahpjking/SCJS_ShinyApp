@@ -36,6 +36,12 @@ p{
   margin: 50px;
 }
 
+/* Top text */
+
+.sidebartext p{
+  text-align: left;
+}
+
 /* HOME SCREEN BUTTONS */
 
 .button-text img{
@@ -48,7 +54,7 @@ p{
   text-align: left;
   vertical-align: middle;
   display: table-cell;
-  margin: 5px;
+  margin: 15px;
 }
 
 .button-text{
@@ -83,15 +89,11 @@ div.tvar .selectize-input{
   max-height: 150px;
 }
 
-.plotcontrol{
+.form-group{
   display: inline-block;
 }
 .tableopts{
   display: inline-block;
-}
-
-#plotopts{
-  text-align: right;
 }
 
 #stt_results{

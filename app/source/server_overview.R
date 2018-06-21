@@ -34,7 +34,7 @@ output$ov_currentplot <- renderPlotly({
               hoverinfo="text",
               colors=overview_cols,
               type="bar") %>% layout(margin = list(b = 100),
-                                     showlegend=FALSE,
+                                     showlegend=input$showleg,
                                      height = input$plotHeight, 
                                      autosize=TRUE,
                                      yaxis=list(title="Percentage difference from<br>National Average",ticksuffix = "%"),
@@ -72,7 +72,7 @@ output$ov_currentplot <- renderPlotly({
               type="scatter",mode="markers",marker = list(symbol=24, size = 12)
               ) %>%
         layout(margin = list(b = 100),
-               showlegend=FALSE,
+               showlegend=input$showleg,
                height = input$plotHeight, 
                autosize=TRUE,
                yaxis=list(title="Percentage difference from<br>National Average",ticksuffix = "%"),
@@ -99,7 +99,7 @@ output$ov_trendplot <- renderPlotly({
             hoverinfo="text",
             type="bar") %>%
     add_lines(data=linedata, color=~breaks, colors=overview_cols) %>%
-      layout(showlegend=FALSE,
+      layout(showlegend=input$showleg,
              yaxis=list(ticksuffix = "%"),
              xaxis=list(title=""),
              height = input$plotHeight, 
@@ -108,7 +108,7 @@ output$ov_trendplot <- renderPlotly({
     
     pheight=(length(all_vars[[input$ov_var]])*100)+100
     subplot(lapply(all_vars[[input$ov_var]], function(x) plotfunc(x,input$ov_pdiv,overview_data())),nrows=round(length(all_vars[[input$ov_var]])/2),titleY=FALSE,titleX=FALSE) %>% 
-      layout(showlegend=FALSE,height=pheight) %>% config(modeBarButtonsToRemove = modebar_remove) 
+      layout(showlegend=input$showleg,height=pheight) %>% config(modeBarButtonsToRemove = modebar_remove) 
 
   }
   

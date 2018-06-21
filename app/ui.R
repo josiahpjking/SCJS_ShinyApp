@@ -60,7 +60,8 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                              tabPanel(title="Animated plot over years",value="anim",
                                       plotlyOutput("ov_animateplot", height = "100%",width='100%')
                              )
-                 )
+                 ),
+                 checkboxInput("showleg",label = "Show Legend",value=FALSE)
                )
              )
     ),
@@ -69,18 +70,18 @@ body<-navbarPage(title="",id="main",position="fixed-top",
     #TRENDS OVER TIME (main_trends)
     ##########
     tabPanel("Visualise Trends", value="main_trends", icon = icon('line-chart'),
-             uiOutput("plotopts"),
-             fluidRow(
-               column(width=4, htmlOutput('trend_summary')),
-               column(width=8, plotlyOutput("trendplot", height = "100%",width='100%'))
-             ),
-             fluidRow(
-               column(width=4,selectizeInput("survey_section", label = "Choose Survey Area", choices=names(all_vars), selected=names(all_vars)[1], multiple=F)),
-               column(width=4,uiOutput('var_select')),
-               column(width=4,selectizeInput("parea",label="Choose Police Divisions",choices=pdivis, selected="National Average", multiple = T, options = list(maxItems = length(pdivis))))
-             ),
-             fluidRow(
-               column(width=12,align="right", actionButton("reset_trends", "Reset Plot"))
+             sidebarLayout(
+               sidebarPanel(
+                 selectizeInput("survey_section", label = "Choose an area of the survey", choices=names(all_vars), selected=names(all_vars)[1], multiple=F),
+                 uiOutput('var_select'),
+                 selectizeInput("parea",label="Choose Police Divisions",choices=pdivis, selected="National Average", multiple = T, options = list(maxItems = length(pdivis))),
+                 htmlOutput('trend_summary')
+               ),
+               mainPanel(
+                 plotlyOutput("trendplot", height = "100%",width='100%'),
+                 checkboxInput("erbar",label = "Show Confidence Intervals",value=FALSE),
+                 checkboxInput("showleg",label = "Show Legend",value=FALSE)
+               )
              )
     ),
     
@@ -89,27 +90,30 @@ body<-navbarPage(title="",id="main",position="fixed-top",
     ##########
     
     tabPanel("Comparison Tool", value="main_compare", icon = icon('bar-chart'),
-             div(class="toptext",
-                 tags$p("Choose a section of the survey (e.g. confidence in the local police) and compare how one specific division compares to another or to the national average, or compare the same division in different survey years."),
-                 tags$p("Use the selection boxes below, and significant differences between adjacent proportions will be colour coded (the better-performing proportion will be green and the worse-performing proportion will be red. Non-significant differences will be grey)."),
-                 tags$p("Hover the mouse over a bar to see the specific question/variable")
+             sidebarLayout(
+               sidebarPanel(
+                 selectizeInput("survey_section_compare", label = "Choose an area of the survey", choices=names(all_vars), selected=names(all_vars)[1], multiple=F),
+                 div(class="sidebartext",
+                     tags$p("Choose a section of the survey (e.g. confidence in the local police) and compare how one specific division compares to another or to the national average, or compare the same division in different survey years."),
+                     tags$p("Significant differences between adjacent proportions are colour coded (the better-performing proportion will be green and the worse-performing proportion will be red. Non-significant differences will be grey)."),
+                     tags$p("Hover the mouse over a bar to see the specific question/variable")
+                 )
+               ),
+               mainPanel(
+                 fluidRow(
+                   column(width=6,align="center",selectizeInput("parea1",NULL,choices=pdivis, selected="National Average", multiple = F)),
+                   column(width=6,align="center",selectizeInput("parea2",NULL,choices=pdivis, selected="National Average", multiple = F))
                  ),
-             
-             fluidRow(
-               column(width=12,align="center",selectizeInput("survey_section_compare", label = "Choose Survey Area", choices=names(all_vars), selected=names(all_vars)[1], multiple=F))
-             ),
-             
-             fluidRow(
-               column(width=6,align="center",selectizeInput("parea1",NULL,choices=pdivis, selected="National Average", multiple = F)),
-               column(width=6,align="center",selectizeInput("parea2",NULL,choices=pdivis, selected="National Average", multiple = F))
-             ),
-             fluidRow(
-               column(width=6,align="center",selectizeInput("year1",NULL,choices=years, selected=years[1], multiple = F)),
-               column(width=6,align="center",selectizeInput("year2",NULL,choices=years, selected=years[length(years)], multiple = F))
-             ),
-             
-             fluidRow(
-               column(width=12,align="center",plotlyOutput('compar_plot', height = "100%",width='90%'))
+                 fluidRow(
+                   column(width=6,align="center",selectizeInput("year1",NULL,choices=years, selected=years[1], multiple = F)),
+                   column(width=6,align="center",selectizeInput("year2",NULL,choices=years, selected=years[length(years)], multiple = F))
+                 ),
+                 
+                 fluidRow(
+                   column(width=12,align="center",plotlyOutput('compar_plot', height = "100%",width='90%'))
+                 )
+                 
+               )
              )
     ),
     

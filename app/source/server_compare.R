@@ -72,9 +72,19 @@ output$compar_plot <- renderPlotly({
       xaxis=list(range=c(0,100),ticksuffix = "%")
     ) -> p2
   
-  subplot(p1,p2) %>% 
-    layout(showlegend=FALSE,
-           margin=list(l=120),
-           autosize=TRUE
-    ) %>% config(modeBarButtonsToRemove = modebar_remove)
+  tryCatch({
+    subplot(p1,p2) %>% 
+      layout(showlegend=FALSE,
+             #margin=list(l=120),
+             autosize=TRUE
+      ) %>% config(modeBarButtonsToRemove = modebar_remove)
+  },
+  error=function(cond){
+    plot_ly() %>% layout(title="<br>Variables not present <br> in both years <br><br>Please choose another year",
+                         yaxis=list(showticklabels=FALSE,showgrid = FALSE,zeroline = FALSE),
+                         xaxis=list(showticklabels=FALSE,showgrid = FALSE,zeroline = FALSE),
+                         paper_bgcolor="transparent", plot_bgcolor="transparent") %>%
+      config(displayModeBar=F)
+  }
+  )
 })

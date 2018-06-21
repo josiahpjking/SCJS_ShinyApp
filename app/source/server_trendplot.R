@@ -16,7 +16,7 @@ output$trendplot <- renderPlotly({
             hoverinfo="text",
             color=~breaks, 
             colors=pdivcols) %>%
-      add_markers(y=~percentage, error_y=list(array = ~ci*100)) %>% 
+      add_markers(y=~percentage, error_y=list(array = ~ci*100), showlegend=FALSE) %>%
       add_lines(y=~percentage, linetype=~wrappedv) -> p
   } else {
     plot_ly(trend_data(), 
@@ -26,21 +26,13 @@ output$trendplot <- renderPlotly({
             hoverinfo="text",
             color=~breaks, 
             colors=pdivcols) %>%
-      add_markers(y=~percentage) %>% 
+      add_markers(y=~percentage, showlegend=FALSE) %>% 
       add_lines(y=~percentage, linetype=~wrappedv) -> p
   }
-  if (input$showleg==FALSE){
-    p %>% layout(xaxis=list(title=""),
+  p %>% layout(xaxis=list(title=""),
+                 showlegend=input$showleg,
                  yaxis=list(title=~ylabel,ticksuffix = "%"),
-                 showlegend=FALSE,
-                 height = input$plotHeight, 
+                 legend = list(orientation = "h", xanchor = "center", yanchor="bottom", x = 0.5),
+                 height = input$plotHeight,
                  autosize=TRUE) %>% config(modeBarButtonsToRemove = modebar_remove)
-  } else{
-    p %>% layout(xaxis=list(title=""),
-                 yaxis=list(title=~ylabel,ticksuffix = "%"),
-                 legend = list(orientation = "h", xanchor = "center", yanchor="top", x = 0.5),
-                 height = input$plotHeight, 
-                 autosize=TRUE) %>% config(modeBarButtonsToRemove = modebar_remove)
-    
-  }
 })
