@@ -15,11 +15,9 @@ output$trendplot <- renderPlotly({
             text=~my_text, 
             hoverinfo="text",
             color=~breaks, 
-            colors=pdivcols, 
-            linetype=~wrappedv, 
-            error_y=list(type = "Percentage",array = ~ci*100, arrayminus = ~ci*100)
-    ) %>%
-      add_markers(y = ~percentage) -> p
+            colors=pdivcols) %>%
+      add_markers(y=~percentage, error_y=list(array = ~ci*100)) %>% 
+      add_lines(y=~percentage, linetype=~wrappedv) -> p
   } else {
     plot_ly(trend_data(), 
             x=~year, 
@@ -27,11 +25,10 @@ output$trendplot <- renderPlotly({
             text=~my_text, 
             hoverinfo="text",
             color=~breaks, 
-            colors=pdivcols, 
-            linetype=~wrappedv) %>%
-      add_markers(y = ~percentage) -> p
+            colors=pdivcols) %>%
+      add_markers(y=~percentage) %>% 
+      add_lines(y=~percentage, linetype=~wrappedv) -> p
   }
-  
   if (input$showleg==FALSE){
     p %>% layout(xaxis=list(title=""),
                  yaxis=list(title=~ylabel,ticksuffix = "%"),

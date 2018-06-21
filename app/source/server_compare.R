@@ -45,10 +45,11 @@ output$compar_plot <- renderPlotly({
             textposition="auto", 
             type = "bar", 
             color=~change, 
-            colors = c("Same"="#BDBDBD","Better"="#82FA58","Worse"="#FA5858")
+            colors = overview_cols
     ) %>% 
     layout(
-      yaxis=list(title="", 
+      yaxis=list(title="",
+                 showticklabels = FALSE,
                  categoryarray=~rev(wrapped_name),categoryorder="array",
                  tickfont=list(family="Arial, sans-serif", size=10)), 
       xaxis=list(range=c(0,100),ticksuffix = "%")
@@ -62,7 +63,7 @@ output$compar_plot <- renderPlotly({
             textposition="auto", 
             type = "bar",
             color=~change, 
-            colors = c("Same"="#BDBDBD","Better"="#82FA58","Worse"="#FA5858")
+            colors = overview_cols
     ) %>% 
     layout(
       yaxis=list(title="",
@@ -73,7 +74,7 @@ output$compar_plot <- renderPlotly({
   
   subplot(p1,p2) %>% 
     layout(showlegend=FALSE,
-           margin=list(l=100),
+           margin=list(l=120),
            autosize=TRUE
-    ) %>% config(displayModeBar=F)
+    ) %>% config(modeBarButtonsToRemove = modebar_remove)
 })

@@ -15,7 +15,7 @@ table_downloaddata<-reactive({
   table_data() %>%
     select(year,Variable,Police_Division,Percentage,SampleSize) %>%
     mutate(
-      Percentage=round(Percentage,signif=1)
+      Percentage=round(Percentage,digits=1)
     ) %>%
     reshape(timevar="year",idvar=c("Police_Division","Variable"),direction="wide") %>% 
     arrange(Variable)
@@ -49,7 +49,7 @@ output$table_ss <- renderTable({
   table_data() %>% select(year,Variable,Police_Division,SampleSize) %>%
     reshape(timevar="year",idvar=c("Police_Division","Variable"),direction="wide") %>% 
     rename_at(vars(starts_with("SampleSize")), funs(gsub("SampleSize.","",.))) %>% 
-    arrange(Variable)
+    arrange(Police_Division)
 })
 
 

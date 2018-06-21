@@ -1,0 +1,100 @@
+/* HEADER */
+
+.head-control {
+  text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 60px;
+}
+
+/* TEXT */
+
+h3, h4{
+  text-align:center;
+  font-family: 'Roboto', sans-serif; 
+  font-weight: 500; 
+  font-size: 20px 
+}
+
+p{
+  text-align:center;
+  font-family: 'Roboto', sans-serif; 
+  font-weight: normal; 
+  font-size: 14px 
+}
+
+.shiny-html-output{
+  text-align:left;
+  font-family: 'Roboto', sans-serif; 
+  font-weight: normal; 
+  font-size: 14px 
+}
+
+/* Top text */
+
+.toptext{
+  margin: 50px;
+}
+
+/* HOME SCREEN BUTTONS */
+
+.button-text img{
+  max-width: 100px;
+  margin: 5px;
+  display: table-row;
+}
+
+.button-text p{
+  text-align: left;
+  vertical-align: middle;
+  display: table-cell;
+  margin: 5px;
+}
+
+.button-text{
+  display: inline-table;
+  width: 40%;
+  margin: 15px;
+  background-color: rgba(45,149,168,0.3);
+}
+
+.home_buttons {
+  display: table;
+  text-align: center;
+  background-color: rgba(45,149,168,0.2);
+  min-width: 1000px;
+  margin: 50px;
+}
+
+.w3-opacity, .w3-hover-opacity:hover{
+  background-color: rgba(0, 0, 0, 0.1);
+  opacity: 0.6;
+}
+
+body{
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+
+/* LIMIT SELECTIZE */
+
+div.tvar .selectize-input{
+  min-height: 34px;
+  max-height: 150px;
+}
+
+.plotcontrol{
+  display: inline-block;
+}
+.tableopts{
+  display: inline-block;
+}
+
+#plotopts{
+  text-align: right;
+}
+
+#stt_results{
+  text-align: center;
+}
+
