@@ -6,6 +6,8 @@ require(magrittr)
 
 
 body<-navbarPage(title="",id="main",position="fixed-top",
+                 
+                 
     tabPanel("Home",icon = icon('home',lib="glyphicon"),
              div(class="toptext", 
                  tags$p("The Scottish Crime and Justice Survey (SCJS) is a large-scale social survey which asks people about their experiences and perceptions of crime. The survey is important because it provides a picture of crime in Scotland, including crimes that haven't been reported to/recorded by the police and captured in police recorded crime statistics."),
@@ -13,26 +15,37 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                  ),
              
              div(class="home_buttons",
-                 
-                 div(class="button-text",
-                 actionLink("link_overview",tags$img(class="w3-hover-opacity", src="overview.png")),
-                 tags$p("Use the Overview tab to see how police divisions have been performing relative to the National Average. Choose between any of the Survey's 3 National Indicators or whole sections of the survey.")
+                 actionLink("link_overview",
+                            div(class="button-text", 
+                                tags$img(src="overview.png"),
+                                tags$p("Use the Overview tab to see how police divisions have been performing relative to the National Average. Choose between any of the Survey's 3 National Indicators or whole sections of the survey.")
+                                )
                  ),
-                 div(class="button-text",
-                     actionLink("link_trends",tags$img(class="w3-hover-opacity", src="trends.png")),
-                     tags$p("Use the Visualise Trends tab to look at how specific questions in the SCJS have changed over time. These trends can also be disaggregated by division.")
+                 actionLink("link_trends",
+                            div(class="button-text",
+                                tags$img(src="trends.png"),
+                                tags$p("Use the Visualise Trends tab to look at how specific questions in the SCJS have changed over time. These trends can also be disaggregated by division.")
+                                )
                  ),
-                 div(class="button-text",
-                     actionLink("link_compare",tags$img(class="w3-hover-opacity", src="comparison.png")),
-                     tags$p("If you're interested in comparing different divisions to one another (or to the National Average), or comparing one division's performance in specific years, then use this comparison tool.")
+                 actionLink("link_compare",
+                            div(class="button-text", 
+                                tags$img(src="comparison.png"),
+                                tags$p("If you're interested in comparing different divisions to one another (or to the National Average), or comparing one division's performance in specific years, then use this comparison tool.")
+                            )
                  ),
-                 div(class="button-text",
-                     actionLink("link_tables",tags$img(class="w3-hover-opacity", src="tables.png")),
-                     tags$p("If you don't like all the visual stuff and just want some numbers, then head to the Tables section. You can download tables of proportions and sample sizes for all variables included in this app.")
+                 actionLink("link_tables",
+                            div(class="button-text", 
+                                tags$img(src="tables.png"),
+                                tags$p("If you don't like all the visual stuff and just want some numbers, then head to the Tables section. You can download tables of proportions and sample sizes for all variables included in this app.")
+                            )
                  )
              )
              
     ),
+    
+    ##########
+    #Overview tab.
+    ##########
     
     tabPanel("Scotland Overview", value="main_overview",
              sidebarLayout(
@@ -49,10 +62,12 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                    htmlOutput('overview_2')
                  )
                ),
+               
                mainPanel(
                  tabsetPanel(id="plottingov",selected="breakdown",
+                             
                              tabPanel(title="1 Year Breakdown",value="breakdown",
-                                      plotlyOutput("ov_currentplot", height = "100%",width='100%')
+                                      plotlyOutput("ov_currentplot", height = "auto",width='100%')
                              ),
                              tabPanel(title="Within Division Trends",value="trends",
                                       plotlyOutput("ov_trendplot", height = "100%",width='100%')
@@ -69,6 +84,7 @@ body<-navbarPage(title="",id="main",position="fixed-top",
     ##########
     #TRENDS OVER TIME (main_trends)
     ##########
+    
     tabPanel("Visualise Trends", value="main_trends", icon = icon('line-chart'),
              sidebarLayout(
                sidebarPanel(
@@ -100,6 +116,7 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                  )
                ),
                mainPanel(
+                 div(id="compare_inputs",
                  fluidRow(
                    column(width=6,align="center",selectizeInput("parea1",NULL,choices=pdivis, selected="National Average", multiple = F)),
                    column(width=6,align="center",selectizeInput("parea2",NULL,choices=pdivis, selected="National Average", multiple = F))
@@ -107,7 +124,7 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                  fluidRow(
                    column(width=6,align="center",selectizeInput("year1",NULL,choices=years, selected=years[1], multiple = F)),
                    column(width=6,align="center",selectizeInput("year2",NULL,choices=years, selected=years[length(years)], multiple = F))
-                 ),
+                 )),
                  
                  fluidRow(
                    column(width=12,align="center",plotlyOutput('compar_plot', height = "100%",width='90%'))

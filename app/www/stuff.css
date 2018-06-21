@@ -43,18 +43,11 @@ p{
 }
 
 /* HOME SCREEN BUTTONS */
-
-.button-text img{
-  max-width: 100px;
-  margin: 5px;
-  display: table-row;
-}
-
-.button-text p{
-  text-align: left;
-  vertical-align: middle;
-  display: table-cell;
-  margin: 15px;
+.home_buttons {
+  display: table;
+  text-align: center;
+  background-color: rgba(45,149,168,0.2);
+  margin: 50px;
 }
 
 .button-text{
@@ -64,30 +57,48 @@ p{
   background-color: rgba(45,149,168,0.3);
 }
 
-.home_buttons {
-  display: table;
-  text-align: center;
-  background-color: rgba(45,149,168,0.2);
-  min-width: 1000px;
-  margin: 50px;
+.button-text img{
+  max-width: 100px;
+  margin: 5px;
+  display: table-row;
 }
 
-.w3-opacity, .w3-hover-opacity:hover{
+.button-text p{
+  color: black;
+  text-align: left;
+  vertical-align: middle;
+  display: table-cell;
+  margin: 15px;
+}
+
+.button-text:hover{
   background-color: rgba(0, 0, 0, 0.1);
   opacity: 0.6;
 }
+
+.navbar{
+  background-color: rgba(145,149,168,1);
+}
+
+
+.navbar-default .navbar-nav > li > a{
+  color: rgba(255,255,255,1);
+}
+
+
 
 body{
   background-color: rgba(0, 0, 0, 0.01);
 }
 
-
 /* LIMIT SELECTIZE */
-
 div.tvar .selectize-input{
   min-height: 34px;
   max-height: 150px;
 }
+
+
+
 
 .form-group{
   display: inline-block;
@@ -100,3 +111,6 @@ div.tvar .selectize-input{
   text-align: center;
 }
 
+#compare_inputs{
+  margin: auto;
+}

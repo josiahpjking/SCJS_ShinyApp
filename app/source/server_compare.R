@@ -49,11 +49,14 @@ output$compar_plot <- renderPlotly({
     ) %>% 
     layout(
       yaxis=list(title="",
+                 tickfont=list(family="Arial, sans-serif", size=10),
                  showticklabels = FALSE,
-                 categoryarray=~rev(wrapped_name),categoryorder="array",
-                 tickfont=list(family="Arial, sans-serif", size=10)), 
-      xaxis=list(range=c(0,100),ticksuffix = "%")
-    ) -> p1
+                 categoryarray=~rev(wrapped_name),categoryorder="array"), 
+      xaxis=list(range=c(0,100),ticksuffix = "%",showticklabels = FALSE)
+    ) %>% add_annotations(x = 0, y = ~wrapped_name,
+                      xanchor = 'right', text = ~wrapped_name,
+                      font = list(family = 'Arial', size = 10),
+                      showarrow = FALSE, align = 'right') -> p1
   
   compare_data() %>% filter(breaks %in% input$parea2 & year %in% input$year2) %>% 
     plot_ly(., y=~wrapped_name, 
@@ -69,14 +72,16 @@ output$compar_plot <- renderPlotly({
       yaxis=list(title="",
                  categoryarray=~rev(wrapped_name),categoryorder="array",
                  showticklabels = FALSE),
-      xaxis=list(range=c(0,100),ticksuffix = "%")
+      xaxis=list(range=c(100,0),ticksuffix = "%",showticklabels = FALSE)
     ) -> p2
   
   tryCatch({
+    pheight=(length(all_vars[[input$survey_section_compare]])^0.5)*300
     subplot(p1,p2) %>% 
       layout(showlegend=FALSE,
-             #margin=list(l=120),
-             autosize=TRUE
+             margin=list(l=120),
+             autosize=TRUE,
+             height=pheight
       ) %>% config(modeBarButtonsToRemove = modebar_remove)
   },
   error=function(cond){

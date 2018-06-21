@@ -29,19 +29,19 @@ server <- function(input, output, session){
   
   observeEvent(input$link_overview,{
     newvalue <- "main_overview"
-    updateTabItems(session, "main", newvalue)
+    updateTabsetPanel(session, "main", newvalue)
   })
   observeEvent(input$link_trends,{
     newvalue <- "main_trends"
-    updateTabItems(session, "main", newvalue)
+    updateTabsetPanel(session, "main", newvalue)
   })
   observeEvent(input$link_compare,{
     newvalue <- "main_compare"
-    updateTabItems(session, "main", newvalue)
+    updateTabsetPanel(session, "main", newvalue)
   })
   observeEvent(input$link_tables,{
     newvalue <- "main_tables"
-    updateTabItems(session, "main", newvalue)
+    updateTabsetPanel(session, "main", newvalue)
   })
   
   
