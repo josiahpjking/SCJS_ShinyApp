@@ -3,9 +3,7 @@ library(plotly)
 require(tidyr)
 require(dplyr)
 require(magrittr)
-library(shinydashboard)
 
-#setwd("\\\\scotland.gov.uk/dc2/fs4_home/Z613379/pdiv_dash/v9/app")
 source("source/plotfunc.R")
 selected_pclick <- 0 #declare outside the server function
 load(file = "data/app_preamble.RData")

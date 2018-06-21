@@ -1,7 +1,7 @@
-setwd("\\\\scotland.gov.uk/dc2/fs4_home/Z613379/pdiv_dash/v9")
 ################
 #sort out data.
 ################
+library(tidyverse)
 
 #####
 #plotting constants
@@ -36,8 +36,7 @@ modebar_remove <- c('hoverClosestCartesian','hoverCompareCartesian','zoom2d','pa
 #DATA, input choices
 #####
 #proportion data
-df<-readRDS("data/pdiv8.1_current.rds")
-
+df<-readRDS("data/pdiv9_test.rds")
 #df$wrapped_name <- sapply(df$name_trunc, FUN = function(x) {paste(strwrap(x, width = 20), collapse = "<br>")})
 #df$wrappedv <- sapply(df$label, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")})
 
