@@ -1,13 +1,13 @@
 
 #basic table data
 table_data<-reactive({
-  df %>% filter(breaks %in% input$table_pdiv & variable %in% input$table_var) %>%
+  df %>% filter(police_div %in% input$table_pdiv & variable %in% input$table_var) %>%
     mutate(
-      Police_Division=breaks,
+      Police_Division=police_div,
       Percentage=percentage, 
       SampleSize=samplesize,
       Variable=variable
-    )
+    ) %>% data.frame(.)
 })
 
 #data for downloading (no testing. )

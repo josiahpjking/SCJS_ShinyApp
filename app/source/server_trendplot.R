@@ -1,9 +1,9 @@
 
 trend_data<-reactive({
   #data for plotting
-  df %>% filter(breaks %in% input$parea) %>% 
+  df %>% filter(police_div %in% input$parea) %>% 
     filter(variable %in% input$var_select) %>% mutate(
-      my_text = paste0("<b>",breaks,"</b><br>",wrappedv,"<br>",round(percentage, digits=1),"% +/-",round(ci*100, digits=1),"<br>N = ",samplesize)
+      my_text = paste0("<b>",police_div,"</b><br>",wrappedv,"<br>",round(percentage, digits=1),"% +/-",round(ci*100, digits=1),"<br>N = ",samplesize)
     )
 })
 
@@ -14,7 +14,7 @@ output$trendplot <- renderPlotly({
             y=~percentage, 
             text=~my_text, 
             hoverinfo="text",
-            color=~breaks, 
+            color=~police_div, 
             colors=pdivcols) %>%
       add_markers(y=~percentage, error_y=list(array = ~ci*100), showlegend=FALSE) %>%
       add_lines(y=~percentage, linetype=~wrappedv) -> p
@@ -24,7 +24,7 @@ output$trendplot <- renderPlotly({
             y=~percentage,
             text=~my_text, 
             hoverinfo="text",
-            color=~breaks, 
+            color=~police_div, 
             colors=pdivcols) %>%
       add_markers(y=~percentage, showlegend=FALSE) %>% 
       add_lines(y=~percentage, linetype=~wrappedv) -> p

@@ -10,28 +10,30 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                  
     tabPanel("Home",icon = icon('home',lib="glyphicon"),
              div(class="toptext", 
-                 tags$p("The Scottish Crime and Justice Survey (SCJS) is a large-scale social survey which asks people about their experiences and perceptions of crime. The survey is important because it provides a picture of crime in Scotland, including crimes that haven't been reported to/recorded by the police and captured in police recorded crime statistics."),
-                 tags$p("This ShinyApp gives a breakdown of different elements of the SCJS by Police Divisions. The App features a number of different tools to display the data in ways which meet a variety of needs.")
-                 ),
+                 tags$p("The Scottish Crime and Justice Survey (SCJS) is a large-scale social survey which asks people about their experiences and perceptions of crime. The survey is important because it provides a picture of crime in Scotland, including crimes that haven't been reported to/recorded by the police and captured in police recorded crime statistics. This ShinyApp gives a breakdown of different elements of the SCJS by Police Divisions. When designing this app, we had in mind two main questions that users might have about responses to the survey:"),
+                 tags$li("Which police divisions in Scotland are over/under-performing, and have specific divisions been consistent over time relative to the National Average?"),
+                 tags$li("How is Scotland as a whole changing over time?"),
+                 tags$p("The App features a number of different tools to meet these needs, which are detailed below. For information about the in-built statistical testing in these tools, and links to other SCJS publications, see the Help & Information tab.")
+             ),
              
              div(class="home_buttons",
                  actionLink("link_overview",
                             div(class="button-text", 
                                 tags$img(src="overview.png"),
-                                tags$p("Use the Overview tab to see how police divisions have been performing relative to the National Average. Choose between any of the Survey's 3 National Indicators or whole sections of the survey.")
-                                )
-                 ),
-                 actionLink("link_trends",
-                            div(class="button-text",
-                                tags$img(src="trends.png"),
-                                tags$p("Use the Visualise Trends tab to look at how specific questions in the SCJS have changed over time. These trends can also be disaggregated by division.")
+                                tags$p("Use the Division Overview tab to see how police divisions have been performing relative to the National Average. Choose between any of the Survey's 3 National Indicators or whole sections of the survey.")
                                 )
                  ),
                  actionLink("link_compare",
                             div(class="button-text", 
                                 tags$img(src="comparison.png"),
-                                tags$p("If you're interested in comparing different divisions to one another (or to the National Average), or comparing one division's performance in specific years, then use this comparison tool.")
+                                tags$p("Use the comparison tool to look at the data in more depth: Pick and choose specific years and/or specific police divisions, and compare the results of the survey.")
                             )
+                 ),
+                 actionLink("link_trends",
+                            div(class="button-text",
+                                tags$img(src="trends.png"),
+                                tags$p("Use the Trends tab to look at how specific questions in the SCJS have changed over time. These trends can also be disaggregated by division.")
+                                )
                  ),
                  actionLink("link_tables",
                             div(class="button-text", 
@@ -47,7 +49,7 @@ body<-navbarPage(title="",id="main",position="fixed-top",
     #Overview tab.
     ##########
     
-    tabPanel("Scotland Overview", value="main_overview",
+    tabPanel("Overview of Police Divisions", value="main_overview",
              sidebarLayout(
                sidebarPanel(
                  selectizeInput("ov_var",label="Choose an area of the survey",choices=c(all_vars[[1]],names(all_vars)),multiple=F,selected=NULL),
@@ -76,26 +78,6 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                                       plotlyOutput("ov_animateplot", height = "100%",width='100%')
                              )
                  ),
-                 checkboxInput("showleg",label = "Show Legend",value=FALSE)
-               )
-             )
-    ),
-    
-    ##########
-    #TRENDS OVER TIME (main_trends)
-    ##########
-    
-    tabPanel("Visualise Trends", value="main_trends", icon = icon('line-chart'),
-             sidebarLayout(
-               sidebarPanel(
-                 selectizeInput("survey_section", label = "Choose an area of the survey", choices=names(all_vars), selected=names(all_vars)[1], multiple=F),
-                 uiOutput('var_select'),
-                 selectizeInput("parea",label="Choose Police Divisions",choices=pdivis, selected="National Average", multiple = T, options = list(maxItems = length(pdivis))),
-                 htmlOutput('trend_summary')
-               ),
-               mainPanel(
-                 plotlyOutput("trendplot", height = "100%",width='100%'),
-                 checkboxInput("erbar",label = "Show Confidence Intervals",value=FALSE),
                  checkboxInput("showleg",label = "Show Legend",value=FALSE)
                )
              )
@@ -135,6 +117,35 @@ body<-navbarPage(title="",id="main",position="fixed-top",
     ),
     
     ##########
+    #TRENDS OVER TIME (main_trends)
+    ##########
+    
+    tabPanel("Visualise Trends", value="main_trends", icon = icon('line-chart'),
+             sidebarLayout(
+               
+               sidebarPanel(
+                 selectizeInput("survey_section", label = "Choose an area of the survey", choices=names(all_vars), selected=names(all_vars)[1], multiple=F),
+                 uiOutput('var_select'),
+                 selectizeInput("parea",label="Choose Police Divisions",choices=pdivis, selected="National Average", multiple = T, options = list(maxItems = length(pdivis))),
+                 div(class="sidebartext",
+                     tags$p("Here you can visualise the trends over time of various questions of the survey."),
+                     tags$p("Choose an area of the survey to focus on, and then explore the variables which the SCJS collects in that area."),
+                     tags$p("You can also select individual police divisions to see how trends have varied for different areas."),
+                     tags$p("Information regarding confidence intervals and sample sizes is available when hovering the mouse over a line on the plot."),
+                     actionLink("link_compare1",
+                            "If you wish to find out whether a difference is significant or not, head to the comparison tool.")
+                 )
+               ),
+               
+               mainPanel(
+                 plotlyOutput("trendplot", height = "100%",width='100%'),
+                 checkboxInput("erbar",label = "Show Confidence Intervals",value=FALSE),
+                 checkboxInput("showleg",label = "Show Legend",value=FALSE)
+               )
+             )
+    ),
+    
+    ##########
     #TABLES (main_tables)
     ##########
     
@@ -168,7 +179,19 @@ body<-navbarPage(title="",id="main",position="fixed-top",
     
     
     tabPanel("Help & Information", value="main_help", icon=icon('info-sign',lib="glyphicon"),
-             div(class="toptext",htmlOutput('stt_summary')),
+             div(class="toptext",id="hi1",
+                 tags$h5("SCJS Questions"),
+                 tags$p("To calculate proportions of, for example, survey respondents expressing confidence in the local police, categories of responses to survey questions have been collapsed across the levels of confidence (e.g. 'Fairly Confident' and 'Very Confident' are both contribute equally to these proportions). For the few exceptional questions (such as perceiving the 'same or less' crime), care has been taken in the labels and information-on-hover to reflect this."),
+                 tags$a(href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications","More information can be found on the SCJS publication page.")
+             ),
+             
+             div(class="toptext",id="hi2",
+                 tags$h5("Statistical Testing tool"),
+                 tags$p("This tool replicates the excel workbook found on",
+                        tags$a(href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/Datasets/SCJS/SCJS201617StatsTestingTool","the SCJS website.")),
+                 tags$p("SCJS estimates are based on a representative sample of the population of Scotland aged 16 or over living in private households. A sample, as used in the SCJS, is a small-scale representation of the population from which it is drawn. Any sample survey may produce estimates that differ from the values that would have been obtained if the whole population had been interviewed. The magnitude of these differences is related to the size and variability of the estimate, and the design of the survey, including sample size. It is however possible to calculate the range of values between which the population figures are estimated to lie; known as the confidence interval (also referred to as margin of error). At the 95 per cent confidence level, when assessing the results of a single survey it is assumed that there is a one in 20 chance that the true population value will fall outside the 95 per cent confidence interval range calculated for the survey estimate. Similarly, over many repeats of a survey under the same conditions, one would expect that the confidence interval would contain the true population value 95 times out of 100. Because of sampling variation, changes in reported estimates between survey years or between population subgroups may occur by chance. In other words, the change may simply be due to which respondents were randomly selected for interview. Whether this is likely to be the case can be assessed using standard statistical tests. These tests indicate whether differences are likely to be due to chance or represent a real difference. In general, only differences that are statistically significant at the five per cent level (and are therefore likely to be real as opposed to occurring by chance) are reported."),
+                 
+                 
              fluidRow(
                column(width=6,align="center",textInput("stt_p1", "Percentage", value = "")),
                column(width=6,align="center",textInput("stt_p2", "Percentage", value = ""))
@@ -183,6 +206,11 @@ body<-navbarPage(title="",id="main",position="fixed-top",
              ),
              fluidRow(
                column(width=12,align="center",div(htmlOutput("stt_results"), style = "text-align: center"))
+             )
+             ),
+             div(class="toptext",id="hi3",
+                 tags$h5("Rounding"),
+                 tags$p("All proportions and confidence intervals presented here are rounded to 1dp. The in-built proportion testing in the app (which colours visual elements red/green/grey accordingly) uses unrounded proportions. Using the stats-testing tool on rounded proportions may yield slightly different results to those displayed in the rest of the app.")
              )
     )
 )

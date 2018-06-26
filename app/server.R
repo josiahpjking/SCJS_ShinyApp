@@ -5,7 +5,7 @@ require(dplyr)
 require(magrittr)
 
 
-#setwd("\\\\scotland.gov.uk/dc2/fs4_home/Z613379/pdiv_dash/v9/app")
+#setwd("\\\\scotland.gov.uk/dc2/fs4_home/Z613379/pdiv_shiny/v9/app")
 source("source/plotfunc.R")
 selected_pclick <- 0 #declare outside the server function
 load(file = "data/app_preamble.RData")
@@ -43,6 +43,24 @@ server <- function(input, output, session){
     newvalue <- "main_tables"
     updateTabsetPanel(session, "main", newvalue)
   })
+  observeEvent(input$link_compare1,{
+    newvalue <- "main_compare"
+    updateTabsetPanel(session, "main", newvalue)
+  })
+  
+  observeEvent(input$stt_button,{
+    shinyjs::toggleState("stt_content")
+    shinyjs::toggleState("stt_p1")
+    shinyjs::toggleState("stt_p2")
+    shinyjs::toggleState("stt_ss1")
+    shinyjs::toggleState("stt_ss2")
+    shinyjs::toggleState("stt_y1")
+    shinyjs::toggleState("stt_y2")
+    shinyjs::toggleState("stt_results")
+  })
+  
+  
+  
   
   
   ######

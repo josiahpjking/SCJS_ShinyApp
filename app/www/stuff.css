@@ -31,12 +31,49 @@ p{
 }
 
 /* Top text */
-
 .toptext{
+  background-color: rgba(217,130,114,0.2);
   margin: 50px;
+  margin-bottom: 0;
 }
 
-/* Top text */
+.toptext .shiny-html-output{
+  margin: 20px;
+}
+
+.toptext p{
+  margin: 20px;
+  text-align:center;
+  font-family: 'Roboto', sans-serif; 
+  font-weight: normal; 
+  font-size: 14px 
+}
+.toptext li, .toptext h5{
+  text-align:center;
+  font-family: 'Roboto', sans-serif; 
+  font-weight: bold; 
+  font-size: 14px 
+}
+
+#hi1{
+  background-color: rgba(45,149,168,0.2);
+}
+#hi2{
+  background-color: rgba(217,130,114,0.2);
+}
+#hi3{
+  background-color: rgba(114,217,130,0.2);
+}
+
+
+
+
+
+
+
+
+
+/* Sidebar text */
 
 .sidebartext p{
   text-align: left;
@@ -48,6 +85,7 @@ p{
   text-align: center;
   background-color: rgba(45,149,168,0.2);
   margin: 50px;
+  margin-top: 0;
 }
 
 .button-text{
@@ -71,6 +109,16 @@ p{
   margin: 15px;
 }
 
+.button-text h6{
+  color: black;
+  text-align: left;
+  vertical-align: middle;
+  display: table;
+  font-weight: bold; 
+  margin: 16px;
+}
+
+
 .button-text:hover{
   background-color: rgba(0, 0, 0, 0.1);
   opacity: 0.6;
@@ -80,13 +128,10 @@ p{
   background-color: rgba(145,149,168,1);
 }
 
-
 .navbar-default .navbar-nav > li > a{
   color: rgba(255,255,255,1);
-}
-
-
-
+} 
+ 
 body{
   background-color: rgba(0, 0, 0, 0.01);
 }

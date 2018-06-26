@@ -1,7 +1,7 @@
+setwd("\\\\scotland.gov.uk/dc2/fs4_home/Z613379/pdiv_shiny/v9")
 ################
 #sort out data.
 ################
-library(tidyverse)
 
 #####
 #plotting constants
@@ -36,13 +36,15 @@ modebar_remove <- c('hoverClosestCartesian','hoverCompareCartesian','zoom2d','pa
 #DATA, input choices
 #####
 #proportion data
-df<-readRDS("data/pdiv9_test.rds")
+df<-readRDS("data/pdiv9.5.test.rds")
+
+
 #df$wrapped_name <- sapply(df$name_trunc, FUN = function(x) {paste(strwrap(x, width = 20), collapse = "<br>")})
 #df$wrappedv <- sapply(df$label, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")})
 
 
 des_factors <- df %>% group_by(year) %>% summarise(des_f=first(des_effect)) #design factors
-pdivis<-levels(factor(df$breaks)) #police divisions
+pdivis<-levels(factor(df$police_div)) #police divisions
 years=levels(df$year) #years
 currentyear=years[length(years)] #latest survey year
 prevyear=years[length(years)-1] #previous survey year
@@ -50,19 +52,26 @@ firstyear=years[1] #first survey year
 yn<-c("Yes","No") #yes no choices
 
 
+getnames<-function(string){
+  df %>%
+    filter(grepl(string,variable)) %>%
+    pull(name_trunc) %>%
+    unique() %>%
+    as.character()
+}
 #variables/variable groupings
-all_vars<-list('National Indicators'=levels(df$variable)[grepl("PREVSURVEY|QS2AREA:|DCONF_03",levels(df$variable))],
-               'Rates of Crime Victimisation'=levels(df$variable)[grepl("PREV",levels(df$variable))],
-               'Confidence in the Police'=levels(df$variable)[grepl("POLCONF",levels(df$variable))],
-               'Attitudes to the Police'=levels(df$variable)[grepl("POLOP|COMPOL|POLPRES|RATPOL",levels(df$variable))],
-               'Confidence in Scottish Crime and Justice System'=levels(df$variable)[grepl("DCONF",levels(df$variable))],
-               'Perceptions of Crime and Safety'=levels(df$variable)[grepl("QS",levels(df$variable))],
-               'Worries of Victimisation'=levels(df$variable)[grepl("QWORR",levels(df$variable))],
-               'Worries of Being Harassed'=levels(df$variable)[grepl("HWORR",levels(df$variable))],
-               'Perceptions of Local Crime'=levels(df$variable)[grepl("QACO",levels(df$variable))],
-               'Perceptions of Local People'=levels(df$variable)[grepl("LCPEOP",levels(df$variable))]
+all_vars<-list('National Indicators'= getnames("PREVSURVEY|QS2AREA:|DCONF_03"),
+               'Rates of Crime Victimisation'=getnames("PREV"),
+               'Confidence in the Police'=getnames("POLCONF"),
+               'Attitudes to the Police'=getnames("POLOP|COMPOL|POLPRES|RATPOL"),
+               'Confidence in Scottish Crime and Justice System'=getnames("DCONF"),
+               'Perceptions of Crime and Safety'=getnames("QS"),
+               'Worries of Victimisation'=getnames("QWORR"),
+               'Worries of Being Harassed'=getnames("HWORR"),
+               'Perceptions of Local Crime'=getnames("QACO"),
+               'Perceptions of Local People'=getnames("LCPEOP")
                )
-
+df$variable<-df$name_trunc
 
 
 
