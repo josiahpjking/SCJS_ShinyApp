@@ -47,21 +47,7 @@ server <- function(input, output, session){
     newvalue <- "main_compare"
     updateTabsetPanel(session, "main", newvalue)
   })
-  
-  observeEvent(input$stt_button,{
-    shinyjs::toggleState("stt_content")
-    shinyjs::toggleState("stt_p1")
-    shinyjs::toggleState("stt_p2")
-    shinyjs::toggleState("stt_ss1")
-    shinyjs::toggleState("stt_ss2")
-    shinyjs::toggleState("stt_y1")
-    shinyjs::toggleState("stt_y2")
-    shinyjs::toggleState("stt_results")
-  })
-  
-  
-  
-  
+
   
   ######
   #server side inputs

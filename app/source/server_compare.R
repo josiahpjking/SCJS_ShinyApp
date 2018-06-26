@@ -6,6 +6,7 @@ compare_data <- reactive({
   
   bind_rows(conf_p1_data,conf_p2_data) %>% filter((police_div==input$parea1 & year==input$year1) | (police_div==input$parea2 & year==input$year2)) -> conf_temp_data
   
+  conf_temp_data$wrapped_name <- sapply(conf_temp_data$name_trunc, FUN = function(x) {paste(strwrap(x, width = 20), collapse = "<br>")})
   
   conf_temp_data %>% 
     group_by(variable) %>% 
@@ -38,6 +39,7 @@ compare_data <- reactive({
 })
   
 output$compar_plot <- renderPlotly({
+  compare_data() %>% nrow()/2 -> visible_vars
   compare_data() %>% filter(police_div %in% input$parea1 & year %in% input$year1) %>%
     plot_ly(., y=~wrapped_name, 
             x=~percentage, 
@@ -77,7 +79,7 @@ output$compar_plot <- renderPlotly({
     ) -> p2
   
   tryCatch({
-    pheight=(length(all_vars[[input$survey_section_compare]])^0.5)*300
+    pheight=(visible_vars*110)+100
     subplot(p1,p2) %>% 
       layout(showlegend=FALSE,
              margin=list(l=120),

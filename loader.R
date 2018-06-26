@@ -1,4 +1,7 @@
-setwd("\\\\scotland.gov.uk/dc2/fs4_home/Z613379/pdiv_shiny/v9")
+require(tidyr)
+require(dplyr)
+require(magrittr)
+#setwd("\\\\scotland.gov.uk/dc2/fs4_home/Z613379/pdiv_shiny/v9")
 ################
 #sort out data.
 ################
@@ -75,6 +78,6 @@ df$variable<-df$name_trunc
 
 
 
-save.image(file = "./app/data/app_preamble.RData")
+save.image(file = "./app/.RData")
 
 
