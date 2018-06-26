@@ -11,8 +11,10 @@ body<-navbarPage(title="",id="main",position="fixed-top",
     tabPanel("Home",icon = icon('home',lib="glyphicon"),
              div(class="toptext", 
                  tags$p("The Scottish Crime and Justice Survey (SCJS) is a large-scale social survey which asks people about their experiences and perceptions of crime. The survey is important because it provides a picture of crime in Scotland, including crimes that haven't been reported to/recorded by the police and captured in police recorded crime statistics. This ShinyApp gives a breakdown of different elements of the SCJS by Police Divisions. When designing this app, we had in mind two main questions that users might have about responses to the survey:"),
-                 tags$li("Which police divisions in Scotland are over/under-performing, and have specific divisions been consistent over time relative to the National Average?"),
-                 tags$li("How is Scotland as a whole changing over time?"),
+                 div(class="questions",
+                     tags$p("Which police divisions in Scotland are over/under-performing, and have specific divisions been consistent over time relative to the National Average?")),
+                 div(class="questions",
+                     tags$p("How is Scotland as a whole changing over time?")),
                  tags$p("The App features a number of different tools to meet these needs, which are detailed below. For information about the in-built statistical testing in these tools, and links to other SCJS publications, see the Help & Information tab.")
              ),
              
@@ -69,16 +71,15 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                  tabsetPanel(id="plottingov",selected="breakdown",
                              
                              tabPanel(title="1 Year Breakdown",value="breakdown",
+                                      tags$p("Click on a division to see how it has performed over time."),
                                       plotlyOutput("ov_currentplot", height = "auto",width='100%')
                              ),
                              tabPanel(title="Within Division Trends",value="trends",
+                                      tags$p("Click on a year to see all divisions."),
                                       plotlyOutput("ov_trendplot", height = "100%",width='100%')
-                             ),
-                             tabPanel(title="Animated plot over years",value="anim",
-                                      plotlyOutput("ov_animateplot", height = "100%",width='100%')
                              )
                  ),
-                 checkboxInput("showleg",label = "Show Legend",value=FALSE)
+                 checkboxInput("showleg",label = "Show Legend",value=TRUE)
                )
              )
     ),
@@ -93,8 +94,7 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                  selectizeInput("survey_section_compare", label = "Choose an area of the survey", choices=names(all_vars), selected=names(all_vars)[1], multiple=F),
                  div(class="sidebartext",
                      tags$p("Choose a section of the survey (e.g. confidence in the local police) and compare how one specific division compares to another or to the national average, or compare the same division in different survey years."),
-                     tags$p("Significant differences between adjacent proportions are colour coded (the better-performing proportion will be green and the worse-performing proportion will be red. Non-significant differences will be grey)."),
-                     tags$p("Hover the mouse over a bar to see the specific question/variable")
+                     tags$p("Significant differences between adjacent proportions are colour coded (the better-performing proportion will be green and the worse-performing proportion will be red. Non-significant differences will be grey).")
                  )
                ),
                mainPanel(
@@ -138,9 +138,11 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                ),
                
                mainPanel(
+                 div(id="trendplottext", tags$p("Hover over the cursor over a point to see more information.")),
                  plotlyOutput("trendplot", height = "100%",width='100%'),
                  checkboxInput("erbar",label = "Show Confidence Intervals",value=FALSE),
-                 checkboxInput("showleg",label = "Show Legend",value=FALSE)
+                 checkboxInput("showleg1",label = "Show Legend",value=FALSE),
+                 actionButton("reset_trends","Reset plot")
                )
              )
     ),
@@ -181,8 +183,7 @@ body<-navbarPage(title="",id="main",position="fixed-top",
     tabPanel("Help & Information", value="main_help", icon=icon('info-sign',lib="glyphicon"),
              div(class="toptext",id="hi1",
                  tags$h5("SCJS Questions"),
-                 tags$p("To calculate proportions of, for example, survey respondents expressing confidence in the local police, categories of responses to survey questions have been collapsed across the levels of confidence (e.g. 'Fairly Confident' and 'Very Confident' are both contribute equally to these proportions). For the few exceptional questions (such as perceiving the 'same or less' crime), care has been taken in the labels and information-on-hover to reflect this."),
-                 tags$a(href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications","More information can be found on the SCJS publication page.")
+                 tags$p("To calculate proportions of, for example, survey respondents expressing confidence in the local police, categories of responses to survey questions have been collapsed across the levels of confidence (e.g. 'Fairly Confident' and 'Very Confident' are both contribute equally to these proportions). For the few exceptional questions (such as perceiving the 'same or less' crime), care has been taken in the labels and information-on-hover to reflect this. More information and the entire questionnaire can be found on ",tags$a(href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications","the SCJS publication page."))
              ),
              
              div(class="toptext",id="hi2",

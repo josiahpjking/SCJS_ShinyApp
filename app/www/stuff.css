@@ -30,11 +30,20 @@ p{
   font-size: 14px 
 }
 
+
+
+
+
 /* Top text */
+
 .toptext{
   background-color: rgba(217,130,114,0.2);
   margin: 50px;
-  margin-bottom: 0;
+  margin-bottom: 10;
+  border-style: outset;
+  border-width: 5px;
+  border-color: rgba(217,130,114,0.4);
+  border-radius: 25px;
 }
 
 .toptext .shiny-html-output{
@@ -48,21 +57,39 @@ p{
   font-weight: normal; 
   font-size: 14px 
 }
-.toptext li, .toptext h5{
+.toptext h5{
+  margin: 25px;
   text-align:center;
   font-family: 'Roboto', sans-serif; 
   font-weight: bold; 
   font-size: 14px 
 }
 
+.questions p{
+  text-align:center;
+  font-family: 'Roboto', sans-serif; 
+  font-weight: bold; 
+  font-size: 14px;
+}
+
+.questions{
+  background-color: rgba(217,130,114,0.4);
+  border-radius: 25px;
+  width: 70%;
+  margin: auto;
+}
+
 #hi1{
   background-color: rgba(45,149,168,0.2);
+  border-color: rgba(45,149,168,0.4);
 }
 #hi2{
   background-color: rgba(217,130,114,0.2);
+  border-color: rgba(217,130,114,0.4);
 }
 #hi3{
   background-color: rgba(114,217,130,0.2);
+  border-color: rgba(114,217,130,0.4);
 }
 
 
@@ -73,26 +100,41 @@ p{
 
 
 
-/* Sidebar text */
+/* Sidebar */
+
+.well{
+  border-style: outset;
+  border-width: 5px;
+  border-color: rgba(149,153,157,0.4);
+  border-radius: 25px;
+}
+
 
 .sidebartext p{
   text-align: left;
 }
 
 /* HOME SCREEN BUTTONS */
+
 .home_buttons {
   display: table;
   text-align: center;
   background-color: rgba(45,149,168,0.2);
   margin: 50px;
-  margin-top: 0;
+  margin-top: 10px;
+  border-style: outset;
+  border-width: 5px;
+  border-color: rgba(45,149,168,0.4);
+  border-radius: 25px;
 }
+
 
 .button-text{
   display: inline-table;
   width: 40%;
   margin: 15px;
   background-color: rgba(45,149,168,0.3);
+  border-radius: 25px;
 }
 
 .button-text img{
@@ -118,11 +160,13 @@ p{
   margin: 16px;
 }
 
-
 .button-text:hover{
   background-color: rgba(0, 0, 0, 0.1);
   opacity: 0.6;
 }
+
+
+
 
 .navbar{
   background-color: rgba(145,149,168,1);
@@ -142,9 +186,6 @@ div.tvar .selectize-input{
   max-height: 150px;
 }
 
-
-
-
 .form-group{
   display: inline-block;
 }
@@ -152,10 +193,14 @@ div.tvar .selectize-input{
   display: inline-block;
 }
 
+
 #stt_results{
   text-align: center;
 }
 
 #compare_inputs{
   margin: auto;
+}
+#compare_outputs p{
+  width: 85%;
 }

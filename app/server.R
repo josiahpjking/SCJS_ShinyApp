@@ -99,7 +99,7 @@ server <- function(input, output, session){
     updateSelectizeInput(session, "var_select", selected = all_vars[[input$survey_section]][1])
   })
   
-  #tab_trends: reset plots
+  #tab_tables: reset tables
   observeEvent(input$reset_tables, {
     updateSelectizeInput(session, "table_pdiv", selected = "National Average")
     updateSelectizeInput(session, "table_var", selected = all_vars[[1]][1])

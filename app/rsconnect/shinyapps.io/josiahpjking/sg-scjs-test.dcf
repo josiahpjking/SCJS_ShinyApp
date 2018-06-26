@@ -5,8 +5,8 @@ account: josiahpjking
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 367662
-bundleId: 1449513
+bundleId: 1450034
 url: https://josiahpjking.shinyapps.io/sg-scjs-test/
-when: 1530008080.08136
+when: 1530023961.06594
 asMultiple: FALSE
 asStatic: FALSE

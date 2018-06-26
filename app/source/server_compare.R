@@ -58,7 +58,7 @@ output$compar_plot <- renderPlotly({
       xaxis=list(range=c(0,100),ticksuffix = "%",showticklabels = FALSE)
     ) %>% add_annotations(x = 0, y = ~wrapped_name,
                       xanchor = 'right', text = ~wrapped_name,
-                      font = list(family = 'Arial', size = 10),
+                      font = list(family = 'Sans', size = 10),
                       showarrow = FALSE, align = 'right') -> p1
   
   compare_data() %>% filter(police_div %in% input$parea2 & year %in% input$year2) %>% 
