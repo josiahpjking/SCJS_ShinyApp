@@ -47,7 +47,6 @@ server <- function(input, output, session){
     newvalue <- "main_compare"
     updateTabsetPanel(session, "main", newvalue)
   })
-
   
   ######
   #server side inputs

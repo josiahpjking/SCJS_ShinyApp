@@ -5,7 +5,7 @@ trend_data<-reactive({
     filter(variable %in% input$var_select) %>% mutate(
       wrapped_name = sapply(name_trunc, FUN = function(x) {paste(strwrap(x, width = 35), collapse = "<br>")}),
       my_text = paste0("<b>",police_div,"</b><br>",year,"<br>",wrapped_name,"<br><b>",round(percentage, digits=1),"</b>% +/-",round(ci*100, digits=1),", N = ",samplesize)
-    )
+    ) %>% filter(!is.na(p))
 })
 
 output$trendplot <- renderPlotly({

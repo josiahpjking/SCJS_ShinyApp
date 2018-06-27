@@ -204,3 +204,29 @@ div.tvar .selectize-input{
 #compare_outputs p{
   width: 85%;
 }
+
+
+#loading-spinner {
+  position: absolute;
+  padding-top: 20%;
+  left: 50%;
+  right: 50%;
+  z-index: -1;
+  margin-top: -33px;
+  margin-left: -33px;
+}
+#plot-container{
+  position: relative;
+}
+.plotly .html-widget .html-widget-output .shiny-bound-output .js-plotly-plot recalculating{
+  z-index: -2;
+}
+
+.shiny-output-error{
+  visibility: hidden;
+}
+
+.shiny-output-error:before{
+  visibility: hidden;
+}
+

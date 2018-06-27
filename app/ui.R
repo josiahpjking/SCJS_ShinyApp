@@ -5,7 +5,7 @@ require(dplyr)
 require(magrittr)
 
 
-body<-navbarPage(title="",id="main",position="fixed-top",
+body<-navbarPage(title="",id="main",position="fixed-top", collapsible=TRUE,
                  
                  
     tabPanel("Home",icon = icon('home',lib="glyphicon"),
@@ -54,7 +54,7 @@ body<-navbarPage(title="",id="main",position="fixed-top",
     tabPanel("Overview of Police Divisions", value="main_overview",
              sidebarLayout(
                sidebarPanel(
-                 selectizeInput("ov_var",label="Choose an area of the survey",choices=c(all_vars[[1]],names(all_vars)),multiple=F,selected=NULL),
+                 selectizeInput("ov_var",label="Choose an area of the survey",choices=list("National Indicators"=all_vars[[1]],"Survey Sections"=names(all_vars)),multiple=F,selected=NULL),
                  conditionalPanel(
                    condition="input.plottingov == 'breakdown'",
                    selectizeInput("ov_year",label="Choose Year",choices=years,selected=years[length(years)],multiple=F),
@@ -69,14 +69,19 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                
                mainPanel(
                  tabsetPanel(id="plottingov",selected="breakdown",
-                             
                              tabPanel(title="1 Year Breakdown",value="breakdown",
                                       tags$p("Click on a division to see how it has performed over time."),
-                                      plotlyOutput("ov_currentplot", height = "auto",width='100%')
+                                      div(class="plot-container",
+                                          tags$img(src="spinner.gif", id="loading-spinner"),
+                                          plotlyOutput("ov_currentplot", height = "auto",width='100%')
+                                      )
                              ),
                              tabPanel(title="Within Division Trends",value="trends",
                                       tags$p("Click on a year to see all divisions."),
-                                      plotlyOutput("ov_trendplot", height = "100%",width='100%')
+                                      div(class="plot-container",
+                                          tags$img(src="spinner.gif", id="loading-spinner"),
+                                          plotlyOutput("ov_trendplot", height = "100%",width='100%')
+                                      )
                              )
                  ),
                  checkboxInput("showleg",label = "Show Legend",value=TRUE)
@@ -91,7 +96,7 @@ body<-navbarPage(title="",id="main",position="fixed-top",
     tabPanel("Comparison Tool", value="main_compare", icon = icon('bar-chart'),
              sidebarLayout(
                sidebarPanel(
-                 selectizeInput("survey_section_compare", label = "Choose an area of the survey", choices=names(all_vars), selected=names(all_vars)[1], multiple=F),
+                 selectizeInput("survey_section_compare", label = "Choose an area of the survey", choices=list("Survey Sections"=names(all_vars)), selected=names(all_vars)[1], multiple=F),
                  div(class="sidebartext",
                      tags$p("Choose a section of the survey (e.g. confidence in the local police) and compare how one specific division compares to another or to the national average, or compare the same division in different survey years."),
                      tags$p("Significant differences between adjacent proportions are colour coded (the better-performing proportion will be green and the worse-performing proportion will be red. Non-significant differences will be grey).")
@@ -109,7 +114,12 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                  )),
                  
                  fluidRow(
-                   column(width=12,align="center",plotlyOutput('compar_plot', height = "100%",width='90%'))
+                   column(width=12,align="center",
+                          div(class="plot-container",
+                              tags$img(src="spinner.gif", id="loading-spinner"),
+                              plotlyOutput('compar_plot', height = "100%",width='90%')
+                          )
+                   )
                  )
                  
                )
@@ -124,7 +134,7 @@ body<-navbarPage(title="",id="main",position="fixed-top",
              sidebarLayout(
                
                sidebarPanel(
-                 selectizeInput("survey_section", label = "Choose an area of the survey", choices=names(all_vars), selected=names(all_vars)[1], multiple=F),
+                 selectizeInput("survey_section", label = "Choose an area of the survey", choices=list("Survey Sections"=names(all_vars)), selected=names(all_vars)[1], multiple=F),
                  uiOutput('var_select'),
                  selectizeInput("parea",label="Choose Police Divisions",choices=pdivis, selected="National Average", multiple = T, options = list(maxItems = length(pdivis))),
                  div(class="sidebartext",
@@ -139,7 +149,9 @@ body<-navbarPage(title="",id="main",position="fixed-top",
                
                mainPanel(
                  div(id="trendplottext", tags$p("Hover over the cursor over a point to see more information.")),
-                 plotlyOutput("trendplot", height = "100%",width='100%'),
+                 div(class="plot-container",
+                     tags$img(src="spinner.gif", id="loading-spinner"),
+                     plotlyOutput("trendplot", height = "100%",width='100%')),
                  checkboxInput("erbar",label = "Show Confidence Intervals",value=FALSE),
                  checkboxInput("showleg1",label = "Show Legend",value=FALSE),
                  actionButton("reset_trends","Reset plot")
@@ -183,13 +195,13 @@ body<-navbarPage(title="",id="main",position="fixed-top",
     tabPanel("Help & Information", value="main_help", icon=icon('info-sign',lib="glyphicon"),
              div(class="toptext",id="hi1",
                  tags$h5("SCJS Questions"),
-                 tags$p("To calculate proportions of, for example, survey respondents expressing confidence in the local police, categories of responses to survey questions have been collapsed across the levels of confidence (e.g. 'Fairly Confident' and 'Very Confident' are both contribute equally to these proportions). For the few exceptional questions (such as perceiving the 'same or less' crime), care has been taken in the labels and information-on-hover to reflect this. More information and the entire questionnaire can be found on ",tags$a(href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications","the SCJS publication page."))
+                 tags$p("To calculate proportions of, for example, survey respondents expressing confidence in the local police, categories of responses to survey questions have been collapsed across the levels of confidence (e.g. 'Fairly Confident' and 'Very Confident' are both contribute equally to these proportions). For the few exceptional questions (such as perceiving the 'same or less' crime), care has been taken in the labels and information-on-hover to reflect this. More information and the entire questionnaire can be found on ",tags$a(target="_blank",tags$ins("the SCJS publication page."),href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications"))
              ),
              
              div(class="toptext",id="hi2",
                  tags$h5("Statistical Testing tool"),
                  tags$p("This tool replicates the excel workbook found on",
-                        tags$a(href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/Datasets/SCJS/SCJS201617StatsTestingTool","the SCJS website.")),
+                        tags$a(target="_blank",tags$ins("the SCJS website."),href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/Datasets/SCJS/SCJS201617StatsTestingTool")),
                  tags$p("SCJS estimates are based on a representative sample of the population of Scotland aged 16 or over living in private households. A sample, as used in the SCJS, is a small-scale representation of the population from which it is drawn. Any sample survey may produce estimates that differ from the values that would have been obtained if the whole population had been interviewed. The magnitude of these differences is related to the size and variability of the estimate, and the design of the survey, including sample size. It is however possible to calculate the range of values between which the population figures are estimated to lie; known as the confidence interval (also referred to as margin of error). At the 95 per cent confidence level, when assessing the results of a single survey it is assumed that there is a one in 20 chance that the true population value will fall outside the 95 per cent confidence interval range calculated for the survey estimate. Similarly, over many repeats of a survey under the same conditions, one would expect that the confidence interval would contain the true population value 95 times out of 100. Because of sampling variation, changes in reported estimates between survey years or between population subgroups may occur by chance. In other words, the change may simply be due to which respondents were randomly selected for interview. Whether this is likely to be the case can be assessed using standard statistical tests. These tests indicate whether differences are likely to be due to chance or represent a real difference. In general, only differences that are statistically significant at the five per cent level (and are therefore likely to be real as opposed to occurring by chance) are reported."),
                  
                  
@@ -224,10 +236,9 @@ fluidPage(
   includeCSS("./www/stuff.css"),
   
   tags$h1(class="head-control",
-          a(href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey","Scottish Crime & Justice Survey"),
+          a(target="_blank",href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey","Scottish Crime & Justice Survey"),
           tags$img(src="scotgov.png",width=200,align="right")
   ),
-
-    
+  
   body
 )
