@@ -9,11 +9,11 @@ output$stt_summary <- renderUI({HTML("This tool replicates the excel workbook fo
 
 
 output$overview_1 <- renderUI({HTML(
-  "For a given question/section of the survey, see which divisions performed <font color='green'><b>better (green)</b></font> or <font color='red'><b>worse (red)</b></font> than the National Average (<font color='grey'><b>grey</b></font> indicates no significant difference) for a chosen year.<br><br>Single variables are displayed as bars, and whole survey areas are displayed as points, with each point representing a question.<br><br>Click on a bar/point to see how that police division performed over time.<br><br>Hover the mouse over the graph to display more information (percentages, sample sizes, confidence intervals) about each data point."
+  "For a given question/section of the survey, see which divisions performed <font color='LimeGreen'><b>above (green)</b></font> or <font color='red'><b>below (red)</b></font> than the National Average (<font color='grey'><b>grey</b></font> indicates no significant difference) for a chosen year.<br><br>Single variables are displayed as bars, and whole survey areas are displayed as points, with each point representing a question.<br><br>Hover the mouse over the graph to display more information (percentages, sample sizes, confidence intervals) about each data point.<br><br>Click on a bar/point to see how that police division performed over time."
 )})
 
 output$overview_2 <- renderUI({HTML(
-  "For a given question/section of the survey, see how a chosen police division has performed over time, with each year showing whether that division performed <font color='green'><b>better (green)</b></font> or <font color='red'><b>worse (red)</b></font> than the National Average (<b>black</b> line) for that year.<br><br>Click on a bar to return to an overview of all divisions for that year.<br><br>Hover the mouse over the graph to display more information (percentages, sample sizes, confidence intervals) about each data point."
+  "For a given question/section of the survey, see how a chosen police division has performed over time, with each year showing whether that division performed <font color='LimeGreen'><b>above (green)</b></font> or <font color='red'><b>below (red)</b></font> the National Average (<b>black</b> line) for that year.<br><br>Hover the mouse over the graph to display more information (percentages, sample sizes, confidence intervals) about each data point.<br><br>Click on a bar to return to an overview of all divisions for that year."
 )})
 
 

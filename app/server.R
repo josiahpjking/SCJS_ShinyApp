@@ -8,7 +8,6 @@ require(magrittr)
 #setwd("\\\\scotland.gov.uk/dc2/fs4_home/Z613379/pdiv_shiny/v9/app")
 source("source/plotfunc.R")
 selected_pclick <- 0 #declare outside the server function
-load(file = "data/app_preamble.RData")
 
 
 server <- function(input, output, session){
@@ -65,7 +64,9 @@ server <- function(input, output, session){
   output$var_select = renderUI({
     selectizeInput("var_select",label = "Choose Variables",choices=all_vars[[input$survey_section]],multiple=T,selected=all_vars[[input$survey_section]][1])
   })
-  
+  output$var_select2 = renderUI({
+    selectizeInput("var_select2",label = "Choose Variables",choices=c("All",all_vars[[input$ov_var]]),multiple=T,selected="All")
+  })
   
   
   

@@ -30,10 +30,6 @@ p{
   font-size: 14px 
 }
 
-
-
-
-
 /* Top text */
 
 .toptext{
@@ -65,42 +61,27 @@ p{
   font-size: 14px 
 }
 
-.questions p{
-  text-align:center;
-  font-family: 'Roboto', sans-serif; 
-  font-weight: bold; 
-  font-size: 14px;
+
+/* NAVBAR */
+
+.navbar{
+  background-color: rgba(145,149,168,1);
 }
 
-.questions{
-  background-color: rgba(217,130,114,0.4);
-  border-radius: 25px;
-  width: 70%;
-  margin: auto;
-}
+.navbar-default .navbar-nav > li > a{
+  color: rgba(255,255,255,1);
+} 
+ 
+ 
+/* body background */
 
-#hi1{
-  background-color: rgba(45,149,168,0.2);
-  border-color: rgba(45,149,168,0.4);
-}
-#hi2{
-  background-color: rgba(217,130,114,0.2);
-  border-color: rgba(217,130,114,0.4);
-}
-#hi3{
-  background-color: rgba(114,217,130,0.2);
-  border-color: rgba(114,217,130,0.4);
+body{
+  background-color: rgba(0, 0, 0, 0.01);
 }
 
 
 
-
-
-
-
-
-
-/* Sidebar */
+/* Sidebarlayouts */
 
 .well{
   border-style: outset;
@@ -109,10 +90,42 @@ p{
   border-radius: 25px;
 }
 
-
 .sidebartext p{
   text-align: left;
 }
+.sidebartext h6{
+  text-align: left;
+  font-family: 'Roboto', sans-serif; 
+  font-weight: bolder; 
+  font-size: 14px 
+}
+
+
+/* plots errors and loading spinners */
+
+#loading-spinner {
+  position: absolute;
+  padding-top: 20%;
+  left: 50%;
+  right: 50%;
+  z-index: -1;
+  margin-top: -33px;
+  margin-left: -33px;
+}
+#plot-container{
+  position: relative;
+}
+.plotly .html-widget .html-widget-output .shiny-bound-output .js-plotly-plot recalculating{
+  z-index: -2;
+}
+
+.shiny-output-error{
+  visibility: hidden;
+}
+.shiny-output-error:before{
+  visibility: hidden;
+}
+
 
 /* HOME SCREEN BUTTONS */
 
@@ -151,15 +164,6 @@ p{
   margin: 15px;
 }
 
-.button-text h6{
-  color: black;
-  text-align: left;
-  vertical-align: middle;
-  display: table;
-  font-weight: bold; 
-  margin: 16px;
-}
-
 .button-text:hover{
   background-color: rgba(0, 0, 0, 0.1);
   opacity: 0.6;
@@ -167,66 +171,98 @@ p{
 
 
 
+/* COMPARISON TAB */
 
-.navbar{
-  background-color: rgba(145,149,168,1);
+#compare-top{
+  text-align: center;
+  background-color: rgba(45,149,168,0.2);
+  border-style: outset;
+  border-width: 5px;
+  border-color: rgba(45,149,168,0.4);
+  border-radius: 25px;
+}
+.compare-inputs{
+  display: inline-table;
+  vertical-align: middle;
+  margin: 10px;
+  width: 35%;
+}
+.compare-inputs-text{
+  display: inline-table;
+  vertical-align: middle;
+  margin: 10px;
+  width: auto;
+}
+.compare-inputs .shiny-input-container{
+  width: 100%;
+  word-wrap: break-word;
+}
+.compare-inputs .selectize-input{
+  width: 100%;
+}
+.compare-row{
+  display: table-row;
+  width: 100%;
 }
 
-.navbar-default .navbar-nav > li > a{
-  color: rgba(255,255,255,1);
-} 
- 
-body{
-  background-color: rgba(0, 0, 0, 0.01);
+#compare-outputs p{
+  margin: auto;
 }
 
-/* LIMIT SELECTIZE */
+
+
+/* TABLE TABS */
+
+.tvar{
+  display: inline-table;
+  width: auto;
+}
 div.tvar .selectize-input{
   min-height: 34px;
   max-height: 150px;
 }
 
-.form-group{
+.tvar .form-group, .tvar .btn{
   display: inline-block;
-}
-.tableopts{
-  display: inline-block;
+  margin: 15px;
+  vertical-align: middle;
 }
 
+
+
+
+
+/* help and info page content */
+
+.questions p{
+  text-align:center;
+  font-family: 'Roboto', sans-serif; 
+  font-weight: bold; 
+  font-size: 14px;
+}
+
+.questions{
+  background-color: rgba(217,130,114,0.4);
+  border-radius: 25px;
+  width: 70%;
+  margin: auto;
+}
+#hi1{
+  background-color: rgba(45,149,168,0.2);
+  border-color: rgba(45,149,168,0.4);
+}
+#hi2{
+  background-color: rgba(217,130,114,0.2);
+  border-color: rgba(217,130,114,0.4);
+}
+#hi3{
+  background-color: rgba(114,217,130,0.2);
+  border-color: rgba(114,217,130,0.4);
+}
 
 #stt_results{
   text-align: center;
 }
 
-#compare_inputs{
-  margin: auto;
-}
-#compare_outputs p{
-  width: 85%;
-}
 
-
-#loading-spinner {
-  position: absolute;
-  padding-top: 20%;
-  left: 50%;
-  right: 50%;
-  z-index: -1;
-  margin-top: -33px;
-  margin-left: -33px;
-}
-#plot-container{
-  position: relative;
-}
-.plotly .html-widget .html-widget-output .shiny-bound-output .js-plotly-plot recalculating{
-  z-index: -2;
-}
-
-.shiny-output-error{
-  visibility: hidden;
-}
-
-.shiny-output-error:before{
-  visibility: hidden;
-}
 

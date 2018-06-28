@@ -32,8 +32,10 @@ output$table_p <- renderTable({
   
   td$diff_first<-sapply(1:nrow(td), function(x) abs(td[x,paste0("Percentage.",currentyear)]-td[x,paste0("Percentage.",firstyear)])/100>sqrt((td[x,paste0("ci.",currentyear)]^2)+(td[x,paste0("ci.",firstyear)]^2)))
   
-  td$Change_from_Previous<-ifelse(td$diff_prev==TRUE,"Yes","No")
-  td$Change_from_First<-ifelse(td$diff_first==TRUE,"Yes","No")
+  td$change_previous<-ifelse(td$diff_prev==TRUE,"Yes","No")
+  td$change_first<-ifelse(td$diff_first==TRUE,"Yes","No")
+  names(td)[grepl("change_previous",names(td))]=paste0(currentyear," change from ",prevyear)
+  names(td)[grepl("change_first",names(td))]=paste0(currentyear," change from ",firstyear)
   
   td %>% select(-matches("ci|SampleSize|diff")) %>%
     rename_at(vars(starts_with("Percentage")), funs(gsub("Percentage.","",.))) %>%

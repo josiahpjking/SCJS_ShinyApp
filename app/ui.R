@@ -12,7 +12,7 @@ body<-navbarPage(title="",id="main",position="fixed-top", collapsible=TRUE,
              div(class="toptext", 
                  tags$p("The Scottish Crime and Justice Survey (SCJS) is a large-scale social survey which asks people about their experiences and perceptions of crime. The survey is important because it provides a picture of crime in Scotland, including crimes that haven't been reported to/recorded by the police and captured in police recorded crime statistics. This ShinyApp gives a breakdown of different elements of the SCJS by Police Divisions. When designing this app, we had in mind two main questions that users might have about responses to the survey:"),
                  div(class="questions",
-                     tags$p("Which police divisions in Scotland are over/under-performing, and have specific divisions been consistent over time relative to the National Average?")),
+                     tags$p("Which police divisions in Scotland are performing above and below the National Average, and have divisions been consistent in this respect over time?")),
                  div(class="questions",
                      tags$p("How is Scotland as a whole changing over time?")),
                  tags$p("The App features a number of different tools to meet these needs, which are detailed below. For information about the in-built statistical testing in these tools, and links to other SCJS publications, see the Help & Information tab.")
@@ -40,7 +40,7 @@ body<-navbarPage(title="",id="main",position="fixed-top", collapsible=TRUE,
                  actionLink("link_tables",
                             div(class="button-text", 
                                 tags$img(src="tables.png"),
-                                tags$p("If you don't like all the visual stuff and just want some numbers, then head to the Tables section. You can download tables of proportions and sample sizes for all variables included in this app.")
+                                tags$p("If you don't like all the visual stuff and just want some numbers, then head to the Tables section. You can download tables of percentages and sample sizes for all variables included in this app.")
                             )
                  )
              )
@@ -54,7 +54,7 @@ body<-navbarPage(title="",id="main",position="fixed-top", collapsible=TRUE,
     tabPanel("Overview of Police Divisions", value="main_overview",
              sidebarLayout(
                sidebarPanel(
-                 selectizeInput("ov_var",label="Choose an area of the survey",choices=list("National Indicators"=all_vars[[1]],"Survey Sections"=names(all_vars)),multiple=F,selected=NULL),
+                 selectizeInput("ov_var",label="Choose a section of the survey",choices=list("National Indicators"=all_vars[[1]],"Survey Sections"=names(all_vars)),multiple=F,selected=NULL),
                  conditionalPanel(
                    condition="input.plottingov == 'breakdown'",
                    selectizeInput("ov_year",label="Choose Year",choices=years,selected=years[length(years)],multiple=F),
@@ -70,14 +70,15 @@ body<-navbarPage(title="",id="main",position="fixed-top", collapsible=TRUE,
                mainPanel(
                  tabsetPanel(id="plottingov",selected="breakdown",
                              tabPanel(title="1 Year Breakdown",value="breakdown",
-                                      tags$p("Click on a division to see how it has performed over time."),
+                                      tags$p("Click on the results of a division to see how it has performed over time."),
                                       div(class="plot-container",
                                           tags$img(src="spinner.gif", id="loading-spinner"),
                                           plotlyOutput("ov_currentplot", height = "auto",width='100%')
                                       )
                              ),
                              tabPanel(title="Within Division Trends",value="trends",
-                                      tags$p("Click on a year to see all divisions."),
+                                      tags$p("Click on the results of a year to see all divisions."),
+                                      uiOutput("var_select2"),
                                       div(class="plot-container",
                                           tags$img(src="spinner.gif", id="loading-spinner"),
                                           plotlyOutput("ov_trendplot", height = "100%",width='100%')
@@ -96,32 +97,37 @@ body<-navbarPage(title="",id="main",position="fixed-top", collapsible=TRUE,
     tabPanel("Comparison Tool", value="main_compare", icon = icon('bar-chart'),
              sidebarLayout(
                sidebarPanel(
-                 selectizeInput("survey_section_compare", label = "Choose an area of the survey", choices=list("Survey Sections"=names(all_vars)), selected=names(all_vars)[1], multiple=F),
                  div(class="sidebartext",
-                     tags$p("Choose a section of the survey (e.g. confidence in the local police) and compare how one specific division compares to another or to the national average, or compare the same division in different survey years."),
-                     tags$p("Significant differences between adjacent proportions are colour coded (the better-performing proportion will be green and the worse-performing proportion will be red. Non-significant differences will be grey).")
+                     tags$p("Choose a section of the survey (e.g. confidence in the local police) and compare between specific divisions and/or across survey years.")
+                     ),
+                 selectizeInput("survey_section_compare", label = "Choose a section of the survey", choices=list("Survey Sections"=names(all_vars)), selected=names(all_vars)[1], multiple=F),
+                 div(class="sidebartext",
+                     tags$h6("Colour-coding"),
+                     tags$p("Choosing police divisions and survey years will update the figure accordingly. Results from both your choices will be compared with one another. For each question, if there is a significant difference between the two selections, the worse-performing result will be coloured", tags$b(style="color:red","red"), "and the better-performing result will be coloured",tags$b(style="color:LimeGreen","green."), "If there is no significant difference between your two selections, the result will be coloured",tags$b(style="color:grey","grey."))
                  )
                ),
                mainPanel(
-                 div(id="compare_inputs",
-                 fluidRow(
-                   column(width=6,align="center",selectizeInput("parea1",NULL,choices=pdivis, selected="National Average", multiple = F)),
-                   column(width=6,align="center",selectizeInput("parea2",NULL,choices=pdivis, selected="National Average", multiple = F))
+                 div(id="compare-top",
+                     div(class="compare-inputs",
+                         div(class="compare-row",selectizeInput("parea1",NULL,choices=pdivis, selected="National Average", multiple = F)),
+                         div(class="compare-row",selectizeInput("year1",NULL,choices=years, selected=years[1], multiple = F))
+                     ),
+                     div(class="compare-inputs-text",
+                         div(class="compare-row",tags$h5("Compared to"))
+                     ),
+                     div(class="compare-inputs",
+                         div(class="compare-row",selectizeInput("parea2",NULL,choices=pdivis, selected="National Average", multiple = F)),
+                         div(class="compare-row",selectizeInput("year2",NULL,choices=years, selected=years[length(years)], multiple = F))
+                     )
                  ),
-                 fluidRow(
-                   column(width=6,align="center",selectizeInput("year1",NULL,choices=years, selected=years[1], multiple = F)),
-                   column(width=6,align="center",selectizeInput("year2",NULL,choices=years, selected=years[length(years)], multiple = F))
-                 )),
-                 
-                 fluidRow(
-                   column(width=12,align="center",
-                          div(class="plot-container",
-                              tags$img(src="spinner.gif", id="loading-spinner"),
-                              plotlyOutput('compar_plot', height = "100%",width='90%')
-                          )
-                   )
+                 div(id="compare-outputs",
+                     tags$p("Percentages on the either side of the figure below are compared", tags$b("against one another.")),
+                     tags$p("If significantly different, the more positive result is shown in", tags$b(style="color:LimeGreen","green"), "and the less positive result in",tags$b(style="color:red","red.")),
+                     div(class="plot-container",
+                         tags$img(src="spinner.gif", id="loading-spinner"),
+                         plotlyOutput('compar_plot', height = "100%",width='100%')
+                     )
                  )
-                 
                )
              )
     ),
@@ -134,12 +140,12 @@ body<-navbarPage(title="",id="main",position="fixed-top", collapsible=TRUE,
              sidebarLayout(
                
                sidebarPanel(
-                 selectizeInput("survey_section", label = "Choose an area of the survey", choices=list("Survey Sections"=names(all_vars)), selected=names(all_vars)[1], multiple=F),
+                 selectizeInput("survey_section", label = "Choose a section of the survey", choices=list("Survey Sections"=names(all_vars)), selected=names(all_vars)[1], multiple=F),
                  uiOutput('var_select'),
                  selectizeInput("parea",label="Choose Police Divisions",choices=pdivis, selected="National Average", multiple = T, options = list(maxItems = length(pdivis))),
                  div(class="sidebartext",
                      tags$p("Here you can visualise the trends over time of various questions of the survey."),
-                     tags$p("Choose an area of the survey to focus on, and then explore the variables which the SCJS collects in that area."),
+                     tags$p("Choose a section of the survey to focus on, and then explore the variables which the SCJS collects in that area."),
                      tags$p("You can also select individual police divisions to see how trends have varied for different areas."),
                      tags$p("Information regarding confidence intervals and sample sizes is available when hovering the mouse over a line on the plot."),
                      actionLink("link_compare1",
@@ -164,18 +170,13 @@ body<-navbarPage(title="",id="main",position="fixed-top", collapsible=TRUE,
     ##########
     
     tabPanel("Tables", value="main_tables", icon = icon('download-alt', lib='glyphicon'),
-             fluidRow(
-               div(class="tvar",
-              column(width=5,
-                     selectizeInput("table_var",label="Choose Variables",choices = c("Select All", all_vars), selected=c(all_vars[[1]][1]), multiple=T, options=list(maxItems=length(unlist(all_vars))))),
-               column(width=5,
-                      selectizeInput("table_pdiv",label="Choose Police Divisions",choices=c("Select All", pdivis), selected="National Average", options = list(maxItems = length(pdivis))),
-                      div(class="tableopts",
-                          downloadButton("downloadData", "Download")),
-                      div(class="tableopts",
-                          actionButton("reset_tables", "Reset")
-                      ))
-             )),
+             div(class="tvar",
+                 selectizeInput("table_var",label="Choose Variables",choices = c("Select All", all_vars), selected=c(all_vars[[1]][1]), multiple=T, options=list(maxItems=length(unlist(all_vars)))),
+                 selectizeInput("table_pdiv",label="Choose Police Divisions",choices=c("Select All", pdivis), selected="National Average", options = list(maxItems = length(pdivis))),
+                 downloadButton("downloadData", "Download"),
+                 actionButton("reset_tables", "Reset")
+             ),
+             
              tabsetPanel(selected="perc",
                tabPanel(title="Percentages",value="perc",
                         tableOutput('table_p')
@@ -195,7 +196,7 @@ body<-navbarPage(title="",id="main",position="fixed-top", collapsible=TRUE,
     tabPanel("Help & Information", value="main_help", icon=icon('info-sign',lib="glyphicon"),
              div(class="toptext",id="hi1",
                  tags$h5("SCJS Questions"),
-                 tags$p("To calculate proportions of, for example, survey respondents expressing confidence in the local police, categories of responses to survey questions have been collapsed across the levels of confidence (e.g. 'Fairly Confident' and 'Very Confident' are both contribute equally to these proportions). For the few exceptional questions (such as perceiving the 'same or less' crime), care has been taken in the labels and information-on-hover to reflect this. More information and the entire questionnaire can be found on ",tags$a(target="_blank",tags$ins("the SCJS publication page."),href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications"))
+                 tags$p("To calculate percentages of, for example, survey respondents expressing confidence in the local police, categories of responses to survey questions have been collapsed across the levels of confidence (e.g. 'Fairly Confident' and 'Very Confident' are both contribute equally to these percentages). For the few exceptional questions (such as perceiving the 'same or less' crime), care has been taken in the labels and information-on-hover to reflect this. More information and the entire questionnaire can be found on ",tags$a(target="_blank",tags$ins("the SCJS publication page."),href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications"))
              ),
              
              div(class="toptext",id="hi2",
@@ -223,7 +224,7 @@ body<-navbarPage(title="",id="main",position="fixed-top", collapsible=TRUE,
              ),
              div(class="toptext",id="hi3",
                  tags$h5("Rounding"),
-                 tags$p("All proportions and confidence intervals presented here are rounded to 1dp. The in-built proportion testing in the app (which colours visual elements red/green/grey accordingly) uses unrounded proportions. Using the stats-testing tool on rounded proportions may yield slightly different results to those displayed in the rest of the app.")
+                 tags$p("All proportions/percentages and confidence intervals presented here are rounded to 1dp. The in-built proportion testing in the app (which colours visual elements red/green/grey accordingly) uses unrounded proportions. Using the stats-testing tool on rounded proportions may yield slightly different results to those displayed in the rest of the app.")
              )
     )
 )

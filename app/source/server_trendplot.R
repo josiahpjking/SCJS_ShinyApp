@@ -33,7 +33,6 @@ output$trendplot <- renderPlotly({
   p %>% layout(xaxis=list(title=""),
                showlegend=input$showleg1,
                yaxis=list(title=~ylabel,ticksuffix = "%"),
-               legend = list(orientation = "h", xanchor = "center", yanchor="bottom", x = 0.5),
-               height = input$plotHeight,
-               autosize=TRUE) %>% config(modeBarButtonsToRemove = modebar_remove)
+               legend = list(x=0,y=100,orientation="h"),
+               height = input$plotHeight) %>% config(modeBarButtonsToRemove = modebar_remove)
 })

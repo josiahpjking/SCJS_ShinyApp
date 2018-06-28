@@ -4,9 +4,11 @@ compare_data <- reactive({
   #data for plot 2
   df %>% filter(variable %in% (all_vars[[input$survey_section_compare]]) & police_div %in% input$parea2 & year %in% input$year2) -> conf_p2_data
   
-  bind_rows(conf_p1_data,conf_p2_data) %>% filter((police_div==input$parea1 & year==input$year1) | (police_div==input$parea2 & year==input$year2)) -> conf_temp_data
-  
-  conf_temp_data$wrapped_name <- sapply(conf_temp_data$name_trunc, FUN = function(x) {paste(strwrap(x, width = 20), collapse = "<br>")})
+  bind_rows(conf_p1_data,conf_p2_data) %>% 
+    filter((police_div==input$parea1 & year==input$year1) | (police_div==input$parea2 & year==input$year2)) %>% 
+    mutate(
+      wrapped_name = sapply(name_trunc, FUN = function(x) {paste(strwrap(x, width = 20), collapse = "<br>")})
+    ) -> conf_temp_data
   
   conf_temp_data %>% 
     group_by(variable) %>% 
@@ -32,8 +34,8 @@ compare_data <- reactive({
                   select(variable,p_signif,better_break,better_p)
   ) %>% 
     mutate(
-      change = ifelse(p_signif==FALSE,"Same",
-                         ifelse(police_div==better_break & p==better_p,"Better","Worse"))
+      change = ifelse(p_signif==FALSE,"No difference",
+                         ifelse(police_div==better_break & p==better_p,"Above","Below"))
     ) %>% 
     select(year,variable,wrappedv,wrapped_name,police_div,percentage,change,samplesize,ci)
 })
@@ -75,7 +77,7 @@ output$compar_plot <- renderPlotly({
       yaxis=list(title="",
                  categoryarray=~rev(wrapped_name),categoryorder="array",
                  showticklabels = FALSE),
-      xaxis=list(range=c(100,0),ticksuffix = "%",showticklabels = FALSE)
+      xaxis=list(range=c(0,100),ticksuffix = "%",showticklabels = FALSE)
     ) -> p2
   
   tryCatch({

@@ -28,9 +28,9 @@ pdivcols=c("Argyll & West Dunbartonshire (L Division)"='#66C2A5',
 #colours for overview page (national avg = black, and up/down/none is included)
 overview_cols=c(pdivcols[-length(pdivcols)],
                 "National Average"='#000000',
-                "Same"="#BDBDBD",
-                "Better"="#95fb71",
-                "Worse"="#fb7171")
+                "No difference"="#BDBDBD",
+                "Above"="#95fb71",
+                "Below"="#fb7171")
 
 #modebar icons to remove
 modebar_remove <- c('hoverClosestCartesian','hoverCompareCartesian','zoom2d','pan2d','toggleSpikelines','select2d','lasso2d','zoomIn2d','zoomOut2d')
