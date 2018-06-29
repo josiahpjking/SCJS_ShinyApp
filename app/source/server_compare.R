@@ -35,14 +35,16 @@ compare_data <- reactive({
   ) %>% 
     mutate(
       change = ifelse(p_signif==FALSE,"No difference",
-                         ifelse(police_div==better_break & p==better_p,"Above","Below"))
+                         ifelse(police_div==better_break & p==better_p,"More Positive","Less Positive"))
     ) %>% 
     select(year,variable,wrappedv,wrapped_name,police_div,percentage,change,samplesize,ci)
 })
   
 output$compar_plot <- renderPlotly({
+
   compare_data() %>% nrow()/2 -> visible_vars
-  compare_data() %>% filter(police_div %in% input$parea1 & year %in% input$year1) %>%
+  
+  compare_data() %>% filter(police_div %in% input$parea1 & year %in% input$year1) %>% 
     plot_ly(., y=~wrapped_name, 
             x=~percentage, 
             text=~paste0(round(percentage,digits=1),"%"), 
@@ -50,6 +52,8 @@ output$compar_plot <- renderPlotly({
             textposition="auto", 
             type = "bar", 
             color=~change, 
+            legendgroup=~change, 
+            showlegend=F,
             colors = overview_cols
     ) %>% 
     layout(
@@ -71,6 +75,7 @@ output$compar_plot <- renderPlotly({
             textposition="auto", 
             type = "bar",
             color=~change, 
+            showlegend=FALSE,
             colors = overview_cols
     ) %>% 
     layout(
@@ -83,7 +88,7 @@ output$compar_plot <- renderPlotly({
   tryCatch({
     pheight=(visible_vars*110)+100
     subplot(p1,p2) %>% 
-      layout(showlegend=FALSE,
+      layout(showlegend=T,
              margin=list(l=120),
              autosize=TRUE,
              height=pheight

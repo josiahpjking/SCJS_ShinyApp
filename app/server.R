@@ -12,6 +12,8 @@ selected_pclick <- 0 #declare outside the server function
 
 server <- function(input, output, session){
   
+  source("source/variable_information.R", local = TRUE)
+  
   source("source/server_summary.R", local = TRUE)
   
   source("source/server_trendplot.R", local = TRUE)
@@ -65,7 +67,7 @@ server <- function(input, output, session){
     selectizeInput("var_select",label = "Choose Variables",choices=all_vars[[input$survey_section]],multiple=T,selected=all_vars[[input$survey_section]][1])
   })
   output$var_select2 = renderUI({
-    selectizeInput("var_select2",label = "Choose Variables",choices=c("All",all_vars[[input$ov_var]]),multiple=T,selected="All")
+      checkboxGroupInput("var_select2",label = NULL,choices=all_vars[[input$ov_var]], selected=all_vars[[input$ov_var]][1])
   })
   
   

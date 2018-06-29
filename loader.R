@@ -29,8 +29,10 @@ pdivcols=c("Argyll & West Dunbartonshire (L Division)"='#66C2A5',
 overview_cols=c(pdivcols[-length(pdivcols)],
                 "National Average"='#000000',
                 "No difference"="#BDBDBD",
-                "Above"="#95fb71",
-                "Below"="#fb7171")
+                "More Positive"="#95fb71",
+                "Less Positive"="#fb7171",
+                "Better than average"="#7195fb",
+                "Worse than average"="#fb9271")
 
 #modebar icons to remove
 modebar_remove <- c('hoverClosestCartesian','hoverCompareCartesian','zoom2d','pan2d','toggleSpikelines','select2d','lasso2d','zoomIn2d','zoomOut2d')
@@ -67,9 +69,9 @@ all_vars<-list('National Indicators'= getnames("PREVSURVEY|QS2AREA:|DCONF_03"),
                'Rates of Crime Victimisation'=getnames("PREV"),
                'Confidence in the Police'=getnames("POLCONF"),
                'Attitudes to the Police'=getnames("POLOP|COMPOL|POLPRES|RATPOL"),
-               'Confidence in Scottish Crime and Justice System'=getnames("DCONF"),
-               'Perceptions of Crime and Safety'=getnames("QS"),
-               'Worries of Victimisation'=getnames("QWORR"),
+               'Confidence in Scottish Criminal Justice System'=getnames("DCONF"),
+               'Perceptions of Crime Rates and Safety'=getnames("QS"),
+               'Worries of Crime'=getnames("QWORR"),
                'Worries of Being Harassed'=getnames("HWORR"),
                'Perceptions of Local Crime'=getnames("QACO"),
                'Perceptions of Local People'=getnames("LCPEOP")

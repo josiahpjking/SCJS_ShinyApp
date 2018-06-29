@@ -100,6 +100,15 @@ body{
   font-size: 14px 
 }
 
+#variable_info p, #overview_1 p, #overview_2 p{
+  text-align: left;
+  font-family: 'Roboto', sans-serif; 
+}
+#variable_info h5{
+  font-weight: bold; 
+}
+
+
 
 /* plots errors and loading spinners */
 
@@ -118,6 +127,7 @@ body{
 .plotly .html-widget .html-widget-output .shiny-bound-output .js-plotly-plot recalculating{
   z-index: -2;
 }
+
 
 .shiny-output-error{
   visibility: hidden;
@@ -169,8 +179,14 @@ body{
   opacity: 0.6;
 }
 
-
-
+#var_select2 .shiny-input-checkboxgroup{
+  width: 100%;
+}
+#var_select2 .checkbox{
+  display: inline-block;
+  width: 30%;
+  vertical-align: top;
+}
 /* COMPARISON TAB */
 
 #compare-top{

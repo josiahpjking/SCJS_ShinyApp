@@ -1,21 +1,20 @@
+output$variable_info<-renderUI({
+  div(id="variable_info",
+      variable_info_list[[input$ov_var]],
+      tags$p("Hover the mouse over the graph to display more information (percentages, sample sizes, confidence intervals) about each data point.")
+  )
+})
 
+output$overview_1 <- renderUI({
+  tags$p("See which divisions performed",
+         tags$b(style="color:DodgerBlue","better (blue)"),"or",tags$b(style="color:Tomato","worse (orange)"),
+         "than the National Average for a chosen year",tags$b(style="color:grey","(grey indicates no significant difference)."))
+})
 
-output$compare_summary <- renderUI({HTML("Choose a section of the survey (e.g. confidence in the local police) and compare how one specific division compares to another or to the national average, or compare the same division in different survey years.<br><br>Use the selection boxes below, and significant differences between <b>adjacent proportions</b> will be colour coded (the better-performing proportion will be green and the worse-performing proportion will be red. Non-significant differences will be grey).")})
-
-
-output$stt_summary <- renderUI({HTML("This tool replicates the excel workbook found on <a href='http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/Datasets/SCJS/SCJS201617StatsTestingTool'>the Scottish Crime & Justice Survey (SCJS) website.</a><br><br>SCJS estimates are based on a representative sample of the population of Scotland aged 16 or over living in private households. A sample, as used in the SCJS, is a small-scale representation of the population from which it is drawn.<br><br>Any sample survey may produce estimates that differ from the values that would have been obtained if the whole population had been interviewed. The magnitude of these differences is related to the size and variability of the estimate, and the design of the survey, including sample size.<br><br>It is however possible to calculate the range of values between which the population figures are estimated to lie; known as the confidence interval (also referred to as margin of error). At the 95 per cent confidence level, when assessing the results of a single survey it is assumed that there is a one in 20 chance that the true population value will fall outside the 95 per cent confidence interval range calculated for the survey estimate. Similarly, over many repeats of a survey under the same conditions, one would expect that the confidence interval would contain the true population value 95 times out of 100.<br><br>Because of sampling variation, changes in reported estimates between survey years or between population subgroups may occur by chance. In other words, the change may simply be due to which respondents were randomly selected for interview.<br><br>Whether this is likely to be the case can be assessed using standard statistical tests. These tests indicate whether differences are likely to be due to chance or represent a real difference. In general, only differences that are statistically significant at the five per cent level (and are therefore likely to be real as opposed to occurring by chance) are reported.")})
-
-
-
-
-output$overview_1 <- renderUI({HTML(
-  "For a given question/section of the survey, see which divisions performed <font color='LimeGreen'><b>above (green)</b></font> or <font color='red'><b>below (red)</b></font> than the National Average (<font color='grey'><b>grey</b></font> indicates no significant difference) for a chosen year.<br><br>Single variables are displayed as bars, and whole survey areas are displayed as points, with each point representing a question.<br><br>Hover the mouse over the graph to display more information (percentages, sample sizes, confidence intervals) about each data point.<br><br>Click on a bar/point to see how that police division performed over time."
-)})
-
-output$overview_2 <- renderUI({HTML(
-  "For a given question/section of the survey, see how a chosen police division has performed over time, with each year showing whether that division performed <font color='LimeGreen'><b>above (green)</b></font> or <font color='red'><b>below (red)</b></font> the National Average (<b>black</b> line) for that year.<br><br>Hover the mouse over the graph to display more information (percentages, sample sizes, confidence intervals) about each data point.<br><br>Click on a bar to return to an overview of all divisions for that year."
-)})
-
-
+output$overview_2 <- renderUI({
+  tags$p("See how a chosen police division has performed over time, with each year showing whether that division performed ",
+         tags$b(style="color:DodgerBlue","better (blue)"),"or",tags$b(style="color:Tomato","worse (orange)"),
+         "than the National Average",tags$b(style="color:black","(black line)"),"in that year",tags$b(style="color:grey","(grey indicates no significant difference)."))
+})
 
 
