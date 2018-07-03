@@ -7,8 +7,8 @@
 #' @export
 #' @examples
 #' new_df <- extract_name_data("/somedata.csv","qswemwbs|qworr")
-#' new_df <- extract_name_data("/somedata.rds","qswemwbs",readfun=readRDS())
-extract_name_data<-function(df,var_string,readfun=read.csv()){
+#' new_df <- extract_name_data("/somedata.rds","qswemwbs",readfun=readRDS)
+extract_name_data<-function(df,var_string,readfun=read.csv){
   alldat = readfun(df)
   names(alldat)<-tolower(names(alldat))
   var_data = alldat[,grepl(var_string,names(alldat))]

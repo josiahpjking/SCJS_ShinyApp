@@ -13,19 +13,45 @@ source("setup/rowSums_na.R")
 source("setup/rowsum_partialstringmatch_variables.R")
 source("setup/create_pdiv_data.R")
 
+
+#################
+#MAKE PROPORTION TABLES FROM DATASETS
+#################
+
 years<-c("2008/09","2009/10","2010/11","2012/13","2014/15")
 
 #get working dir, list data files. 
-data_paths <- dir(path = "data/", pattern='SCJS*', recursive = T,full.names = T)
+data_paths <- dir(path = "\\\\scotland.gov.uk/dc2/fs4_home/Z613379/data/", pattern='SCJS*', recursive = T,full.names = T)
 
-create_pdiv_data(data_paths, years)
+#make tables of proportions
+df <- create_pdiv_data(data_paths) 
 
-#proportion data
-#df<-readRDS("data/pdiv9.5.test.rds")
+#set year
+df$year <- factor(df$year)
+levels(df$year)<-years
 
-#####
-#plotting constants
-#####
+#read info on variables
+variable_info<-read.csv("data/variables_full.csv")
+variable_info$variable<-tolower(variable_info$variable)
+#join to proportion tables
+df<-left_join(df,variable_info)
+
+#make some wrapped variables (this is for plotting.)
+df %>% mutate(
+  wrappedv = sapply(label, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")}),
+  wrapped_name <- sapply(name_trunc, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")})
+) -> df
+
+#set variable
+df$variable<-factor(df$label)
+levels(df$variable)
+
+
+
+#################
+#APP DETAILS/PLOTTING OPTIONS ETC
+#################
+
 #police division colours
 pdivcols=c("Argyll & West Dunbartonshire (L Division)"='#66C2A5',
            "Ayrshire (U Division)"='#FC8D62',
@@ -42,6 +68,7 @@ pdivcols=c("Argyll & West Dunbartonshire (L Division)"='#66C2A5',
            "Renfrewshire & Inverclyde (K Division)"='#FDB462',
            "Tayside (D Division)"='#B3DE69',
            "National Average"='#000000')
+
 #colours for overview page (national avg = black, and up/down/none is included)
 overview_cols=c(pdivcols,
                 "No difference"="#BDBDBD",
@@ -51,6 +78,7 @@ overview_cols=c(pdivcols,
 #modebar icons to remove
 modebar_remove <- c('hoverClosestCartesian','hoverCompareCartesian','zoom2d','pan2d','toggleSpikelines','select2d','lasso2d','zoomIn2d','zoomOut2d')
 
+# USER INPUTS
 des_factors <- df %>% group_by(year) %>% summarise(des_f=first(des_effect)) #design factors
 pdivis<-levels(factor(df$police_div)) #police divisions
 years=levels(df$year) #years
@@ -59,6 +87,8 @@ prevyear=years[length(years)-1] #previous survey year
 firstyear=years[1] #first survey year
 yn<-c("Yes","No") #yes no choices
 
+
+# VARIABLE LISTS
 
 getnames<-function(string){
   df %>%
@@ -79,8 +109,8 @@ all_vars<-list('National Indicators'= getnames("PREVSURVEY|QS2AREA:|DCONF_03"),
                'Worries of Crime Victimisation'=getnames("QWORR"),
                'Worries of Being Harassed'=getnames("HWORR")
                )
+#now overwrite variable with more user-friendly input
 df$variable<-df$name_trunc
-
 
 #### map data
 pd_latlon <- readRDS("data/pd_mapdata.RDS")
@@ -92,6 +122,12 @@ df %>% filter(year==currentyear, grepl("Victim of any crime",variable)) %>% grou
     PDivName = police_div,
     mytext = paste0("<b>",PDivName,"</b> <br>Population: ",round(population),"<br>Prevalence of all <br> SCJS Crime: ",signif(anycrime,3),"%")
   ) %>% left_join(pd_latlon@data, .) -> pd_latlon@data
+
+
+
+############
+#FINALLY, save Rdata to the app directory
+############
 
 
 save.image(file = "./app/.RData")

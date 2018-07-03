@@ -8,13 +8,12 @@
 #source("rowSums_na.R")
 #source("rowsum_partialstringmatch_variables.R")
 
-#years_names<-c("2008/09","2009/10","2010/11","2012/13","2014/15")
 #get working dir, list data files. 
 #data_files <- dir(path = "data/", pattern='SCJS*', recursive = T,full.names = T)
 
-create_pdiv_data<-function(data_files, years_names){
+create_pdiv_data<-function(data_files){
   #load in demographic variables for each year.
-  demograph<-bind_rows(lapply(data_files[1:5], function(x) 
+  demograph<-bind_rows(lapply(data_files, function(x) 
     extract_name_data(x,"serial|age|laa|cjaa|gen|urb|tenure|soc|nssec|simd|wgtg|prev|qpolconf|qs2area|qsfdark|qsfnigh|qratpol|polop|compol|polpres|qworr|qaco_|lcpeop|qhworr|qswem|dconf")), .id = "year")
   
   #some variables were named differently in the first year (e.g. qpolconf_01 was qpolconf_1). this will look for names which match when replacing _ with _0, and combines them.
@@ -273,40 +272,6 @@ create_pdiv_data<-function(data_files, years_names){
   
   
   #set police_div
-  
-  #set year
-  pdiv_tables$year <- factor(pdiv_tables$year)
-  levels(pdiv_tables$year)<-years_names
-  
-  variable_info<-read.csv("pdiv_shiny/variables_full.csv")
-  variable_info$variable<-tolower(variable_info$variable)
-  
-  pdiv_tables<-left_join(pdiv_tables,variable_info)
-  head(pdiv_tables)
-  pdiv_tables$wrappedv <- sapply(pdiv_tables$label, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")})
-  pdiv_tables$wrapped_name <- sapply(pdiv_tables$name_trunc, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")})
-  
-  
-  #set variable
-  pdiv_tables$variable<-factor(pdiv_tables$variable)
-  levels(pdiv_tables$variable)
-  
-  pdiv_tables$variable<-factor(pdiv_tables$label)
-  levels(pdiv_tables$variable)
-  
-  #saveRDS(ungroup(pdiv_tables), "../data/pdiv_data.rds")
-  
-  ####
-  ##Making dummy data
-  ####
-  pdiv_tables %>% select(-count) %>% mutate(
-    p=sample(jitter(p)),
-    percentage=p*100,
-    ci = (sqrt((p*(1-p))/samplesize))*1.96*des_effect,
-    low = percentage-(ci*100),
-    high = percentage+(ci*100)
-  ) -> pdiv_scrambled
-  #saveRDS(pdiv_scrambled, "../data/pdiv_data_scrambled.rds")
-  return(pdiv_tables, pdiv_scrambled)
+  return(pdiv_tables)
 }
 
