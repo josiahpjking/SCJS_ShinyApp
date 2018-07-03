@@ -128,7 +128,7 @@ df %>% filter(year==currentyear, grepl("Victim of any crime",variable)) %>% grou
 ############
 #FINALLY, save Rdata to the app directory
 ############
-
+ungroup(df) -> df
 
 save.image(file = "./app/.RData")
 
