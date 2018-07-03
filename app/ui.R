@@ -1,4 +1,5 @@
 library(shiny)
+library(leaflet)
 library(plotly)
 require(tidyr)
 require(dplyr)

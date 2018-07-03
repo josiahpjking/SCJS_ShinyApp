@@ -114,13 +114,12 @@ df$variable<-df$name_trunc
 
 #### map data
 pd_latlon <- readRDS("data/pd_mapdata.RDS")
-df %>% filter(year==currentyear, grepl("Victim of any crime",variable)) %>% group_by(police_div) %>%
+df %>% filter(year==currentyear) %>% group_by(police_div) %>%
   summarise(
-    population = first(samplesize_w),
-    anycrime = first(percentage)
+    anycrime = first(percentage[grepl("Victim of any crime",variable)])
   ) %>% mutate(
     PDivName = police_div,
-    mytext = paste0("<b>",PDivName,"</b> <br>Population: ",round(population),"<br>Prevalence of all <br> SCJS Crime: ",signif(anycrime,3),"%")
+    mytext = paste0("<b>",PDivName,"</b><br> Prevalence of all SCJS Crime: ",signif(anycrime,3),"%")
   ) %>% left_join(pd_latlon@data, .) -> pd_latlon@data
 
 
@@ -130,6 +129,8 @@ df %>% filter(year==currentyear, grepl("Victim of any crime",variable)) %>% grou
 ############
 ungroup(df) -> df
 
+#update the app data.
 save.image(file = "./app/.RData")
 
+runApp(appDir="./app/")
 
