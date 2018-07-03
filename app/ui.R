@@ -9,19 +9,18 @@ fluidPage(
   #get CSS style stuff.
   includeCSS("./www/stuff.css"),
   
-  #make header
-  tags$h1(class="head-control",
-          a(target="_blank",href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey","Scottish Crime & Justice Survey"),
-          tags$img(src="scotgov.png",width=200,align="right")
-  ),
-  
   #main body of app. It's a navbar, so menu at top, different tabs.
   #each tab is sourced from a separate file to help the layout be a little easier to get to grips with.
   navbarPage(title="",
              id="main",
              position="fixed-top", 
              collapsible=TRUE,
-
+             
+             header = div(class="header-back",
+               tags$h1(class="head-control",
+                     a(target="_blank",href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey","Scottish Crime & Justice Survey"),
+                     tags$img(src="scotgov.png",width=200,align="left")
+             )),
              #########
              #HOME
              #########
@@ -33,7 +32,7 @@ fluidPage(
              #Overviews (main_overview)
              ##########
              tabPanel("Overview of Police Divisions", value="main_overview",
-                      source("source/ui_overview.R")
+                      source("source/ui_overview.R", verbose=F)
              ),
              
              ##########

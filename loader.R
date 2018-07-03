@@ -1,10 +1,27 @@
+#####
+#DATA, input choices
+#####
 require(tidyr)
 require(dplyr)
+require(ggplot2)
 require(magrittr)
-#setwd("\\\\scotland.gov.uk/dc2/fs4_home/Z613379/pdiv_shiny/v9")
-################
-#sort out data.
-################
+require(plotly)
+#load in current set of functions
+
+source("setup/extract_name_data.R")
+source("setup/rowSums_na.R")
+source("setup/rowsum_partialstringmatch_variables.R")
+source("setup/create_pdiv_data.R")
+
+years<-c("2008/09","2009/10","2010/11","2012/13","2014/15")
+
+#get working dir, list data files. 
+data_paths <- dir(path = "data/", pattern='SCJS*', recursive = T,full.names = T)
+
+create_pdiv_data(data_paths, years)
+
+#proportion data
+#df<-readRDS("data/pdiv9.5.test.rds")
 
 #####
 #plotting constants
@@ -24,29 +41,15 @@ pdivcols=c("Argyll & West Dunbartonshire (L Division)"='#66C2A5',
            "North East (A Division)"='#80B1D3',
            "Renfrewshire & Inverclyde (K Division)"='#FDB462',
            "Tayside (D Division)"='#B3DE69',
-           "National Average"='#B3B3B3')
+           "National Average"='#000000')
 #colours for overview page (national avg = black, and up/down/none is included)
-overview_cols=c(pdivcols[-length(pdivcols)],
-                "National Average"='#000000',
+overview_cols=c(pdivcols,
                 "No difference"="#BDBDBD",
                 "More Positive"="#95fb71",
-                "Less Positive"="#fb7171",
-                "Better than average"="#7195fb",
-                "Worse than average"="#fb9271")
+                "Less Positive"="#fb7171")
 
 #modebar icons to remove
 modebar_remove <- c('hoverClosestCartesian','hoverCompareCartesian','zoom2d','pan2d','toggleSpikelines','select2d','lasso2d','zoomIn2d','zoomOut2d')
-
-#####
-#DATA, input choices
-#####
-#proportion data
-df<-readRDS("data/pdiv9.5.test.rds")
-
-
-#df$wrapped_name <- sapply(df$name_trunc, FUN = function(x) {paste(strwrap(x, width = 20), collapse = "<br>")})
-#df$wrappedv <- sapply(df$label, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")})
-
 
 des_factors <- df %>% group_by(year) %>% summarise(des_f=first(des_effect)) #design factors
 pdivis<-levels(factor(df$police_div)) #police divisions
@@ -68,16 +71,27 @@ getnames<-function(string){
 all_vars<-list('National Indicators'= getnames("PREVSURVEY|QS2AREA:|DCONF_03"),
                'Rates of Crime Victimisation'=getnames("PREV"),
                'Confidence in the Police'=getnames("POLCONF"),
-               'Attitudes to the Police'=getnames("POLOP|COMPOL|POLPRES|RATPOL"),
+               'Attitudes to the Police'=getnames("POLOP|POLPRES|RATPOL"),
                'Confidence in Scottish Criminal Justice System'=getnames("DCONF"),
                'Perceptions of Crime Rates and Safety'=getnames("QS"),
-               'Worries of Crime'=getnames("QWORR"),
-               'Worries of Being Harassed'=getnames("HWORR"),
                'Perceptions of Local Crime'=getnames("QACO"),
-               'Perceptions of Local People'=getnames("LCPEOP")
+               'Perceptions of Local People'=getnames("LCPEOP"),
+               'Worries of Crime Victimisation'=getnames("QWORR"),
+               'Worries of Being Harassed'=getnames("HWORR")
                )
 df$variable<-df$name_trunc
 
+
+#### map data
+pd_latlon <- readRDS("data/pd_mapdata.RDS")
+df %>% filter(year==currentyear, grepl("Victim of any crime",variable)) %>% group_by(police_div) %>%
+  summarise(
+    population = first(samplesize_w),
+    anycrime = first(percentage)
+  ) %>% mutate(
+    PDivName = police_div,
+    mytext = paste0("<b>",PDivName,"</b> <br>Population: ",round(population),"<br>Prevalence of all <br> SCJS Crime: ",signif(anycrime,3),"%")
+  ) %>% left_join(pd_latlon@data, .) -> pd_latlon@data
 
 
 save.image(file = "./app/.RData")

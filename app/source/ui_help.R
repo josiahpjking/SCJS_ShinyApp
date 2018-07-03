@@ -1,10 +1,10 @@
 div(id="helpinfo",
-    div(class="toptext",id="hi1",
+    div(class="helptext",id="hi1",
         tags$h5("SCJS Questions"),
         tags$p("To calculate percentages of, for example, survey respondents expressing confidence in the local police, categories of responses to survey questions have been combined (e.g. Confidence includes those responding 'Fairly Confident' and 'Very Confident'). For the few exceptional questions (such as perceiving the 'same or less' crime), care has been taken in the labels and information-on-hover to reflect this. More information and the entire questionnaire can be found on ",tags$a(target="_blank",tags$ins("the SCJS publication page."),href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications"))
     ),
     
-    div(class="toptext",id="hi2",
+    div(class="helptext",id="hi2",
         tags$h5("Statistical Testing tool"),
         tags$p("This tool replicates the excel workbook found on",
                tags$a(target="_blank",tags$ins("the SCJS website."),href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/Datasets/SCJS/SCJS201617StatsTestingTool")),
@@ -27,7 +27,7 @@ div(id="helpinfo",
           column(width=12,align="center",div(htmlOutput("stt_results"), style = "text-align: center"))
         )
     ),
-    div(class="toptext",id="hi3",
+    div(class="helptext",id="hi3",
         tags$h5("Rounding"),
         tags$p("All proportions/percentages and confidence intervals presented here are rounded to 1dp. The in-built proportion testing in the app (which colours visual elements red/green/grey accordingly) uses unrounded proportions. Using the stats-testing tool on rounded proportions may yield slightly different results to those displayed in the rest of the app.")
     )

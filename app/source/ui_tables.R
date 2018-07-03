@@ -6,11 +6,11 @@ div(id="tables",
       actionButton("reset_tables", "Reset")
   ),
   
-  tabsetPanel(selected="perc",
-              tabPanel(title="Percentages",value="perc",
+  tabsetPanel(selected="table_perc",
+              tabPanel(title="Percentages",value="table_perc",
                        tableOutput('table_p')
               ),
-              tabPanel(title="Sample Sizes",value="samps",
+              tabPanel(title="Sample Sizes",value="table_samps",
                        tableOutput('table_ss')
               )
   )

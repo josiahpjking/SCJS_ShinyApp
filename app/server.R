@@ -14,6 +14,8 @@ server <- function(input, output, session){
   
   source("source/variable_information.R", local = TRUE)
   
+  source("source/server_map.R",local=T)
+  
   source("source/server_summary.R", local = TRUE)
   
   source("source/server_trendplot.R", local = TRUE)
@@ -26,8 +28,9 @@ server <- function(input, output, session){
   
   source("source/server_statstool.R", local = TRUE)
   
-  
-  
+  ########
+  #HOME SCREEN BUTTONS
+  ########
   observeEvent(input$link_overview,{
     newvalue <- "main_overview"
     updateTabsetPanel(session, "main", newvalue)
@@ -44,39 +47,30 @@ server <- function(input, output, session){
     newvalue <- "main_tables"
     updateTabsetPanel(session, "main", newvalue)
   })
+  
+  #LINK FROM TRENDS > COMPARISONS
   observeEvent(input$link_compare1,{
     newvalue <- "main_compare"
     updateTabsetPanel(session, "main", newvalue)
   })
   
+  ###########################
   ######
   #server side inputs
-  ######
-  #plotting options. 
-  output$plotopts<-renderUI({
-    list(
-      div(class="plotcontrol",
-          checkboxInput("erbar",label = "Show Confidence Intervals",value=FALSE)),
-      div(class="plotcontrol",
-          checkboxInput("showleg",label = "Show Legend",value=FALSE))
-    )
-  })
-    
-  #variable selection - based on list index of all vars (i.e. nat indicators).
-  output$var_select = renderUI({
-    selectizeInput("var_select",label = "Choose Variables",choices=all_vars[[input$survey_section]],multiple=T,selected=all_vars[[input$survey_section]][1])
-  })
-  output$var_select2 = renderUI({
-      checkboxGroupInput("var_select2",label = NULL,choices=all_vars[[input$ov_var]], selected=all_vars[[input$ov_var]][1])
+  
+  #overview_tab - input variable selection based on survey area.
+  output$ov_var2 = renderUI({
+    if(!(input$ov_var %in% names(all_vars) ))
+      return()
+    selectInput("ov_var2",label = "Choose variable:",choices=c("All",all_vars[[input$ov_var]]), selected="All")
   })
   
+  #trends_tab - input variable selection based on survey area.
+  output$trends_var2 = renderUI({
+    checkboxGroupInput("trends_var2",label = "Choose Variables",choices=all_vars[[input$trends_var]],selected=all_vars[[input$trends_var]][1])
+  })
   
-  
-  ########
-  #Observes
-  ########
-  
-  #tab_overview: plotly clicks for overview data.
+  #overview_tab - observe plotly click to change graph based on x value.
   observe({
       d <- event_data("plotly_click")
       new_value <- ifelse(is.null(d),"0",d$x) # 0 if no selection
@@ -84,30 +78,31 @@ server <- function(input, output, session){
       new_value <- gsub(")"," Division)",new_value)
       if(selected_pclick!=new_value) {
         selected_pclick <<- new_value 
-        if(selected_pclick !=0 && input$plottingov == 'breakdown'){
-          updateTabsetPanel(session, "plottingov", selected = "trends")
+        if(selected_pclick !=0 && input$ovplotting == 'breakdown'){
+          updateTabsetPanel(session, "ovplotting", selected = "trends")
           updateSelectizeInput(session, "ov_pdiv", selected = selected_pclick)
         }
-        if(selected_pclick !=0 && input$plottingov == 'trends'){
-          updateTabsetPanel(session, "plottingov", selected = "breakdown")
+        if(selected_pclick !=0 && input$ovplotting == 'trends'){
+          updateTabsetPanel(session, "ovplotting", selected = "breakdown")
           updateSelectizeInput(session, "ov_year", selected = selected_pclick)
         }
       }
     })
   
-  #tab_trends: reset plots
+  
+  #RESET TREND PLOTS
   observeEvent(input$reset_trends, {
-    updateSelectizeInput(session, "parea", selected = "National Average")
-    updateSelectizeInput(session, "var_select", selected = all_vars[[input$survey_section]][1])
+    updateSelectizeInput(session, "trend_pdiv", selected = "National Average")
+    updateSelectizeInput(session, "trends_var2", selected = all_vars[[input$trends_var]][1])
   })
   
-  #tab_tables: reset tables
+  #RESET TABLES
   observeEvent(input$reset_tables, {
     updateSelectizeInput(session, "table_pdiv", selected = "National Average")
     updateSelectizeInput(session, "table_var", selected = all_vars[[1]][1])
   })
   
-  #tab_tables: select all (vars/divisions)
+  #SELECT ALL in TABLES
   observe({
     if("Select All" %in% input$table_pdiv){
       updateSelectizeInput(session, "table_pdiv", selected = pdivis)
@@ -116,10 +111,6 @@ server <- function(input, output, session){
       updateSelectizeInput(session, "table_var", selected = unname(unlist(all_vars)))
     }
   })
-  
-
-
-
   
 
 }

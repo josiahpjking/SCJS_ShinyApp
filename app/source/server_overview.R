@@ -9,10 +9,10 @@ overview_data <- reactive({
       p_diff=percentage-nat_avgp,
       p_diff2=ifelse(reverse_coded==1,0-p_diff,p_diff),
       p_direction=ifelse(p_diff2==0,"No difference",
-                         ifelse(p_diff2>0,"Better than average","Worse than average")),
+                         ifelse(p_diff2>0,"More Positive","Less Positive")),
       c=sqrt((ci^2)+(nat_avgci^2)),
-      change=ifelse(((abs(p_diff)/100)>c)==TRUE & p_direction=="Better than average","Better than average",
-                    ifelse(((abs(p_diff)/100)>c)==TRUE & p_direction=="Worse than average","Worse than average","No difference")),
+      change=ifelse(((abs(p_diff)/100)>c)==TRUE & p_direction=="More Positive","More Positive",
+                    ifelse(((abs(p_diff)/100)>c)==TRUE & p_direction=="Less Positive","Less Positive","No difference")),
       wrapped_name = sapply(name_trunc, FUN = function(x) {paste(strwrap(x, width = 35), collapse = "<br>")}),
       my_text = paste0("<b>",police_div,"</b><br>",year,"<br>",wrapped_name,"<br><b>",round(percentage, digits=1),"</b>% +/-",round(ci*100, digits=1),", N = ",samplesize,"<br><i><b>Click to see this division relative<br>to the national average over time.<i></b>"),
       my_text2 = paste0("<b>",year,"</b><br>",police_div,"<br>",wrapped_name,"<br><b>",round(percentage, digits=1),"</b>% +/-",round(ci*100, digits=1),", N = ",samplesize,"<br><i><b>Click to see this year<br>for all divisions.<i></b>"),
@@ -36,17 +36,20 @@ output$ov_currentplot <- renderPlotly({
               text=~my_text,
               hoverinfo="text",
               colors=overview_cols,
-              type="bar") %>% layout(margin = list(b = 100),
+              type="bar") %>% layout(title=paste0("<b>",input$ov_year,"</b><br>",paste(strwrap(input$ov_var, width = 75), collapse = "<br>")),
+                                     margin = list(t=70, b = 100),
                                      showlegend=input$showleg,
                                      height = input$plotHeight, 
                                      autosize=TRUE,
-                                     yaxis=list(title="Percentage difference from<br>National Average",ticksuffix = "%"),
+                                     yaxis=list(title="Percentage Point Difference from<br>National Average",ticksuffix = "%"),
                                      xaxis=list(title="",
                                                 tickangle=90,
                                                 categoryarray=~wrappedpolice_div[order(p_diff)], 
                                                 categoryorder="array")
               ) %>% config(modeBarButtonsToRemove = modebar_remove)
+
   } else if(input$ov_var %in% names(all_vars)){
+    
     overview_data() %>% filter(variable %in% all_vars[[input$ov_var]]) %>% 
       filter(year %in% input$ov_year) %>% 
       filter(police_div!="National Average") %>%
@@ -56,7 +59,8 @@ output$ov_currentplot <- renderPlotly({
       group_by(wrappedpolice_div) %>%
       summarise(
         av=mean(p_diff2,na.rm=T)
-      ) %>% arrange(av) %>% mutate(plotorder=seq(1:nrow(.))) -> orderwrap
+      ) %>% arrange(av) %>%
+      mutate(plotorder=seq(1:nrow(.))) -> orderwrap
     
     
     overview_data() %>% filter(variable %in% all_vars[[input$ov_var]]) %>% 
@@ -72,13 +76,14 @@ output$ov_currentplot <- renderPlotly({
               text=~my_text,
               hoverinfo="text",
               colors=overview_cols,
-              type="scatter",mode="markers",marker = list(symbol=24, size = 12)
+              type="scatter",mode="markers",marker = list(symbol=24, size = 15)
               ) %>%
-        layout(margin = list(b = 100),
+        layout(title=paste0("<b>",input$ov_year,"</b><br>",input$ov_var),
+               margin = list(t=70, b = 100),
                showlegend=input$showleg,
                height = input$plotHeight, 
                autosize=TRUE,
-               yaxis=list(title="Percentage difference from<br>National Average",ticksuffix = "%"),
+               yaxis=list(title="Percentage Point Difference from<br>National Average",ticksuffix = "%"),
                xaxis=list(title="",
                           tickangle=90,
                           categoryarray=~orderwrap$wrappedpolice_div, 
@@ -101,36 +106,61 @@ output$ov_trendplot <- renderPlotly({
             text=~my_text2,
             hoverinfo="text",
             type="bar") %>%
-    add_lines(data=linedata, color=~police_div, colors=overview_cols) %>%
-      layout(showlegend=input$showleg,
+    add_lines(data=linedata,color=~police_div, colors=overview_cols) %>%
+      layout(title=paste0("<b>",input$ov_pdiv,"</b><br>",paste(strwrap(input$ov_var, width = 70), collapse = "<br>")),
+             margin=list(t=70),
+             showlegend=input$showleg,
              yaxis=list(title="Percentage",ticksuffix = "%"),
              xaxis=list(title="Year"),
              height = input$plotHeight, 
              autosize=TRUE) %>% config(modeBarButtonsToRemove = modebar_remove)
   } else if(input$ov_var %in% names(all_vars)){
-    pheight=ceiling(length(input$var_select2)/2)*400
-    overview_data() %>% filter(variable %in% input$var_select2) %>%
-      filter(police_div %in% c("National Average",input$ov_pdiv)) %>% 
-      mutate(
-        perc1 = ifelse(police_div=="National Average",percentage, NA),
-        perc2 = ifelse(police_div==input$ov_pdiv, percentage, NA)
-      ) %>% group_by(variable) -> plotdat
-    plots<-do(plotdat,
-             p=plot_ly(.,
-                     x=~year,
-                     y=~perc1,
-                     type="scatter",mode="lines",
-                     text=~my_text2,hoverinfo="text",
-                     color=~variable,
-                     line=list(color="black"),
-                     colors=overview_cols
-              ) %>%
-               add_trace(type="bar",mode="marker",
-                y=~perc2, color=~change)
-    )
-    subplot(plots[["p"]],nrows=ceiling(length(input$var_select2)/2)) %>% 
-      layout(showlegend=FALSE, height=pheight) %>%
-        config(modeBarButtonsToRemove = modebar_remove)
+    if (input$ov_var2=="All"){
+      overview_data() %>% filter(variable %in% all_vars[[input$ov_var]]) %>% filter(police_div %in% input$ov_pdiv) %>%
+      plot_ly(.,
+              inherit=F,
+              x=~year,
+              y=~percentage,
+              color=~change,
+              text=~my_text2,
+              hoverinfo="text",
+              colors=overview_cols,
+              type="scatter",mode="markers",
+              marker = list(symbol=24, size = 15)) %>%
+        add_trace(type="scatter",mode="lines",
+                  color=~wrapped_name, opacity=0.2,
+                  marker=NULL, line=list(color=~wrapped_name,dash="dot")) %>%
+      layout(title=paste0("<b>",input$ov_pdiv,"</b><br>",input$ov_var),
+             margin=list(t=70),
+             showlegend=input$showleg,
+             legend = list(x=1.1,y=1.1),
+             yaxis=list(title="Percentage Point Difference <br> from National Average",ticksuffix = "%"),
+             xaxis=list(title="Year"),
+             height = input$plotHeight, 
+             autosize=TRUE) %>% config(modeBarButtonsToRemove = modebar_remove)
+    } else {
+      overview_data() %>% filter(variable %in% input$ov_var2) %>%
+        filter(police_div %in% c("National Average",input$ov_pdiv)) %>% 
+        mutate(
+          perc1 = ifelse(police_div=="National Average",percentage, NA),
+          perc2 = ifelse(police_div==input$ov_pdiv, percentage, NA)
+        ) %>% 
+      plot_ly(., 
+              x=~year,
+              y=~perc1,
+              type="scatter",mode="lines",
+              text=~my_text2,hoverinfo="text",
+              color=~variable,
+              line=list(color="black"),
+              colors=overview_cols, showlegend=F) %>%
+        add_trace(type="bar",mode="marker", y=~perc2, color=~change) %>%
+        layout(title=paste0("<b>",input$ov_pdiv,"</b><br>",paste(strwrap(input$ov_var2, width = 70), collapse = "<br>")),
+          showlegend=input$showleg,
+          margin=list(t=70),
+          yaxis=list(title="Percentage",ticksuffix = "%"),
+          xaxis=list(title="Year"),
+          height = input$plotHeight, 
+          autosize=TRUE) %>% config(modeBarButtonsToRemove = modebar_remove)
+    }
   }
-  
 })

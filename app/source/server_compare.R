@@ -1,11 +1,11 @@
 compare_data <- reactive({
   #data for plotting
-  df %>% filter(variable %in% (all_vars[[input$survey_section_compare]]) & police_div %in% input$parea1 & year %in% input$year1) -> conf_p1_data
+  df %>% filter(variable %in% (all_vars[[input$comp_var]]) & police_div %in% input$comp_pdiv1 & year %in% input$comp_year1) -> conf_p1_data
   #data for plot 2
-  df %>% filter(variable %in% (all_vars[[input$survey_section_compare]]) & police_div %in% input$parea2 & year %in% input$year2) -> conf_p2_data
+  df %>% filter(variable %in% (all_vars[[input$comp_var]]) & police_div %in% input$comp_pdiv2 & year %in% input$comp_year2) -> conf_p2_data
   
   bind_rows(conf_p1_data,conf_p2_data) %>% 
-    filter((police_div==input$parea1 & year==input$year1) | (police_div==input$parea2 & year==input$year2)) %>% 
+    filter((police_div==input$comp_pdiv1 & year==input$comp_year1) | (police_div==input$comp_pdiv2 & year==input$comp_year2)) %>% 
     mutate(
       wrapped_name = sapply(name_trunc, FUN = function(x) {paste(strwrap(x, width = 20), collapse = "<br>")})
     ) -> conf_temp_data
@@ -44,7 +44,7 @@ output$compar_plot <- renderPlotly({
 
   compare_data() %>% nrow()/2 -> visible_vars
   
-  compare_data() %>% filter(police_div %in% input$parea1 & year %in% input$year1) %>% 
+  compare_data() %>% filter(police_div %in% input$comp_pdiv1 & year %in% input$comp_year1) %>% 
     plot_ly(., y=~wrapped_name, 
             x=~percentage, 
             text=~paste0(round(percentage,digits=1),"%"), 
@@ -54,7 +54,8 @@ output$compar_plot <- renderPlotly({
             color=~change, 
             legendgroup=~change, 
             showlegend=F,
-            colors = overview_cols
+            colors = overview_cols,
+            height=(visible_vars*110)+100
     ) %>% 
     layout(
       yaxis=list(title="",
@@ -67,7 +68,7 @@ output$compar_plot <- renderPlotly({
                       font = list(family = 'Sans', size = 10),
                       showarrow = FALSE, align = 'right') -> p1
   
-  compare_data() %>% filter(police_div %in% input$parea2 & year %in% input$year2) %>% 
+  compare_data() %>% filter(police_div %in% input$comp_pdiv2 & year %in% input$comp_year2) %>% 
     plot_ly(., y=~wrapped_name, 
             x=~percentage, 
             text=~paste0(round(percentage,digits=1),"%"), 
@@ -76,7 +77,8 @@ output$compar_plot <- renderPlotly({
             type = "bar",
             color=~change, 
             showlegend=FALSE,
-            colors = overview_cols
+            colors = overview_cols,
+            height=(visible_vars*110)+100
     ) %>% 
     layout(
       yaxis=list(title="",
@@ -86,12 +88,10 @@ output$compar_plot <- renderPlotly({
     ) -> p2
   
   tryCatch({
-    pheight=(visible_vars*110)+100
     subplot(p1,p2) %>% 
       layout(showlegend=T,
              margin=list(l=120),
-             autosize=TRUE,
-             height=pheight
+             autosize=TRUE
       ) %>% config(modeBarButtonsToRemove = modebar_remove)
   },
   error=function(cond){
