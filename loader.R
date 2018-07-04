@@ -78,6 +78,8 @@ overview_cols=c(pdivcols,
 #modebar icons to remove
 modebar_remove <- c('hoverClosestCartesian','hoverCompareCartesian','zoom2d','pan2d','toggleSpikelines','select2d','lasso2d','zoomIn2d','zoomOut2d')
 
+
+df<-readRDS("data/pdiv9.5.test.rds")
 # USER INPUTS
 des_factors <- df %>% group_by(year) %>% summarise(des_f=first(des_effect)) #design factors
 pdivis<-levels(factor(df$police_div)) #police divisions
@@ -114,13 +116,7 @@ df$variable<-df$name_trunc
 
 #### map data
 pd_latlon <- readRDS("data/pd_mapdata.RDS")
-df %>% filter(year==currentyear) %>% group_by(police_div) %>%
-  summarise(
-    anycrime = first(percentage[grepl("Victim of any crime",variable)])
-  ) %>% mutate(
-    PDivName = police_div,
-    mytext = paste0("<b>",PDivName,"</b><br> Prevalence of all SCJS Crime: ",signif(anycrime,3),"%")
-  ) %>% left_join(pd_latlon@data, .) -> pd_latlon@data
+
 
 
 
@@ -132,5 +128,5 @@ ungroup(df) -> df
 #update the app data.
 save.image(file = "./app/.RData")
 
-runApp(appDir="./app/")
+shiny::runApp(appDir="./app/")
 

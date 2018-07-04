@@ -110,13 +110,13 @@ body{
 .home_allbuttons {
   display: table;
   text-align: center;
-  margin: 50px;
+  margin: 25px;
   margin-top: 10px;
 }
 .home-button{
   display: inline-table;
-  width: 40%;
-  margin: 15px;
+  width: 20%;
+  margin: 10px;
   border-top: 8px solid #0065bd;
   border-bottom: 1px solid #b3b3b3;
 }
@@ -172,12 +172,15 @@ body{
   margin: auto;
 }
 
-#pdiv_map{
+#map{
   display: table-cell;
+  margin-left: 50px;
   width: 35%;
 }
+#map .shiny-input-container:not(.shiny-input-container-inline){
+  width: 100%;
+}
 .leaflet-container{
-  margin-left: 50px;
   background: #fff;
 }
 #home-toptext{
@@ -187,19 +190,6 @@ body{
 }
 
 
-
-
-
-
-
-#var_select2 .shiny-input-checkboxgroup{
-  width: 100%;
-}
-#var_select2 .checkbox{
-  display: inline-block;
-  width: 30%;
-  vertical-align: top;
-}
 /* COMPARISON TAB */
 
 #compare-top{
@@ -232,6 +222,13 @@ body{
   width: 100%;
 }
 
+/* TREND TABS */
+div.plot-below .form-group, div.plot-below .shiny-input-container, div.plot-below .checkbox{
+  display: inline-block;
+}
+.plot-below p{
+  text-align: left;
+}
 
 /* TABLE TABS */
 
@@ -259,6 +256,7 @@ div.tvar .selectize-input{
   border-top: 8px solid #0065bd;
   border-bottom: 2px solid #b3b3b3;
   margin-bottom: 20px;
+  background-color: #f8f8f8;
 }
 .helptext p{
   margin: 20px;
@@ -277,15 +275,3 @@ div.tvar .selectize-input{
 #stt_results{
   text-align: center;
 }
-#hi1{
-  background-color: #f8f8f8;
-}
-#hi2{
-  background-color: #f8f8f8;
-}
-#hi3{
-  background-color: #f8f8f8;
-}
-
-
-

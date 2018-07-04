@@ -29,8 +29,8 @@ server <- function(input, output, session){
   ########
   #HOME SCREEN BUTTONS
   ########
-  observeEvent(input$link_overview,{
-    newvalue <- "main_overview"
+  observeEvent(input$link_divisions,{
+    newvalue <- "main_divisions"
     updateTabsetPanel(session, "main", newvalue)
   })
   observeEvent(input$link_trends,{
@@ -60,7 +60,7 @@ server <- function(input, output, session){
   output$ov_var2 = renderUI({
     if(!(input$ov_var %in% names(all_vars) ))
       return()
-    selectInput("ov_var2",label = "Choose variable:",choices=c("All",all_vars[[input$ov_var]]), selected="All")
+    selectInput("ov_var2",label = "Choose variable:",choices=all_vars[[input$ov_var]])
   })
   
   #trends_tab - input variable selection based on survey area.
@@ -110,5 +110,4 @@ server <- function(input, output, session){
     }
   })
   
-
 }

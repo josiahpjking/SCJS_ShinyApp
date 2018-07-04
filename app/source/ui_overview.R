@@ -27,17 +27,17 @@ sidebarLayout(
                              tags$img(src="spinner.gif", id="loading-spinner"),
                              plotlyOutput("ov_currentplot", height = "auto",width='100%')
                          ),
-                         tags$p("Click on the results of a division to see how it has performed over time.")
+                         div(class="plot-below",tags$p("Click on the results of a division to see how it has performed over time."))
                 ),
-                tabPanel(title="Trend Over Time",value="trends",
+                tabPanel(title="Divisions Over Time",value="trends",
                          uiOutput("ov_var2"),
                          div(class="plot-container",
                              tags$img(src="spinner.gif", id="loading-spinner"),
                              plotlyOutput("ov_trendplot", height = "100%",width='100%')
                          ),
-                         tags$p("Click on the results of a year to see all divisions for that year.")
+                         div(class="plot-below",tags$p("Click on the results of a year to see all divisions for that year."))
                 ),
-                checkboxInput("showleg",label = "Show Legend",value=TRUE)       
+                div(class="plot-below",checkboxInput("showleg",label = "Show Legend",value=TRUE))       
     )
   )
 )

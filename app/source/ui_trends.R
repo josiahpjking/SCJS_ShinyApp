@@ -16,9 +16,11 @@ sidebarLayout(
     div(class="plot-container",
         tags$img(src="spinner.gif", id="loading-spinner"),
         plotlyOutput("trendplot", height = "100%",width='100%')),
-    div(id="trendplottext", tags$p("Hover over the cursor over a point to see more information.")),
-    checkboxInput("erbar",label = "Show Confidence Intervals",value=TRUE),
-    checkboxInput("showleg1",label = "Show Legend",value=TRUE),
-    actionButton("reset_trends","Reset plot")
+    div(class="plot-below",
+        tags$p("Hover over the cursor over a point to see more information."),
+        checkboxInput("erbar",label = "Show Confidence Intervals",value=TRUE),
+        checkboxInput("showleg1",label = "Show Legend",value=TRUE),
+        actionButton("reset_trends","Reset plot")
+    )
   )
 )

@@ -1,7 +1,7 @@
 
 #basic table data
 table_data<-reactive({
-  df %>% filter(police_div %in% input$table_pdiv & variable %in% input$table_var) %>%
+  df %>% filter(police_div %in% input$table_pdiv & variable %in% unlist(all_vars[input$table_var])) %>%
     mutate(
       Police_Division=police_div,
       Percentage=percentage, 

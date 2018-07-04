@@ -30,9 +30,9 @@ fluidPage(
              ),
              
              ##########
-             #Overviews (main_overview)
+             #Division Breakdowns (main_divisions)
              ##########
-             tabPanel("Overview of Police Divisions", value="main_overview",
+             tabPanel("Breakdown by Police Division", value="main_divisions",
                       source("source/ui_overview.R", verbose=F)
              ),
              
