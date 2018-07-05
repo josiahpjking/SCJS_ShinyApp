@@ -11,10 +11,13 @@
 #get working dir, list data files. 
 #data_files <- dir(path = "data/", pattern='SCJS*', recursive = T,full.names = T)
 
-create_pdiv_data<-function(data_files){
+create_pdiv_data<-function(data_files,years,design_effects){
   #load in demographic variables for each year.
   demograph<-bind_rows(lapply(data_files, function(x) 
     extract_name_data(x,"serial|age|laa|cjaa|gen|urb|tenure|soc|nssec|simd|wgtg|prev|qpolconf|qs2area|qsfdark|qsfnigh|qratpol|polop|compol|polpres|qworr|qaco_|lcpeop|qhworr|qswem|dconf")), .id = "year")
+  
+  demograph$year<-factor(demograph$year)
+  levels(demograph$year)<-years
   
   #some variables were named differently in the first year (e.g. qpolconf_01 was qpolconf_1). this will look for names which match when replacing _ with _0, and combines them.
   rowsum_partialstringmatch_variables(demograph,"_","_0") -> demograph
@@ -255,9 +258,9 @@ create_pdiv_data<-function(data_files){
   ######
   
   #add design effects, and calculate CIs
-  design_effects <- data.frame(year=as.character(c(1,2,3,4,5,6)),des_effect=c(1.5,1.5,1.5,1.3,1.2,1.34))
+  desfacts <- data.frame(year=years,des_effect=design_effects)
   
-  left_join(pdtable, design_effects) %>%
+  left_join(pdtable, desfacts) %>%
     mutate(
       percentage=p*100,
       count=p*samplesize,

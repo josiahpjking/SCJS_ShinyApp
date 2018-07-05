@@ -12,6 +12,8 @@ server <- function(input, output, session){
   
   source("source/variable_information.R", local = TRUE)
   
+  source("source/server_home.R",local=T)
+  
   source("source/server_map.R",local=T)
   
   source("source/server_summary.R", local = TRUE)
@@ -23,8 +25,6 @@ server <- function(input, output, session){
   source("source/server_table.R", local = TRUE)
   
   source("source/server_overview.R", local = TRUE)
-  
-  source("source/server_statstool.R", local = TRUE)
   
   ########
   #HOME SCREEN BUTTONS
@@ -97,7 +97,7 @@ server <- function(input, output, session){
   #RESET TABLES
   observeEvent(input$reset_tables, {
     updateSelectizeInput(session, "table_pdiv", selected = "National Average")
-    updateSelectizeInput(session, "table_var", selected = all_vars[[1]][1])
+    updateSelectizeInput(session, "table_var", selected = names(all_vars)[1])
   })
   
   #SELECT ALL in TABLES

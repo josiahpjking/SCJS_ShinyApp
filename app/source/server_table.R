@@ -28,14 +28,9 @@ output$table_p <- renderTable({
   table_data() %>% select(year,Variable,Police_Division,Percentage,SampleSize,ci) %>%
     reshape(timevar="year",idvar=c("Police_Division","Variable"),direction="wide") -> td
   
-  td$diff_prev<-sapply(1:nrow(td), function(x) abs(td[x,paste0("Percentage.",currentyear)]-td[x,paste0("Percentage.",prevyear)])/100>sqrt((td[x,paste0("ci.",currentyear)]^2)+(td[x,paste0("ci.",prevyear)]^2)))
-  
-  td$diff_first<-sapply(1:nrow(td), function(x) abs(td[x,paste0("Percentage.",currentyear)]-td[x,paste0("Percentage.",firstyear)])/100>sqrt((td[x,paste0("ci.",currentyear)]^2)+(td[x,paste0("ci.",firstyear)]^2)))
-  
-  td$change_previous<-ifelse(td$diff_prev==TRUE,"Yes","No")
-  td$change_first<-ifelse(td$diff_first==TRUE,"Yes","No")
-  names(td)[grepl("change_previous",names(td))]=paste0(currentyear," change from ",prevyear)
-  names(td)[grepl("change_first",names(td))]=paste0(currentyear," change from ",firstyear)
+  td$diff<-sapply(1:nrow(td), function(x) abs(td[x,paste0("Percentage.",input$table_year[1])]-td[x,paste0("Percentage.",input$table_year[2])])/100>sqrt((td[x,paste0("ci.",input$table_year[1])]^2)+(td[x,paste0("ci.",input$table_year[2])]^2)))
+  td$change<-ifelse(td$diff==TRUE,"Yes","No")
+  names(td)[grepl("change",names(td))]=paste0(input$table_year[1]," change from ",input$table_year[2])
   
   td %>% select(-matches("ci|SampleSize|diff")) %>%
     rename_at(vars(starts_with("Percentage")), funs(gsub("Percentage.","",.))) %>%

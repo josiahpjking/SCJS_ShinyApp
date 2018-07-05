@@ -1,0 +1,38 @@
+
+There are various different ways to keep your use of R neat and organised. 
+Trying to make it as accessible as possible for users who potentially have little experience of R, I opted to use RStudio 'projects'. 
+The aim is that it collates information about the working directory, workspace, history, etc - open an existing project and you are taken straight back to where it left off (even the scripts are still open).
+
+
+To update the SCJS shiny app, you will need:
+1 - R (version 3.4.4)
+2 - RStudio
+3 - the SCJS_ShinyApp R project (this is the entire directory named SCJS_ShinyApp, with the SCJS_ShinyApp.Rproj file in it)
+4 - access to the SCJS NVF datasets (all years)
+
+Step 1
+Open RStudio. From RStudio, open the SCJS_ShinyApp.Rproj (File > Open Project > )
+This should take you into the project (it should load some scripts and the environment etc). 
+
+Step 2
+The way I have written this is intended to diminish the amount of R required to update the app. Unfortunately, this means that most of the work happens elsewhere. 
+There is one R script (loader.R) which:
+- reads in the NVF datasets
+- creates data for the app (dataframe of proportions, police divisions etc)
+- sets up all the prerequisite variables for the app (user input choices, color schemes etc)
+- updates the datafile (collection of data, variables etc) which is referenced by the app
+- runs the app locally (i.e. opens it on your machine)
+
+Theoretically, all you have to do is run loader.R
+Easiest way to do this = in the loader.R script, select all the code (ctrl+A) and run it (ctrl+enter).
+This will run all the lines of code in the script sequentially. Barring any mishaps, it should open up a window displaying the updated app.
+
+Step 3
+Re-publish the app!
+In the window which opened, the top right gives an option to re-publish. Use this. 
+WARNING: shinyapps.io accounts are linked via token and secret to specific machine. The scotland.shinyapps account is linked to the machine I used (number 64671). It may be linked to my account on it. In the case of being unable to re-publish, please ask someone in the governments shiny group to help. 
+
+
+
+
+

@@ -1,9 +1,7 @@
 sidebarLayout(
   sidebarPanel(
     div(class="sidebartext",
-        tags$p("Choose a section of the survey (e.g. confidence in the local police) and compare between specific divisions and/or across survey years."),
-        tags$p("The selections you make will be compared", tags$b("against one another."),"For each question, if there is a significant difference between the two selections, the more positive result will be coloured", tags$b(style="color:red","red"), "and the less positive result will be coloured",tags$b(style="color:LimeGreen","green."), "If there is no significant difference between your two selections, the bars will be coloured",tags$b(style="color:grey","grey.")
-        )
+        tags$p("Choose a section of the survey (e.g. confidence in the local police) and test for significant differences (color coding) between specific divisions and/or across survey years.")
     ),
     selectizeInput("comp_var", label = "Choose a section of the survey", choices=list("Survey Sections"=names(all_vars)), selected=names(all_vars)[1], multiple=F),
     uiOutput("variable_info_comp")
@@ -24,7 +22,7 @@ sidebarLayout(
     ),
     div(id="compare-outputs",
         tags$p("Percentages on the either side of the figure below are compared", tags$b("against one another.")),
-        tags$p("If significantly different, the more positive result is shown in", tags$b(style="color:LimeGreen","green"), "and the less positive result in",tags$b(style="color:red","red.")),
+        tags$p("If significantly different, the more positive result is shown in", tags$b(style="color:LimeGreen","green"), "and the less positive result in",tags$b(style="color:red","red."), "If there is no significant difference between your two selections, the bars will be coloured",tags$b(style="color:grey","grey.")),
         div(class="plot-container",
             tags$img(src="spinner.gif", id="loading-spinner"),
             plotlyOutput('compar_plot')

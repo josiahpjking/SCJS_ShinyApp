@@ -102,9 +102,9 @@ output$ov_currentplot <- renderPlotly({
                 type="scatter",mode="markers",marker = list(symbol=24, size = 15),
                 split=~wrapped_name,
                 legendgroup=~wrapped_name) %>%
-      layout(title=paste0("<b>",input$ov_year,"</b><br>",input$ov_var),
+      layout(title=paste0("<b>",input$ov_year,"</b><br>",input$ov_var,"<br>(each point is a variable in the survey)"),
         margin = list(t=70, b = 100),
-        showlegend=input$showleg,
+        showlegend=FALSE,
         height = input$plotHeight, 
         autosize=TRUE,
         yaxis=list(title="Percentage Point Difference <br> from National Average",ticksuffix = "%"),
@@ -112,15 +112,7 @@ output$ov_currentplot <- renderPlotly({
                    tickangle=90,
                    categoryarray=~orderwrap$wrappedpolice_div, 
                    categoryorder="array")
-      ) %>% #add_lines(data=line_data,
-             #         linetype=~wrapped_name,
-              #        y=~percentage,
-               #       split=~wrapped_name,
-                #      line=list(color="black"),
-                 #     #opacity=1,
-                  #    text=~natav_text, hoverinfo="text",
-                   #   showlegend=T) %>% 
-      config(modeBarButtonsToRemove = modebar_remove)
+      ) %>% config(modeBarButtonsToRemove = modebar_remove)
   }
 })
 
