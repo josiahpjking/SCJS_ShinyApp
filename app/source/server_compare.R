@@ -1,3 +1,8 @@
+
+########
+# DATA 
+########
+# this subsets the data based on user inputs, checks for common variables, and tests proportions between two selections.
 compare_data <- reactive({
   #data for plotting
   df %>% filter(variable %in% (all_vars[[input$comp_var]]) & police_div %in% input$comp_pdiv1 & year %in% input$comp_year1) -> conf_p1_data
@@ -39,11 +44,22 @@ compare_data <- reactive({
     ) %>% 
     select(year,variable,wrappedv,wrapped_name,police_div,percentage,change,samplesize,ci)
 })
-  
-output$compar_plot <- renderPlotly({
 
+
+
+
+
+
+########
+# PLOT
+########
+# Using the above data, this plots the two user-defined selections, and color codes them according to proportion testing
+output$compar_plot <- renderPlotly({
+  
+  #how many variables are there?
   compare_data() %>% nrow()/2 -> visible_vars
   
+  #plot LEFT
   compare_data() %>% filter(police_div %in% input$comp_pdiv1 & year %in% input$comp_year1) %>% 
     plot_ly(., y=~wrapped_name, 
             x=~percentage, 
@@ -68,6 +84,7 @@ output$compar_plot <- renderPlotly({
                       font = list(family = 'Sans', size = 10),
                       showarrow = FALSE, align = 'right') -> p1
   
+  #plot RIGHT
   compare_data() %>% filter(police_div %in% input$comp_pdiv2 & year %in% input$comp_year2) %>% 
     plot_ly(., y=~wrapped_name, 
             x=~percentage, 
@@ -87,6 +104,8 @@ output$compar_plot <- renderPlotly({
       xaxis=list(range=c(0,100),ticksuffix = "%",showticklabels = FALSE)
     ) -> p2
   
+  
+  #plot output
   tryCatch({
     subplot(p1,p2) %>% 
       layout(showlegend=T,
@@ -103,3 +122,17 @@ output$compar_plot <- renderPlotly({
   }
   )
 })
+
+
+
+########
+# VARIABLE INFO 
+########
+# this updates the text information on the selected area of the survey (see variable_information.R for text)
+output$variable_info_comp<-renderUI({
+  div(class="variable_info",
+      variable_info_list[[input$comp_var]]
+  )
+})
+
+

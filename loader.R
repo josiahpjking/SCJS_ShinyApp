@@ -13,24 +13,30 @@ source("setup/rowSums_na.R")
 source("setup/rowsum_partialstringmatch_variables.R")
 source("setup/create_pdiv_data.R")
 
-
-
-
+###########
+#FOR UPDATING
+###########
+#these are all the years of the survey
 years<-c("2008/09","2009/10","2010/11","2012/13","2014/15")
+#these are all the design effects
+d_effects = c(1.5, 1.5, 1.5, 1.3, 1.2)
 
-
+#this is the new year of the survey
+new_year <- c("2016/17")
+#this is the new design effect
+new_deffect <- 1.34
+#list data files which match "SCJS" in the following directory
+new_data_path <- dir(path = "\\\\scotland.gov.uk/dc2/fs4_home/Z613379/data/", pattern='SCJS_2016_17_MAIN8*', recursive = T,full.names = T)
 
 #################
 #MAKE PROPORTION TABLES FROM NEW DATASETS
 #################
 
-#get working dir, list data files. 
-data_paths <- dir(path = "\\\\scotland.gov.uk/dc2/fs4_home/Z613379/data/", pattern='SCJS*', recursive = T,full.names = T)
 
 #make tables of proportions
 #this requires the new data set(s), the year(s), and the design effects.
-# previous years design effects = c(1.5,1.5,1.5,1.3,1.2,1.34)
-df <- create_pdiv_data(data_paths[5],years=c("2014/15"),design_effects=c(1.2)) 
+# previous years 
+df <- create_pdiv_data(new_data_path,years=new_year,design_effects=new_deffect) 
 
 #read info on variables
 variable_info<-read.csv("data/variables_full.csv")
@@ -163,4 +169,7 @@ ungroup(df) -> df
 save.image(file = "./app/.RData")
 
 shiny::runApp(appDir="./app/")
+
+
+
 

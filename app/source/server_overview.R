@@ -1,9 +1,15 @@
+######
+#DATA
+######
+#this doesn't need to be reactive. I'm not sure why it is.. 
 overview_data <- reactive({
+  #filter to just national average data
   df %>% filter(police_div=="National Average") %>% mutate(
     nat_avgp = percentage,
     nat_avgci = ci
   ) %>% select(variable,year,nat_avgp,nat_avgci) -> nat_avg
   
+  #join and do proportion testing for all other data.
   left_join(df, nat_avg) %>% 
     mutate(
       p_diff=percentage-nat_avgp,
@@ -26,20 +32,29 @@ overview_data <- reactive({
       #wrapped pdiv name
       wrappedpolice_div=sapply(gsub(" Division","",police_div), FUN = function(x) {paste(strwrap(x, width = 15), collapse = "<br>")})
       ) %>% select(-c(p_direction,c))
-  })
+})
  
+#####
+#SINGLE YEAR PLOT
+#####
+#this is the plot for a single year of all police divisions, ordered by difference from national average.
+#it's a horrible ifelse because it plots bars when user selects single variables, and markers when user selects whole survey areas (multiple questions)
 
 output$ov_currentplot <- renderPlotly({
+  
+  #BAR PLOT
   if(!(input$ov_var %in% names(all_vars))){
+    #national average data
     overview_data() %>% filter(variable %in% input$ov_var) %>% 
       filter(year %in% input$ov_year) %>% 
       filter(police_div == "National Average") -> line_data
-    
+    #division data
     overview_data() %>% filter(variable %in% input$ov_var) %>% 
       filter(year %in% input$ov_year) %>% 
       filter(police_div!="National Average") -> bar_data
     
-      plot_ly(bar_data,
+    #PLOT
+    plot_ly(bar_data,
               x=~wrappedpolice_div,
               y=~percentage,
               color=~change,
@@ -54,7 +69,7 @@ output$ov_currentplot <- renderPlotly({
              autosize=TRUE,
              yaxis=list(title="Percentage",ticksuffix = "%"),
              xaxis=list(title="",tickangle=90,
-                        categoryarray=~wrappedpolice_div[order(p_diff)], categoryorder="array")
+                        categoryarray=~wrappedpolice_div[order(p_diff2)], categoryorder="array")
       ) %>%
         add_lines(inherit=F,
                   data=line_data, 
@@ -65,7 +80,9 @@ output$ov_currentplot <- renderPlotly({
 
   } else if(input$ov_var %in% names(all_vars)){
     
-    #get plotting order (can't do it as above.)
+    #SCATTER PLOT
+    
+    #first get order for plotting x axis (this is because for multiple questions it's ordered by avg diff from national average. and you can't do it as easily as above.)
     overview_data() %>% filter(variable %in% all_vars[[input$ov_var]]) %>% 
       filter(year %in% input$ov_year) %>% 
       filter(police_div!="National Average") %>%
@@ -75,11 +92,12 @@ output$ov_currentplot <- renderPlotly({
       ) %>% arrange(av) %>%
       mutate(plotorder=seq(1:nrow(.))) -> orderwrap
     
-    
+    #division data
     overview_data() %>% filter(variable %in% all_vars[[input$ov_var]]) %>% 
       filter(year %in% input$ov_year) %>% 
       filter(police_div!="National Average") -> bar_data
     
+    #national average data (not actually shown in the end..)
     bar_data %>% select(variable, wrappedpolice_div) %>%
       left_join(., 
                 overview_data() %>% 
@@ -116,6 +134,12 @@ output$ov_currentplot <- renderPlotly({
   }
 })
 
+
+######
+# DIVISION OVER TIME PLOT
+######
+#this is the barplot fora single division over time. coloured by signif difference from national average, with national average as a solid line.
+#again, a horrible ifelse for user selection of single variable vs whole area. Currently it actually plots the same (if choose a survey area, user has to choose specific variable), so not necessary to split like this, but there's a small chance we might want to try and plot several variables in one plot (initial idea). so preserving it for now.
 output$ov_trendplot <- renderPlotly({
   if(!(input$ov_var %in% names(all_vars))){
     overview_data() %>% filter(variable %in% input$ov_var) %>% 
@@ -163,3 +187,77 @@ output$ov_trendplot <- renderPlotly({
           autosize=TRUE) %>% config(modeBarButtonsToRemove = modebar_remove)
   }
 })
+
+
+
+
+#####
+#VARIABLE SELECTION > update based on survey area selection.
+#####
+output$ov_var2 = renderUI({
+  if(!(input$ov_var %in% names(all_vars) ))
+    return()
+  selectInput("ov_var2",label = "Choose variable:",choices=all_vars[[input$ov_var]])
+})
+
+
+#####
+#PLOTLY CLICKS 
+#####
+#this responds to clicks on the graph and takes the user to the other graph based on x axis clicks.
+observe({
+  d <- event_data("plotly_click")
+  new_value <- ifelse(is.null(d),"0",d$x) # 0 if no selection
+  new_value <- gsub("<br>"," ",new_value)
+  new_value <- gsub(")"," Division)",new_value)
+  if(selected_pclick!=new_value) {
+    selected_pclick <<- new_value 
+    if(selected_pclick !=0 && input$ovplotting == 'breakdown'){
+      updateTabsetPanel(session, "ovplotting", selected = "trends")
+      updateSelectizeInput(session, "ov_pdiv", selected = selected_pclick)
+    }
+    if(selected_pclick !=0 && input$ovplotting == 'trends'){
+      updateTabsetPanel(session, "ovplotting", selected = "breakdown")
+      updateSelectizeInput(session, "ov_year", selected = selected_pclick)
+    }
+  }
+})
+
+
+########
+# VARIABLE INFO 
+########
+# this updates the text information on the selected area of the survey (see variable_information.R for text)
+output$variable_info_ov<-renderUI({
+  div(class="variable_info",
+      variable_info_list[[input$ov_var]]
+  )
+})
+
+#####
+#GRAPH INFO - info for ov_currentplot
+#####
+output$overview_1 <- renderUI({
+  div(
+    tags$p("Compared to the National Average, see which divisions had",
+           tags$b(style="color:LimeGreen","More Positive (green)"),"or",tags$b(style="color:red","Less Positive (red)"),
+           "responses to the SCJS for a chosen year",tags$b(style="color:grey","(grey indicates no significant difference from the National Average).")),
+    tags$i("Hover the mouse over the graph to display more information (percentages, sample sizes, confidence intervals) about each data point.")
+  )
+})
+#####
+#GRAPH INFO  info for ov_trendplot
+#####
+output$overview_2 <- renderUI({
+  div(
+    tags$i("See how a chosen police division has performed over time, with each year showing whether that division had ",
+           tags$b(style="color:LimeGreen","More Positive (green)"),"or",tags$b(style="color:red","Less Positive (red)"),
+           "responses to the SCJS than the National Average",tags$b(style="color:black","(black line)"),"in that year",tags$b(style="color:grey","(grey indicates no significant difference).")),
+    tags$p("Hover the mouse over the graph to display more information (percentages, sample sizes, confidence intervals) about each data point.")
+  )
+})
+
+
+
+
+

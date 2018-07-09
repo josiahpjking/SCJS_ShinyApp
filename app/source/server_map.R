@@ -1,7 +1,10 @@
-
-require(leaflet)
+######
+#MAP
+######
+#this responds to user input of variable and renders the map on the home page.
 output$pdiv_map <- renderLeaflet({
-  
+
+  #get current year data for the selected indicator, join to map data. 
   df %>% filter(year==currentyear) %>% filter(grepl(input$map_var,variable)) %>%
     group_by(police_div) %>% 
     summarise(
@@ -13,6 +16,7 @@ output$pdiv_map <- renderLeaflet({
       mytitle = paste0(wrapped_name,"<br>(2014/15)")
     ) %>% left_join(pd_latlon@data, .) -> pd_latlon@data
   
+  #set map titles and color palettes
   maptitle=pd_latlon@data$mytitle[1]
   indx=which(all_vars[[1]]==input$map_var)
   pal=colorNumeric(
@@ -20,6 +24,7 @@ output$pdiv_map <- renderLeaflet({
     domain=pd_latlon@data$percentage
   )
   
+  #render map
   leaflet(pd_latlon) %>% setView(lng = -3.5, lat = 57.817, zoom = 6) %>%
     #addProviderTiles("Stamen.TonerLite") %>% 
     addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5,

@@ -1,5 +1,6 @@
-
-#basic table data
+#####
+#DATA - basic table data. filter by police division and variable selection. set as class(data.frame) for reshaping.
+#####
 table_data<-reactive({
   df %>% filter(police_div %in% input$table_pdiv & variable %in% unlist(all_vars[input$table_var])) %>%
     mutate(
@@ -10,7 +11,9 @@ table_data<-reactive({
     ) %>% data.frame(.)
 })
 
-#data for downloading (no testing. )
+#####
+#DOWNLOAD DATA - no testing, both percentages and samplesizes
+#####
 table_downloaddata<-reactive({
   table_data() %>%
     select(year,Variable,Police_Division,Percentage,SampleSize) %>%
@@ -21,15 +24,18 @@ table_downloaddata<-reactive({
     arrange(Variable)
 })
 
-#######
-#Table of percentages with Stats Testing for latest vs. previous, and latest vs. first.
-#######
+
+#####
+#PERCENTAGE TABLE - with stats testing between selected years.
+#####
 output$table_p <- renderTable({
   table_data() %>% select(year,Variable,Police_Division,Percentage,SampleSize,ci) %>%
     reshape(timevar="year",idvar=c("Police_Division","Variable"),direction="wide") -> td
   
   td$diff<-sapply(1:nrow(td), function(x) abs(td[x,paste0("Percentage.",input$table_year[1])]-td[x,paste0("Percentage.",input$table_year[2])])/100>sqrt((td[x,paste0("ci.",input$table_year[1])]^2)+(td[x,paste0("ci.",input$table_year[2])]^2)))
+  
   td$change<-ifelse(td$diff==TRUE,"Yes","No")
+  
   names(td)[grepl("change",names(td))]=paste0(input$table_year[1]," change from ",input$table_year[2])
   
   td %>% select(-matches("ci|SampleSize|diff")) %>%
@@ -38,10 +44,9 @@ output$table_p <- renderTable({
 },digits=1)
 
 
-
-#######
-#Table of sample sizes.
-#######
+#####
+#SAMPLESIZE TABLE
+#####
 output$table_ss <- renderTable({
   table_data() %>% select(year,Variable,Police_Division,SampleSize) %>%
     reshape(timevar="year",idvar=c("Police_Division","Variable"),direction="wide") %>% 
@@ -51,7 +56,7 @@ output$table_ss <- renderTable({
 
 
 #######
-#Table download output
+#Table download button
 #######
 output$downloadData <- downloadHandler(
   filename = "scjs_download.csv",
@@ -59,3 +64,25 @@ output$downloadData <- downloadHandler(
     write.csv(table_downloaddata(), file, row.names = FALSE)
   }
 )
+
+#####
+#RESET TABLE BUTTON
+#####
+observeEvent(input$reset_tables, {
+  updateSelectizeInput(session, "table_pdiv", selected = "National Average")
+  updateSelectizeInput(session, "table_var", selected = names(all_vars)[1])
+})
+
+#####
+#SELECT ALL in table - both for division and variable. 
+#####
+observe({
+  if("Select All" %in% input$table_pdiv){
+    updateSelectizeInput(session, "table_pdiv", selected = pdivis)
+  }
+  if("Select All" %in% input$table_var){
+    updateSelectizeInput(session, "table_var", selected = names(all_vars)[1])
+  }
+})
+
+

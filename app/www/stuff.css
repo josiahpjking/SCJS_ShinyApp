@@ -112,6 +112,7 @@ body{
 }
 .home-button{
   display: inline-table;
+  vertical-align: top;
   width: 20%;
   margin: 5px;
   border-top: 8px solid #0065bd;
@@ -126,15 +127,15 @@ body{
   border-bottom: 1px solid #b3b3b3;
 }
 .button-head img{
-  max-width: 75px;
+  display: table-cell;
+  width: 50px;
   text-align: left;
-  display: table-row;
 }
 .button-head h4{
+  display: table-cell;
   color: black;
   text-align: center;
   vertical-align: middle;
-  display: table-cell;
 }
 .button-head h4:hover{
   color: #0065bd;
@@ -151,7 +152,7 @@ body{
   display: table;
 }
 #natind1, #natind2, #natind3{
-  display: inline-block;
+  display: inline-table;
   margin: auto;
   width: auto;
   text-align: center;
@@ -205,11 +206,11 @@ body{
   width: 70%;
   margin: auto;
 }
-
 #map{
-  display: table-cell;
-  margin-left: 50px;
-  width: 25%;
+  display: inline-block;
+  vertical-align: top;
+  width: 33%;
+  min-width: 300px;
 }
 #map .shiny-input-container:not(.shiny-input-container-inline){
   width: 100%;
@@ -218,8 +219,8 @@ body{
   background: #fff;
 }
 #home-toptext{
-  display: table-cell;
-  width: 40%;
+  display: inline-block;
+  width: 66%;
   border-bottom: 1px solid #b3b3b3;
 }
 

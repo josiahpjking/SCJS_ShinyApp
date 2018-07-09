@@ -32,7 +32,7 @@ div(id="home",
                      div(class="home-button",
                          div(class="button-head",
                              tags$img(src="trends.png"),
-                             tags$h4("Trends Over Time")),
+                             tags$h4("Trends")),
                          tags$p("See how specific questions in the SCJS have changed over time. These trends can also be disaggregated by division.")
                      )
           ),
@@ -41,7 +41,7 @@ div(id="home",
                          div(class="button-head",
                              tags$img(src="tables.png"),
                              tags$h4("Tables")),
-                         tags$p("Don't like all the visual stuff and just want some numbers? You can download tables of percentages and sample sizes for all variables included in this app.")
+                         tags$p("Don't like all the visual stuff and just want some numbers? You can download tables of percentages and sample sizes for all variables included here.")
                      )
           )
       )

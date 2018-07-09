@@ -1,6 +1,7 @@
-
+#####
+#DATA - filter and make some string variables for plotting
+#####
 trend_data<-reactive({
-  #data for plotting
   df %>% filter(police_div %in% input$trends_pdiv) %>% 
     filter(variable %in% input$trends_var2) %>% mutate(
       wrapped_name = sapply(name_trunc, FUN = function(x) {paste(strwrap(x, width = 35), collapse = "<br>")}),
@@ -8,9 +9,12 @@ trend_data<-reactive({
     ) %>% filter(!is.na(p))
 })
 
+#####
+#PLOT TRENDS. this is a fairly simply plot, but has to accommodate options of error bars. 
+#####
 output$trendplot <- renderPlotly({
   if (input$erbar==TRUE){
-    plot_ly(trend_data(), 
+    plot_ly(trend_data() %>% arrange(police_div), 
             x=~year, 
             y=~percentage, 
             text=~my_text, 
@@ -36,3 +40,29 @@ output$trendplot <- renderPlotly({
                legend = list(x=1.1,y=1),
                height = input$plotHeight) %>% config(modeBarButtonsToRemove = modebar_remove)
 })
+
+#####
+#VARIABLE SELECTION > update based on survey area selection.
+#####
+output$trends_var2 = renderUI({
+  checkboxGroupInput("trends_var2",label = "Choose Variables",choices=all_vars[[input$trends_var]],selected=all_vars[[input$trends_var]][1])
+})
+
+#####
+#This is the link to the comparison tool, which is shown in the sidebar of the trends tab.
+#####
+observeEvent(input$link_compare1,{
+  newvalue <- "main_compare"
+  updateTabsetPanel(session, "main", newvalue)
+})
+
+
+#####
+#RESET TRENDS PLOT
+#####
+observeEvent(input$reset_trends, {
+  updateSelectizeInput(session, "trend_pdiv", selected = "National Average")
+  updateSelectizeInput(session, "trends_var2", selected = all_vars[[input$trends_var]][1])
+})
+
+
