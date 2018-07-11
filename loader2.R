@@ -89,7 +89,7 @@ all_data %>% mutate_at(vars("tenure"), funs(recode(.,'1'="Owner Occupied",'2'="S
 #recode SES group
 all_data %>% mutate_at(vars("tabnssec"), funs(recode(.,'1'="Management & Prof.",'2'="Intermediate",'3'="Routine & Man.",'4'="NW & LTUE",.default=NA_character_))) -> all_data
 
-#save another version of current data (avoids reading in again)
+#save another version of current data (safety measure: avoids reading in again)
 all_data2 <- all_data
 
 #####################################################################################################
@@ -180,7 +180,7 @@ tidy_df %>% group_by(year) %>% summarise_all(
   gather(., key="variable",value="number_obs",-year) -> year_counts
 
 #this will show the number of non NA observations across years for variables matching the string
-year_counts %>% filter(grepl("qsfdark",variable))
+#year_counts %>% filter(grepl("qsfdark",variable))
 
 #this summarises whether a variable has at least 1 non NA observation for each year.
 year_counts %>% group_by(variable) %>% 
@@ -435,7 +435,7 @@ ungroup(df) -> df
 save.image(file = "./app/.RData")
 
 ####################### RUN THE APP ############################
-
+#load("app/.RData")
 shiny::runApp(appDir="./app/")
 
 

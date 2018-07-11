@@ -215,6 +215,17 @@ observe({
     if(selected_pclick !=0 && input$ovplotting == 'breakdown'){
       updateTabsetPanel(session, "ovplotting", selected = "trends")
       updateSelectizeInput(session, "ov_pdiv", selected = selected_pclick)
+      
+      #a hack to change variable based on nearest y value. not great :/
+      overview_data() %>% filter(
+        police_div %in% selected_pclick,
+        year %in% input$ov_year,
+        variable %in% all_vars[[input$ov_var]]) %>% 
+      select(variable,p_diff) %>%
+        arrange(p_diff) -> yopts
+      newy = d$y
+      newv = yopts$variable[which.min(abs(yopts$p_diff - newy))]
+      updateSelectInput(session, "ov_var2", selected = newv)
     }
     if(selected_pclick !=0 && input$ovplotting == 'trends'){
       updateTabsetPanel(session, "ovplotting", selected = "breakdown")
