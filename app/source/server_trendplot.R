@@ -61,7 +61,7 @@ observeEvent(input$link_compare1,{
 #RESET TRENDS PLOT
 #####
 observeEvent(input$reset_trends, {
-  updateSelectizeInput(session, "trend_pdiv", selected = "National Average")
+  updateSelectizeInput(session, "trends_pdiv", selected = "National Average")
   updateSelectizeInput(session, "trends_var2", selected = all_vars[[input$trends_var]][1])
 })
 

@@ -63,6 +63,9 @@ variable_info_list <- list(
              tags$li("Solve crimes"),
              tags$li("Catch criminals")
       ),
+      tags$p("In addition, the SCJS also measures the percentage of respondents who believe that:",
+             tags$li("The police in the local area are doing a fair or good job")
+      ),
       tags$p("All these variables measure the public confidence in the local police; higher percentages are better, indicating more confidence.")
   ),
 ######################################################################################
@@ -79,8 +82,7 @@ variable_info_list <- list(
              tags$li(tags$u("Have poor relations with the community"))
       ),
       tags$p("In addition, the SCJS also measures the percentage of respondents who believe that:",
-             tags$li(tags$u("There is not enough police presence in the local area")),
-             tags$li("The police in the local area are doing a fair or good job")
+             tags$li(tags$u("There is not enough police presence in the local area"))
       ),
       tags$p("Some of these variables (underlined) are not positive measures. For these variables, lower percentages are better. For others, higher percentages are better, indicating agreement with positive statements about the local police."),
       tags$p(tags$i("Due to changes in the survey, some questions might not be present in all years."))

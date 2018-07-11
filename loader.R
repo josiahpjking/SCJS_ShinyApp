@@ -119,8 +119,8 @@ getnames<-function(string){
 #variables/variable groupings
 all_vars<-list('National Indicators'= getnames("PREVSURVEY|QS2AREA:|DCONF_03"),
                'Rates of Crime Victimisation'=getnames("PREV"),
-               'Confidence in the Police'=getnames("POLCONF"),
-               'Attitudes to the Police'=getnames("POLOP|POLPRES|RATPOL"),
+               'Confidence in the Police'=getnames("POLCONF|RATPOL"),
+               'Attitudes to the Police'=getnames("POLOP|POLPRES"),
                'Confidence in Scottish Criminal Justice System'=getnames("DCONF"),
                'Perceptions of Crime Rates and Safety'=getnames("QS"),
                'Perceptions of Local Crime'=getnames("QACO"),

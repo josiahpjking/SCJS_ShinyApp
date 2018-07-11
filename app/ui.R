@@ -33,7 +33,7 @@ fluidPage(
              #Division Breakdowns (main_divisions)
              ##########
              tabPanel("Breakdown by Police Divisions", value="main_divisions",
-                      source("source/ui_overview.R", verbose=F)
+                      source("source/ui_overview.R")
              ),
              
              ##########

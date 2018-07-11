@@ -24,7 +24,7 @@ compare_data <- reactive({
   left_join(conf_temp_data %>% 
               filter(variable %in% valid_variables), 
             conf_temp_data %>%
-              select(year,variable,p,ci,samplesize,des_effect,police_div,reverse_coded) %>%
+              select(year,variable,p,ci,samplesize,des_fact,police_div,reverse_coded) %>%
               filter(variable %in% valid_variables) %>%
               group_by(variable) %>% 
               summarise(
