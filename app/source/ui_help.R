@@ -1,4 +1,4 @@
-div(id="helpinfo",
+help_page <- div(id="helpinfo",
     div(class="helptext",id="hi1",
         tags$h5("SCJS Questions"),
         tags$p("To calculate percentages of, for example, survey respondents expressing confidence in the local police, categories of responses to survey questions have been combined (e.g. Confidence includes those responding 'Fairly Confident' and 'Very Confident'). For the few exceptional questions (such as perceiving the 'same or less' crime), care has been taken in the labels and information-on-hover to reflect this. More information and the entire questionnaire can be found on ",tags$a(target="_blank",tags$ins("the SCJS publication page."),href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications"))

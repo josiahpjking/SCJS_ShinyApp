@@ -7,6 +7,7 @@ require(magrittr)
 
 source("source/plotfunc.R")
 selected_pclick <- 0 #declare outside the server function
+selected_y <- 0
 
 server <- function(input, output, session){
   

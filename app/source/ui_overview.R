@@ -1,4 +1,5 @@
-sidebarLayout(
+overview_page <- 
+  sidebarLayout(
   sidebarPanel(
     conditionalPanel(
       condition="input.ovplotting == 'breakdown'",
@@ -37,7 +38,7 @@ sidebarLayout(
                          ),
                          div(class="plot-below",tags$p("Click on the results of a year to see all divisions for that year."))
                 ),
-                div(class="plot-below",checkboxInput("showleg",label = "Show Legend",value=TRUE))       
+                div(class="plot-below",checkboxInput("showleg",label = "Show Legend",value=FALSE))       
     )
   )
 )

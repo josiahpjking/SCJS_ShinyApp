@@ -128,24 +128,30 @@ body{
 }
 .button-head img{
   display: table-cell;
-  width: 50px;
+  width: 40px;
   text-align: left;
 }
 .button-head h4{
   display: table-cell;
   color: black;
-  text-align: center;
+  text-align: right;
   vertical-align: middle;
 }
 .button-head h4:hover{
   color: #0065bd;
 }
 .home-button p{
+  display: table-row;
   color: black;
   text-align: center;
   vertical-align: middle;
 }
-
+@media only screen and (max-width: 600px){
+  .home-button{
+    display: block;
+    width: 100%;
+  }
+}
 
 #indicators{
   margin: auto;
@@ -154,11 +160,17 @@ body{
 #natind1, #natind2, #natind3{
   display: inline-table;
   margin: auto;
-  width: auto;
+  width: 30%;
   text-align: center;
   vertical-align: bottom;
-  width: 30%;
 }
+@media only screen and (max-width: 600px){
+  #natind1, #natind2, #natind3{
+    display: block;
+    width: 80%;
+  }
+}
+
 .ind{
   text-align: center;
 }
@@ -196,21 +208,10 @@ body{
   font-weight: normal; 
   font-size: 14px 
 }
-#questions p{
-  text-align:center;
-  font-family: 'Roboto', sans-serif; 
-  font-weight: bold; 
-  font-size: 14px;
-}
-#questions{
-  width: 70%;
-  margin: auto;
-}
 #map{
   display: inline-block;
   vertical-align: top;
-  width: 33%;
-  min-width: 300px;
+  min-width: 320px;
 }
 #map .shiny-input-container:not(.shiny-input-container-inline){
   width: 100%;
@@ -220,7 +221,8 @@ body{
 }
 #home-toptext{
   display: inline-block;
-  width: 66%;
+  min-width: 320px;
+  max-width: 920px;
   border-bottom: 1px solid #b3b3b3;
 }
 
@@ -237,7 +239,6 @@ body{
   display: inline-table;
   vertical-align: middle;
   margin: 10px;
-  width: 35%;
 }
 .compare-inputs-text{
   display: inline-table;
@@ -256,6 +257,15 @@ body{
   display: table-row;
   width: 100%;
 }
+@media only screen and (max-width: 600px){
+  .compare-inputs-text, .compare-inputs{
+    display: block;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 
 /* TREND TABS */
 div.plot-below .form-group, div.plot-below .shiny-input-container, div.plot-below .checkbox{

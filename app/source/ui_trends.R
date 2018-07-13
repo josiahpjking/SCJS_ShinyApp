@@ -1,4 +1,5 @@
-sidebarLayout(
+trends_page <- 
+  sidebarLayout(
   sidebarPanel(
     ############### INPUTS/SIDE PANEL
     div(class="sidebartext",

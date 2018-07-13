@@ -61,10 +61,13 @@ output$ov_currentplot <- renderPlotly({
               text=~my_text,
               hoverinfo="text",
               colors=overview_cols,
-              type="bar") %>%
-      layout(title=paste0("<b>",input$ov_year,"</b><br>",paste(strwrap(input$ov_var, width = 75), collapse = "<br>")),
+              type="bar", 
+              source="clickable") %>%
+      layout(title=paste0("<b>",input$ov_year,"</b><br>",paste(strwrap(input$ov_var, width = 40), collapse = "<br>")),
+             titlefont=list(size=14),
              margin = list(t=70, b = 100),
              showlegend=input$showleg,
+             legend = list(x=1.1,y=1),
              height = input$plotHeight, 
              autosize=TRUE,
              yaxis=list(title="Percentage",ticksuffix = "%"),
@@ -110,7 +113,8 @@ output$ov_currentplot <- renderPlotly({
     plot_ly(bar_data %>% group_by(wrappedpolice_div),
             x=~wrappedpolice_div,
             split=~wrapped_name,
-            legendgroup=~wrapped_name) %>%
+            legendgroup=~wrapped_name, 
+            source="clickable") %>%
       add_trace(x=~wrappedpolice_div,
                 y=~p_diff,
                 color=~change,
@@ -120,7 +124,8 @@ output$ov_currentplot <- renderPlotly({
                 type="scatter",mode="markers",marker = list(symbol=24, size = 15),
                 split=~wrapped_name,
                 legendgroup=~wrapped_name) %>%
-      layout(title=paste0("<b>",input$ov_year,"</b><br>",input$ov_var,"<br>(each point is a variable in the survey)"),
+      layout(title=paste0("<b>",input$ov_year,"</b><br>",paste(strwrap(input$ov_var, width = 40), collapse = "<br>"),"<br>(each point is a variable in the survey)"),
+        titlefont=list(size=14),
         margin = list(t=70, b = 100),
         showlegend=FALSE,
         height = input$plotHeight, 
@@ -153,9 +158,11 @@ output$ov_trendplot <- renderPlotly({
             colors=~overview_cols,
             text=~my_text2,
             hoverinfo="text",
-            type="bar") %>%
+            type="bar",
+            source="clickable") %>%
     add_lines(data=linedata,color=~police_div, colors=overview_cols) %>%
-      layout(title=paste0("<b>",input$ov_pdiv,"</b><br>",paste(strwrap(input$ov_var, width = 70), collapse = "<br>")),
+      layout(title=paste0("<b>",input$ov_pdiv,"</b><br>",paste(strwrap(input$ov_var, width = 40), collapse = "<br>")),
+             titlefont=list(size=12),
              margin=list(t=70),
              showlegend=input$showleg,
              yaxis=list(title="Percentage",ticksuffix = "%"),
@@ -176,9 +183,11 @@ output$ov_trendplot <- renderPlotly({
               text=~my_text2,hoverinfo="text",
               color=~variable,
               line=list(color="black"),
-              colors=overview_cols, showlegend=F) %>%
+              colors=overview_cols,
+              source="clickable") %>%
         add_trace(type="bar",mode="marker", y=~perc2, color=~change) %>%
-        layout(title=paste0("<b>",input$ov_pdiv,"</b><br>",paste(strwrap(input$ov_var2, width = 70), collapse = "<br>")),
+        layout(title=paste0("<b>",input$ov_pdiv,"</b><br>",paste(strwrap(input$ov_var2, width = 40), collapse = "<br>")),
+          titlefont=list(size=12),
           showlegend=input$showleg,
           margin=list(t=70),
           yaxis=list(title="Percentage",ticksuffix = "%"),
@@ -206,16 +215,16 @@ output$ov_var2 = renderUI({
 #####
 #this responds to clicks on the graph and takes the user to the other graph based on x axis clicks.
 observe({
-  d <- event_data("plotly_click")
+  d <- event_data("plotly_click", source="clickable")
   new_value <- ifelse(is.null(d),"0",d$x) # 0 if no selection
   new_value <- gsub("<br>"," ",new_value)
   new_value <- gsub(")"," Division)",new_value)
-  if(selected_pclick!=new_value) {
+  if(selected_pclick!=new_value){
     selected_pclick <<- new_value 
     if(selected_pclick !=0 && input$ovplotting == 'breakdown'){
       updateTabsetPanel(session, "ovplotting", selected = "trends")
       updateSelectizeInput(session, "ov_pdiv", selected = selected_pclick)
-      
+
       #a hack to change variable based on nearest y value. not great :/
       overview_data() %>% filter(
         police_div %in% selected_pclick,

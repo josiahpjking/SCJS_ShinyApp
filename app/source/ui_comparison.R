@@ -1,4 +1,4 @@
-sidebarLayout(
+comparison_page <- sidebarLayout(
   sidebarPanel(
     div(class="sidebartext",
         tags$p("Choose a section of the survey (e.g. confidence in the local police) and test for significant differences (color coding) between specific divisions and/or across survey years.")

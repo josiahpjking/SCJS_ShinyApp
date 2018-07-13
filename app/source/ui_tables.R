@@ -1,4 +1,4 @@
-div(id="tables",
+table_page <- div(id="tables",
     ###### INPUTS/ top panel
   div(class="tvar",
       
