@@ -1,32 +1,61 @@
 /* HEADER */
-
-.head-control {
+#header-back{
+  margin-top: 20px;
+  margin-bottom: 10px;
+  display: table;
   text-align: center;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 60px;
+  width: 100%;
+  background-image: url("scotgovbanner.jpg");
+  border-bottom: 1px solid #ebebeb;
+}
+#header-content{
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+#header-content img{
+  display: inline-block;
+}
+#header-text{
+  display: inline-block;
+  text-align: center;
+  background-color: #4774B1;
+  padding: 24px;
+}
+#header-text a{
+  font-size: 28px;
+  text-align: center;
+  letter-spacing: 10px;
+  color: white;
+}
+@media only screen and (max-width: 600px){
+  #header-text a{
+    font-size: 16px;
+    letter-spacing: 6px;
+  }
 }
 
 /* GENERAL TEXT */
 
-h3, h4{
+h4{
   text-align:center;
-  font-family: 'Roboto', sans-serif; 
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif; 
+  color: #777;
   font-weight: 500; 
   font-size: 20px 
 }
 p{
   text-align:center;
   font-family: 'Roboto', sans-serif; 
+  color: #777;
   font-weight: normal; 
-  font-size: 14px 
+  font-size: 16px 
 }
 /* for the rendered text objects */
 .shiny-html-output{
   text-align:left;
   font-family: 'Roboto', sans-serif; 
   font-weight: normal; 
-  font-size: 14px 
+  font-size: 16px 
 }
 
 /* NAVBAR */
@@ -66,7 +95,7 @@ body{
   text-align: left;
   font-family: 'Roboto', sans-serif; 
   font-weight: bolder; 
-  font-size: 14px 
+  font-size: 16px 
 }
 .variable_info p, #overview_1 p, #overview_2 p{
   text-align: left;
@@ -95,8 +124,6 @@ body{
 .plotly .html-widget .html-widget-output .shiny-bound-output .js-plotly-plot recalculating{
   z-index: -2;
 }
-
-
 .shiny-output-error{
   visibility: hidden;
 }
@@ -153,6 +180,8 @@ body{
   }
 }
 
+/* home page indicators */
+
 #indicators{
   margin: auto;
   display: table;
@@ -177,7 +206,7 @@ body{
 .ind h5{
   font-family: 'Roboto', sans-serif; 
   font-weight: bolder; 
-  font-size: 14px 
+  font-size: 16px 
 }
 .ni{
   position: relative;
@@ -190,11 +219,11 @@ body{
   height: 100%;
   opacity: .8;
 }
-
 .ni h6{
   font-family: 'Roboto', sans-serif; 
   font-weight: 500; 
   font-size: 20px;
+  color: #777;
   position: absolute;
   text-align: center;
   top: 20%;
@@ -202,28 +231,48 @@ body{
 }
 
 #home-toptext p{
-  margin: 20px;
   text-align: left;
+  color: #777;
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal; 
-  font-size: 14px 
+  font-size: 16px 
 }
 #map{
   display: inline-block;
   vertical-align: top;
-  min-width: 320px;
+  min-width: 200px;
+}
+#map .selectize-dropdown, #map .selectize-dropdown.form-control{
+  z-index: 1001;
 }
 #map .shiny-input-container:not(.shiny-input-container-inline){
   width: 100%;
+  max-width: 400px;
 }
 .leaflet-container{
   background: #fff;
 }
 #home-toptext{
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
   display: inline-block;
-  min-width: 320px;
-  max-width: 920px;
+  min-width: 200px;
+  max-width: 800px;
   border-bottom: 1px solid #b3b3b3;
+}
+#home{
+  display: table;
+  margin: auto;
+}
+#home .lists{
+  width: 50%;
+  display: inline-block;
+}
+#home .two-lists{
+  margin-left: 5%;
+  width: 95%;
+  display: table;
 }
 
 
@@ -306,16 +355,18 @@ div.tvar .selectize-input{
 .helptext p{
   margin: 20px;
   text-align:center;
+  color: #777;
   font-family: 'Roboto', sans-serif; 
   font-weight: normal; 
-  font-size: 14px 
+  font-size: 16px 
 }
 .helptext h5{
   margin: 25px;
   text-align:center;
+  color: #777;
   font-family: 'Roboto', sans-serif; 
   font-weight: bold; 
-  font-size: 14px 
+  font-size: 16px 
 }
 #stt_results{
   text-align: center;

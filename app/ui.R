@@ -27,12 +27,11 @@ fluidPage(
              position="fixed-top", 
              collapsible=TRUE,
              
-             header = div(class="header-back",
-               tags$h1(class="head-control",
-                     a(target="_blank",href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey","Scottish Crime & Justice Survey"),
-                     tags$img(src="scotgov.png",width=200,align="left")
-             )),
-             
+             header = div(id="header-back",
+                          div(id="header-content",
+                              tags$h1(id = "header-text", a(target="_blank",href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey","Scottish Crime & Justice Survey"))
+                          )
+             ),
              
              tabPanel("Home",icon = icon('home',lib="glyphicon"),
                       home_page

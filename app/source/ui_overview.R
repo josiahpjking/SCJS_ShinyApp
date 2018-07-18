@@ -16,7 +16,7 @@ overview_page <-
     ),
     conditionalPanel(
       condition="input.ovplotting == 'trends'",
-      selectizeInput("ov_pdiv",label="Choose Division",choices=pdivis,selected=pdivis[12],multiple=F)
+      selectizeInput("ov_pdiv",label="Choose Division",choices=pdivis,selected="National Average",multiple=F)
     ),
     uiOutput("variable_info_ov")
   ),

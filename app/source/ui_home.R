@@ -7,8 +7,8 @@ home_page <- div(id="home",
           uiOutput("natind2"),
           uiOutput("natind3")
       ),
-      
       tags$h3("Police Division Tools"),
+      tags$p("Using the tools below, you can investigate how responses differ between Police Divisions for a selection of survey areas, from rates of crime victimisation, to confidence in/attitudes to the police, to perceptions of local people & crime."),
       div(class="home_allbuttons",
           actionLink("link_divisions",
                      div(class="home-button", 

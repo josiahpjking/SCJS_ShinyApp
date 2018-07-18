@@ -22,7 +22,7 @@ comparison_page <- sidebarLayout(
     ),
     div(id="compare-outputs",
         tags$p("Percentages on the either side of the figure below are compared", tags$b("against one another.")),
-        tags$p("If significantly different, the more positive result is shown in", tags$b(style="color:LimeGreen","green"), "and the less positive result in",tags$b(style="color:red","red."), "If there is no significant difference between your two selections, the bars will be coloured",tags$b(style="color:grey","grey.")),
+        tags$p("If significantly different, the more positive result is shown in", tags$b(style="color:LimeGreen","green"), "and the less positive result in",tags$b(style="color:#fb7171","red."), "If there is no significant difference between your two selections, the bars will be coloured",tags$b(style="color:grey","grey.")),
         div(class="plot-container",
             tags$img(src="spinner.gif", id="loading-spinner"),
             plotlyOutput('compar_plot')
