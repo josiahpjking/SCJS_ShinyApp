@@ -11,14 +11,13 @@ source("source/ui_comparison.R")
 source("source/ui_trends.R")
 source("source/ui_tables.R")
 source("source/ui_help.R")
-
+source("source/ui_links.R")
 
 fluidPage(
   
   #get CSS style stuff.
   includeCSS("./www/stuff.css"),
   includeCSS("./www/bootstrap-theme.min.css"),
-  
   #main body of app. It's a navbar, so menu at top, different tabs.
   #each tab is sourced from a separate file to help the layout be a little easier to get to grips with.
   
@@ -51,5 +50,6 @@ fluidPage(
              tabPanel("Help & Information", value="main_help", icon=icon('info-sign',lib="glyphicon"),
                       help_page
              )
-  )
+  ),
+  linkpanel
 )

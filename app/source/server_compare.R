@@ -75,13 +75,12 @@ output$compar_plot <- renderPlotly({
     ) %>% 
     layout(
       yaxis=list(title="",
-                 tickfont=list(family="Arial, sans-serif", size=10),
                  showticklabels = FALSE,
                  categoryarray=~rev(wrapped_name),categoryorder="array"), 
       xaxis=list(range=c(0,100),ticksuffix = "%",showticklabels = FALSE)
     ) %>% add_annotations(x = 0, y = ~wrapped_name,
                       xanchor = 'right', text = ~wrapped_name,
-                      font = list(family = 'Sans', size = 10),
+                      font = list(family = 'sans serif', size = 10),
                       showarrow = FALSE, align = 'right') -> p1
   
   #plot RIGHT

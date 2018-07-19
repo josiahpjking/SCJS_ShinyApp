@@ -1,21 +1,22 @@
 home_page <- div(id="home",
   div(id="home-toptext",
       tags$p("The Scottish Crime and Justice Survey (SCJS) is a large-scale social survey which asks people about their experiences and perceptions of crime. The survey is important because it provides a picture of crime in Scotland, including crimes that haven't been reported to/recorded by the police and captured in police recorded crime statistics."),
-      tags$h3("The National Picture"),
+      tags$h3("National Performance"),
+      tags$p("The SCJS captures data on 3 National Indicators, which enable the measurement of progress towards acheiving of a safer, more successful and prosperous Scotland. For more information, visit the",tags$a(target="_blank",tags$ins("National Performance Framework website."),href="http://nationalperformance.gov.scot")),
       div(id="indicators",
           uiOutput("natind1"),
           uiOutput("natind2"),
           uiOutput("natind3")
       ),
       tags$h3("Police Division Tools"),
-      tags$p("Using the tools below, you can investigate how responses differ between Police Divisions for a selection of survey areas, from rates of crime victimisation, to confidence in/attitudes to the police, to perceptions of local people & crime."),
+      tags$p("Using the tools below, you can investigate how responses differ between Police Divisions for a selection of survey areas, including rates of crime victimisation, confidence in/attitudes to the police, and perceptions of local people & crime."),
       div(class="home_allbuttons",
           actionLink("link_divisions",
                      div(class="home-button", 
                          div(class="button-head",
                              tags$img(src="overview.png"),
                              tags$h4("Division Breakdowns")),
-                         tags$p("How have police divisions been performing relative to the National Average?")
+                         tags$p("See how police divisions have been performing relative to the National Average")
                      )
           ),
           actionLink("link_compare",
@@ -23,7 +24,7 @@ home_page <- div(id="home",
                          div(class="button-head",
                              tags$img(src="comparison.png"),
                              tags$h4("Comparison Tool")),
-                         tags$p("Compare responses between divisions and across survey years.")
+                         tags$p("Compare responses between divisions and across survey years")
                      )
           ),
           actionLink("link_trends",
@@ -31,7 +32,7 @@ home_page <- div(id="home",
                          div(class="button-head",
                              tags$img(src="trends.png"),
                              tags$h4("Trends")),
-                         tags$p("See how responses to the SCJS have changed over time. Trends can be disaggregated by division.")
+                         tags$p("See responses to the SCJS over time. Trends can be disaggregated by division")
                      )
           ),
           actionLink("link_tables",
@@ -39,7 +40,7 @@ home_page <- div(id="home",
                          div(class="button-head",
                              tags$img(src="tables.png"),
                              tags$h4("Tables")),
-                         tags$p("Don't like visual stuff? Just want some numbers? Download tables of percentages and sample sizes for all variables included here.")
+                         tags$p("Just want numbers? Download tables of percentages and sample sizes for all variables included here")
                      )
           )
       )

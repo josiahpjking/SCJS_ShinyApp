@@ -33,7 +33,7 @@ variable_info_list <- list(
       tags$p("The SCJS captures data on 3 National Indicators. National Indicators enable the measurement of progress towards acheiving of a more successful and prosperous Scotland. The three indicators measured in the SCJS are:",
              tags$li(tags$u("Rate of any crime victimisation")),
              tags$li("Perceived local crime rate to be the same or less than 2 years ago"),
-             tags$li("Confident in access to the Criminal Justic System for all")
+             tags$li("Confident in access to the Criminal Justice System for all")
       ),
       tags$p("For underlined variables, lower percentages are better."),
       tags$a(target="_blank",tags$ins("Click here for more information on the National Performance Framework."),href="http://nationalperformance.gov.scot")

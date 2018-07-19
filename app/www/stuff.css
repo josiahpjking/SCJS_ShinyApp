@@ -35,7 +35,12 @@
 }
 
 /* GENERAL TEXT */
-
+h3{
+  text-align: center;
+  margin-top: 25px;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif; 
+  Color: #7597c5;
+}
 h4{
   text-align:center;
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif; 
@@ -90,6 +95,7 @@ body{
 }
 .sidebartext p{
   text-align: left;
+  color: black;
 }
 .sidebartext h6{
   text-align: left;
@@ -100,6 +106,7 @@ body{
 .variable_info p, #overview_1 p, #overview_2 p{
   text-align: left;
   font-family: 'Roboto', sans-serif; 
+  color: black;
 }
 .variable_info h5{
   font-weight: bold; 
@@ -145,7 +152,7 @@ body{
   border-top: 8px solid #0065bd;
 }
 .home-button:hover{
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(58,92,138, 0.1);
   opacity: 0.6;
 }
 .button-head{
@@ -163,9 +170,6 @@ body{
   color: black;
   text-align: right;
   vertical-align: middle;
-}
-.button-head h4:hover{
-  color: #0065bd;
 }
 .home-button p{
   display: table-row;
@@ -205,8 +209,9 @@ body{
 }
 .ind h5{
   font-family: 'Roboto', sans-serif; 
-  font-weight: bolder; 
-  font-size: 16px 
+  color: #777;
+  font-weight: normal; 
+  font-size: 16px;
 }
 .ni{
   position: relative;
@@ -223,7 +228,6 @@ body{
   font-family: 'Roboto', sans-serif; 
   font-weight: 500; 
   font-size: 20px;
-  color: #777;
   position: absolute;
   text-align: center;
   top: 20%;
@@ -247,7 +251,7 @@ body{
 }
 #map .shiny-input-container:not(.shiny-input-container-inline){
   width: 100%;
-  max-width: 400px;
+  max-width: 350px;
 }
 .leaflet-container{
   background: #fff;
@@ -259,11 +263,11 @@ body{
   display: inline-block;
   min-width: 200px;
   max-width: 800px;
-  border-bottom: 1px solid #b3b3b3;
 }
 #home{
   display: table;
   margin: auto;
+  border-bottom: 1px solid #b3b3b3;
 }
 #home .lists{
   width: 50%;
@@ -295,23 +299,23 @@ body{
   margin: 10px;
   width: auto;
 }
-.compare-inputs .shiny-input-container{
-  width: 100%;
-  word-wrap: break-word;
-}
-.compare-inputs .selectize-input{
-  width: 100%;
-}
 .compare-row{
   display: table-row;
   width: 100%;
 }
-@media only screen and (max-width: 600px){
+@media only screen and (max-width: 900px){
   .compare-inputs-text, .compare-inputs{
     display: block;
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  .compare-inputs .shiny-input-container{
+    width: 100%;
+    word-wrap: break-word;
+  }
+  .compare-inputs .selectize-input{
+    width: 100%;
   }
 }
 
@@ -328,7 +332,7 @@ div.plot-below .form-group, div.plot-below .shiny-input-container, div.plot-belo
 
 .tvar{
   display: inline-table;
-  width: auto;
+  width: 100%;
 }
 div.tvar .selectize-input{
   min-height: 34px;
@@ -368,6 +372,30 @@ div.tvar .selectize-input{
   font-weight: bold; 
   font-size: 16px 
 }
-#stt_results{
-  text-align: center;
+
+
+
+#credits { 
+  display: table;
+  background-color: white;
+  padding: 10px 10px 10px 10px; 
+  opacity: 0.70;  
+  z-index: 1;
+  transition: opacity 500ms; 
+} 
+#credits h5{
+  padding-left: 2px;
+  margin: 0px;
+  letter-spacing: 4px;
 }
+#credits:hover { 
+  /* Fade in while hovering */ 
+  z-index: 200;
+  opacity: 1; 
+  transition-delay: 0.25s; 
+}
+
+.fb-share-button, .twitter-share-button{
+    vertical-align: top;
+}
+

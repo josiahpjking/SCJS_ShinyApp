@@ -6,8 +6,9 @@ table_page <- div(id="tables",
       
       selectizeInput("table_pdiv",label="Choose Police Divisions",choices=c("Select All", pdivis), selected="National Average", options = list(maxItems = length(pdivis))),
       
-      selectizeInput("table_year",label="Choose 2 years to test",choices=years, multiple=T,selected=c(currentyear,prevyear),options=list(maxItems=2)),
-      
+      selectizeInput("table_year",label="Choose 2 years to test",choices=years, multiple=T,selected=c(currentyear,prevyear),options=list(maxItems=2))
+      ),
+  div(class="tvar",
       downloadButton("downloadData", "Download"),
       
       actionButton("reset_tables", "Reset")
