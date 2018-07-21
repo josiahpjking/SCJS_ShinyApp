@@ -4,6 +4,7 @@ library(plotly)
 require(tidyr)
 require(dplyr)
 require(magrittr)
+require(forcats)
 
 source("source/plotfunc.R")
 selected_pclick <- 0 #declare outside the server function
@@ -16,8 +17,6 @@ server <- function(input, output, session){
   source("source/server_home.R",local=T)
   
   source("source/server_map.R",local=T)
-  
-  #source("source/server_summary.R", local = TRUE)
   
   source("source/server_trendplot.R", local = TRUE)
   

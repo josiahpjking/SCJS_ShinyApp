@@ -10,14 +10,14 @@ df %>% filter(police_div=="National Average",
     c=sqrt(sum(ci^2)),
     p_signif=p_diff>c,
     rev_coded=first(reverse_coded),
-    thisyear = ifelse(p_signif==TRUE & year[which(p==min(p))]==currentyear, "lower",
-                      ifelse(p_signif==TRUE & year[which(p==min(p))]!=currentyear, "higher",
+    thisyear = ifelse(p_signif==TRUE & year[which(p==min(p))]==currentyear, "down",
+                      ifelse(p_signif==TRUE & year[which(p==min(p))]!=currentyear, "up",
                              "same")),
-    thisyear_imp = ifelse(rev_coded==1 & thisyear=="higher","lower",
-                          ifelse(rev_coded==1 & thisyear=="lower","higher", thisyear)),
-    thisyear_col = ifelse(thisyear_imp=="higher","#95fb71",
-                          ifelse(thisyear_imp=="lower","#fb7171","#BDBDBD"))
-  ) %>% select(variable, current_percentage, current_ci, thisyear_imp, thisyear_col) -> image_data
+    thisyear_direction = factor(ifelse(rev_coded==1 & thisyear=="up","down",
+                          ifelse(rev_coded==1 & thisyear=="down","up", thisyear))),
+    text1 = fct_recode(thisyear_direction, "IMPROVING"="up","WORSENING"="down","MAINTAINING"="same"),
+    text2 = paste0(round(current_percentage,1),"% ",text1)
+  ) %>% select(variable, current_percentage, current_ci, thisyear,text2) -> image_data
 
 image_data %>% filter(grepl("Confident",variable)) -> ni_conf_data
 image_data %>% filter(grepl("Victim",variable)) -> ni_crime_data
@@ -29,31 +29,31 @@ image_data %>% filter(grepl("Perceived",variable)) -> ni_perc_data
 ########
 # these are the divs which set up the indicator graphics. in loader.R script, it sets an object for each indicator which sets the image to source, and the text etc.
 output$natind1<-renderUI({
-  div(class="ind",
+  div(
       tags$h5("Crime Victimisation Rate"),
       div(class="ni",
           tags$img(src=paste0(ni_crime_data[,4],".png")),
-          tags$h6(paste0(round(ni_crime_data[,2],1),"%"))
+          tags$h6(ni_crime_data[,5])
       )
   )
 })
   
 output$natind2<-renderUI({
-  div(class="ind",
+  div(
       tags$h5("Confident in access to Justice"),
       div(class="ni",
           tags$img(src=paste0(ni_conf_data[,4],".png")),
-          tags$h6(paste0(round(ni_conf_data[,2],1),"%"))
+          tags$h6(ni_conf_data[,5])
       )
   )
 })
 
 output$natind3<-renderUI({
-  div(class="ind",
+  div(
       tags$h5("Perceived Same or Less Local Crime"),
       div(class="ni",
           tags$img(src=paste0(ni_perc_data[,4],".png")),
-          tags$h6(paste0(round(ni_perc_data[,2],1),"%"))
+          tags$h6(ni_perc_data[,5])
       )
   )
 })

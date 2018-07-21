@@ -13,7 +13,12 @@ source("source/ui_tables.R")
 source("source/ui_help.R")
 source("source/ui_links.R")
 
-fluidPage(
+headpanel<-div(id="header-content",
+                tags$h1(id = "header-text", a(target="_blank",href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey","SCOTTISH CRIME & JUSTICE SURVEY"))
+)
+
+
+fluidPage(title="Scottish Crime and Justice Survey", #set title for easier relocating on browser.
   
   #get CSS style stuff.
   includeCSS("./www/stuff.css"),
@@ -26,28 +31,34 @@ fluidPage(
              position="fixed-top", 
              collapsible=TRUE,
              
-             header = div(id="header-back",
-                          div(id="header-content",
-                              tags$h1(id = "header-text", a(target="_blank",href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey","Scottish Crime & Justice Survey"))
-                          )
-             ),
+             header = div(id = "header-blank",
+                          div(id="beta",
+                              tags$img(src="beta.png"))
+                          ),
              
              tabPanel("Home",icon = icon('home',lib="glyphicon"),
+                      headpanel,
+                      tags$h1("THIS IS A DEV. VERSION. DATA/LAYOUT HAS NOT YET BEEN QUALITY ASSURED OR APPROVED"),
                       home_page
              ),
-             tabPanel("Breakdown by Police Divisions", value="main_divisions",
+             tabPanel("Breakdown by Police Divisions", value="main_divisions", icon = icon('bar-chart'),
+                      headpanel,
                       overview_page
              ),
-             tabPanel("Comparison Tool", value="main_compare", icon = icon('bar-chart'),
+             tabPanel("Comparison Tool", value="main_compare", icon=icon('balance-scale'),
+                      headpanel,
                       comparison_page
              ),
              tabPanel("Visualise Trends", value="main_trends", icon = icon('line-chart'),
+                      headpanel,
                       trends_page
              ),
              tabPanel("Tables", value="main_tables", icon = icon('download-alt', lib='glyphicon'),
+                      headpanel,
                       table_page
              ),
              tabPanel("Help & Information", value="main_help", icon=icon('info-sign',lib="glyphicon"),
+                      headpanel,
                       help_page
              )
   ),

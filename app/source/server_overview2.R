@@ -28,7 +28,7 @@ df %>% filter(police_div=="National Average") %>% mutate(
       #text for nat average lines
       natav_text = paste0("<b>",police_div,"</b><br>",year,"<br>",wrapped_name,"<br><b>",round(percentage, digits=1),"</b>% +/-",round(ci*100, digits=1),", N = ",samplesize),
       #wrapped pdiv name
-      wrappedpolice_div=sapply(gsub(" Division","",police_div), FUN = function(x) {paste(strwrap(x, width = 20), collapse = "<br>")})
+      wrappedpolice_div=sapply(gsub(" Division","",police_div), FUN = function(x) {paste(strwrap(x, width = 15), collapse = "<br>")})
       ) %>% 
   select(-c(p_direction,c)) -> overview_data
 
@@ -53,7 +53,7 @@ output$ov_currentplot <- renderPlotly({
     
     #PLOT
     plot_ly(bar_data,
-              x=~wrappedpolice_div,
+              x=~police_div,
               y=~percentage,
               color=~change,
               text=~my_text,
@@ -63,18 +63,18 @@ output$ov_currentplot <- renderPlotly({
               source="clickable") %>%
       layout(title=paste0("<b>",input$ov_year,"</b><br>",paste(strwrap(input$ov_var, width = 40), collapse = "<br>")),
              titlefont=list(size=14),
-             margin = list(t=100, b = 135),
+             margin = list(t=100, b = 100),
              showlegend=input$showleg,
              legend = list(x=1.1,y=1),
              height = input$plotHeight, 
              autosize=TRUE,
              yaxis=list(title="Percentage",ticksuffix = "%"),
              xaxis=list(title="",tickangle=90,
-                        categoryarray=~wrappedpolice_div[order(p_diff2)], categoryorder="array")
+                        categoryarray=~police_div[order(p_diff2)], categoryorder="array")
       ) %>%
         add_lines(inherit=F,
                   data=line_data, 
-                  x=bar_data$wrappedpolice_div,
+                  x=bar_data$police_div,
                   y=~percentage,
                   color=~police_div,
                   text=~natav_text, hoverinfo="text") %>% config(modeBarButtonsToRemove = modebar_remove)
@@ -86,7 +86,7 @@ output$ov_currentplot <- renderPlotly({
     overview_data %>% filter(variable %in% all_vars[[input$ov_var]]) %>% 
       filter(year %in% input$ov_year) %>% 
       filter(police_div!="National Average") %>%
-      group_by(wrappedpolice_div) %>%
+      group_by(police_div) %>%
       summarise(
         av=mean(p_diff2,na.rm=T)
       ) %>% arrange(av) %>%
@@ -98,21 +98,21 @@ output$ov_currentplot <- renderPlotly({
       filter(police_div!="National Average") -> bar_data
     
     #national average data (not actually shown in the end..)
-    bar_data %>% select(variable, wrappedpolice_div) %>%
+    bar_data %>% select(variable, police_div) %>%
       left_join(., 
                 overview_data %>% 
                   filter(variable %in% all_vars[[input$ov_var]]) %>% 
                   filter(year %in% input$ov_year) %>% 
                   filter(police_div=="National Average") %>%
-                  select(-wrappedpolice_div)
+                  select(-police_div)
       ) -> line_data
     
-    plot_ly(bar_data %>% group_by(wrappedpolice_div),
-            x=~wrappedpolice_div,
+    plot_ly(bar_data %>% group_by(police_div),
+            x=~police_div,
             split=~wrapped_name,
             legendgroup=~wrapped_name, 
             source="clickable") %>%
-      add_trace(x=~wrappedpolice_div,
+      add_trace(x=~police_div,
                 y=~p_diff,
                 color=~change,
                 text=~my_text,
@@ -123,14 +123,14 @@ output$ov_currentplot <- renderPlotly({
                 legendgroup=~wrapped_name) %>%
       layout(title=paste0("<b>",input$ov_year,"</b><br>",paste(strwrap(input$ov_var, width = 40), collapse = "<br>"),"<br>(each point is a variable in the survey)"),
         titlefont=list(size=14),
-        margin = list(t=100, b = 135),
+        margin = list(t=100, b = 100),
         showlegend=FALSE,
         height = input$plotHeight, 
         autosize=TRUE,
         yaxis=list(title="Percentage Point Difference <br> from National Average",ticksuffix = "%"),
         xaxis=list(title="",
                    tickangle=90,
-                   categoryarray=~orderwrap$wrappedpolice_div, 
+                   categoryarray=~orderwrap$police_div, 
                    categoryorder="array")
       ) %>% config(modeBarButtonsToRemove = modebar_remove)
   }
@@ -192,8 +192,8 @@ output$ov_var2 = renderUI({
 observe({
   d <- event_data("plotly_click", source="clickable")
   new_value <- ifelse(is.null(d),"0",d$x) # 0 if no selection
-  new_value <- gsub("<br>"," ",new_value)
-  new_value <- gsub(")"," Division)",new_value)
+  #new_value <- gsub("<br>"," ",new_value)
+  #new_value <- gsub(")"," Division)",new_value)
   if(selected_pclick!=new_value){
     selected_pclick <<- new_value 
     if(selected_pclick !=0 && input$ovplotting == 'breakdown'){

@@ -1,25 +1,27 @@
+
+#beta{
+  position: absolute;
+  right: 0;
+  z-index: 3000;
+}
+
 /* HEADER */
-#header-back{
-  margin-top: 20px;
-  margin-bottom: 10px;
-  display: table;
-  text-align: center;
-  width: 100%;
-  background-image: url("scotgovbanner.jpg");
-  border-bottom: 1px solid #ebebeb;
+#header-blank{
+  height: 70px;
 }
+
 #header-content{
-  margin-top: 50px;
-  margin-bottom: 20px;
-}
-#header-content img{
-  display: inline-block;
+  text-align: center;
+  background-image: url("scotgovbanner.jpg");
 }
 #header-text{
+  margin-top: 0;
+  margin-bottom: 0;
   display: inline-block;
-  text-align: center;
-  background-color: #4774B1;
+  background-color: #0065bd;
   padding: 24px;
+  border-left: 10px solid white;
+  border-right: 10px solid white;
 }
 #header-text a{
   font-size: 28px;
@@ -37,9 +39,10 @@
 /* GENERAL TEXT */
 h3{
   text-align: center;
-  margin-top: 25px;
+  margin-top: 45px;
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif; 
-  Color: #7597c5;
+  color: #0065bd;
+  letter-spacing: 4px;
 }
 h4{
   text-align:center;
@@ -95,7 +98,7 @@ body{
 }
 .sidebartext p{
   text-align: left;
-  color: black;
+  color: #333;
 }
 .sidebartext h6{
   text-align: left;
@@ -106,7 +109,7 @@ body{
 .variable_info p, #overview_1 p, #overview_2 p{
   text-align: left;
   font-family: 'Roboto', sans-serif; 
-  color: black;
+  color: #333;
 }
 .variable_info h5{
   font-weight: bold; 
@@ -140,20 +143,30 @@ body{
 
 
 /* HOME SCREEN BUTTONS */
-.home_allbuttons {
-  display: table;
-  text-align: center;
+
+
+.home_allbuttons{
+  text-align: justify;
+  width: 100%;
 }
+.home_allbuttons:after{
+  content:"\00a0";
+  width: 1px;
+  height: 1px;
+  overflow:hidden;
+  display: inline-block;
+  margin-right:100%;
+}  
 .home-button{
-  display: inline-table;
+  display: inline-block;
   vertical-align: top;
   width: 20%;
-  margin: 5px;
-  border-top: 8px solid #0065bd;
+  border-top: 5px solid #0065bd;
+  transition: opacity 500ms; 
 }
 .home-button:hover{
-  background-color: rgba(58,92,138, 0.1);
   opacity: 0.6;
+  transition-delay: 0.25s; 
 }
 .button-head{
   display: inline-table;
@@ -163,17 +176,18 @@ body{
 .button-head img{
   display: table-cell;
   width: 40px;
-  text-align: left;
+  text-align: right;
 }
 .button-head h4{
   display: table-cell;
-  color: black;
-  text-align: right;
+  text-align: left;
   vertical-align: middle;
+  color: #0065bd;
+  font-size: 16px 
 }
 .home-button p{
   display: table-row;
-  color: black;
+  color: #333;
   text-align: center;
   vertical-align: middle;
 }
@@ -187,35 +201,45 @@ body{
 /* home page indicators */
 
 #indicators{
-  margin: auto;
-  display: table;
+  width: 100%;
+  text-align: justify;
+}
+#indicators:after{
+  content:"\00a0";
+  width: 1px;
+  height: 1px;
+  overflow:hidden;
+  display: inline-block;
+  margin-right:100%;
+} 
+#indicators h5{
+  border-top: 4px solid #0065bd;
+  font-family: 'Roboto', sans-serif; 
+  color: #0065bd;
+  font-size: 16px;
 }
 #natind1, #natind2, #natind3{
-  display: inline-table;
-  margin: auto;
-  width: 30%;
-  text-align: center;
-  vertical-align: bottom;
+  display: inline-block;
+  width: 20%;
+  vertical-align: top;
+  border-bottom: 1px solid #b3b3b3;
 }
 @media only screen and (max-width: 600px){
   #natind1, #natind2, #natind3{
     display: block;
     width: 80%;
+    margin-left: 0;
+  }
+  #indicators h5{
+    max-width: 150px;
   }
 }
 
-.ind{
-  text-align: center;
-}
-.ind h5{
-  font-family: 'Roboto', sans-serif; 
-  color: #777;
-  font-weight: normal; 
-  font-size: 16px;
-}
+
 .ni{
+  vertical-align: top;
   position: relative;
-  margin: auto;
+  /*margin: auto;*/
   width: 100px;
   height: 100px;
 }
@@ -223,17 +247,20 @@ body{
   width: 100%;
   height: 100%;
   opacity: .8;
+  transition: opacity 500ms; 
 }
 .ni h6{
+  /*background-color: rgba(255,255,255,.5);*/
   font-family: 'Roboto', sans-serif; 
-  font-weight: 500; 
-  font-size: 20px;
+  font-size: 14px;
   position: absolute;
   text-align: center;
-  top: 20%;
-  left: 20%;
+  top: 10%;
 }
-
+.ni:hover img{
+  opacity: .2;
+  transition-delay: 0.25s;
+}
 #home-toptext p{
   text-align: left;
   color: #777;
@@ -257,7 +284,7 @@ body{
   background: #fff;
 }
 #home-toptext{
-  margin-left: 20px;
+  /*margin-left: 20px;*/
   margin-right: 20px;
   margin-bottom: 20px;
   display: inline-block;
@@ -265,20 +292,35 @@ body{
   max-width: 800px;
 }
 #home{
-  display: table;
+  /*display: table;*/
   margin: auto;
   border-bottom: 1px solid #b3b3b3;
 }
-#home .lists{
-  width: 50%;
-  display: inline-block;
-}
-#home .two-lists{
-  margin-left: 5%;
-  width: 95%;
-  display: table;
+/* overview tab */ 
+
+#ov_var2 .shiny-input-container:not(.shiny-input-container-inline){
+  width: 100%;
 }
 
+@media only screen and (max-width: 600px){
+  #ov_currentplot .xaxislayer-above .xtick tspan{
+    font-size: 8px !important;
+  }
+  #ov_currentplot .xaxislayer-above .xtick text{
+    font-size: 8px !important;
+  }
+}
+@media only screen and (max-width: 400px){
+  #ov_currentplot .xaxislayer-above .xtick tspan{
+    font-size: 6px !important;
+  }
+  #ov_currentplot .xaxislayer-above .xtick text{
+    font-size: 6px !important;
+  }
+}
+
+
+ 
 
 /* COMPARISON TAB */
 
@@ -367,8 +409,8 @@ div.tvar .selectize-input{
 .helptext h5{
   margin: 25px;
   text-align:center;
-  color: #777;
-  font-family: 'Roboto', sans-serif; 
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif; 
+  color: #0065bd;
   font-weight: bold; 
   font-size: 16px 
 }
@@ -385,8 +427,11 @@ div.tvar .selectize-input{
 } 
 #credits h5{
   padding-left: 2px;
-  margin: 0px;
+  margin: 0;
   letter-spacing: 4px;
+}
+.fb-share-button, .twitter-share-button{
+    vertical-align: top;
 }
 #credits:hover { 
   /* Fade in while hovering */ 
@@ -394,8 +439,9 @@ div.tvar .selectize-input{
   opacity: 1; 
   transition-delay: 0.25s; 
 }
-
-.fb-share-button, .twitter-share-button{
-    vertical-align: top;
+.fb-share-button:hover, .twitter-share-button:hover{
+  /* Fade in while hovering */ 
+  z-index: 200;
+  opacity: 1; 
+  transition-delay: 0.25s; 
 }
-

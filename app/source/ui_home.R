@@ -14,32 +14,32 @@ home_page <- div(id="home",
           actionLink("link_divisions",
                      div(class="home-button", 
                          div(class="button-head",
-                             tags$img(src="overview.png"),
-                             tags$h4("Division Breakdowns")),
+                             tags$h4("Division Breakdowns"),
+                             tags$img(src="divisionicons.png")),
                          tags$p("See how police divisions have been performing relative to the National Average")
                      )
           ),
           actionLink("link_compare",
                      div(class="home-button", 
                          div(class="button-head",
-                             tags$img(src="comparison.png"),
-                             tags$h4("Comparison Tool")),
+                             tags$h4("Comparison Tool"),
+                             tags$img(src="comparisonicons.png")),
                          tags$p("Compare responses between divisions and across survey years")
                      )
           ),
           actionLink("link_trends",
                      div(class="home-button",
                          div(class="button-head",
-                             tags$img(src="trends.png"),
-                             tags$h4("Trends")),
+                             tags$h4("Trends"),
+                             tags$img(src="trendsicons.png")),
                          tags$p("See responses to the SCJS over time. Trends can be disaggregated by division")
                      )
           ),
           actionLink("link_tables",
                      div(class="home-button", 
                          div(class="button-head",
-                             tags$img(src="tables.png"),
-                             tags$h4("Tables")),
+                             tags$h4("Tables"),
+                             tags$img(src="tablesicons.png")),
                          tags$p("Just want numbers? Download tables of percentages and sample sizes for all variables included here")
                      )
           )
