@@ -191,26 +191,22 @@ year_counts %>% group_by(variable) %>%
 
 
 
-
-#####################################################################################################
+######
 #CREATE TABLES OF PROPORTIONS FOR USE IN SHINY APP
 ######
 
-############### Choose variables #################
-
+############### VARIABLE WEIGHTINGS #################
 # these variables are the ones which are weighted by individual weighting
 tidy_df %>% 
-  select(prevviolent, prevsurveycrime, polpres, qsfdark, matches("qpolconf|qs2area|qsfnigh|qratpol|polop|compol|qworr|qaco_|lcpeop|qhworr|dconf")) %>% 
+  select(prevproperty, prevviolent, prevsurveycrime, polpres, qsfdark, matches("qpolconf|qs2area|qsfnigh|qratpol|polop|compol|qworr|qaco_|lcpeop|qhworr|dconf")) %>% 
   names() -> indiv_vars
 
-# these variables are the ones which are weighted by household weighting
+# are there any variables which are weighted by household weighting?
 tidy_df %>% 
-  select(prevproperty) %>%
+  select() %>%
   names() -> hhd_vars
 
-
-############### Calculate Proportions, get samplesizes, get weighted samplesizes #################
-
+########################################################
 #calculate weighted proportions (individual weightings)
 tidy_df %>% 
   group_by(police_div, year) %>% 
@@ -230,35 +226,38 @@ tidy_df %>%
   mutate(police_div="National Average") %>%
   bind_rows(df_wide,.) -> df_wide
 
+
+
+########################################################
 #calculate weighted proportions (household weightings)
-tidy_df %>% 
-  group_by(police_div, year) %>% 
-  summarise_at(vars(one_of(hhd_vars)),
-               funs(
-                 p=prop.table(xtabs(wgtghhd ~ .))[2],
-                 ss=sum(!is.na(.)),
-                 wss=sum(wgtghhd[!is.na(.)])
-               )) -> df_wide_hhd
-#join the national averages
-tidy_df %>% 
-  group_by(year) %>% 
-  summarise_at(vars(one_of(hhd_vars)),
-               funs(
-                 p=prop.table(xtabs(wgtghhd ~ .))[2],
-                 ss=sum(!is.na(.)),
-                 wss=sum(wgtghhd[!is.na(.)])
-               )) %>% 
-  mutate(police_div="National Average") %>%
-  bind_rows(df_wide_hhd,.) -> df_wide_hhd
-
-
-#this is because we're only looking at one household weighted variable.
-#comment out line if looking at more than one.
-names(df_wide_hhd)[3:5]<-paste0("prevproperty_",names(df_wide_hhd)[3:5])
-
-#join the household weighted and individual weighted data
-df_wide <- left_join(df_wide,df_wide_hhd)
-
+if(length(hhd_vars)>0){
+  tidy_df %>% 
+    group_by(police_div, year) %>% 
+    summarise_at(vars(one_of(hhd_vars)),
+                 funs(
+                   p=prop.table(xtabs(wgtghhd ~ .))[2],
+                   ss=sum(!is.na(.)),
+                   wss=sum(wgtghhd[!is.na(.)])
+                 )) -> df_wide_hhd
+  #join the national averages
+  tidy_df %>% 
+    group_by(year) %>% 
+    summarise_at(vars(one_of(hhd_vars)),
+                 funs(
+                   p=prop.table(xtabs(wgtghhd ~ .))[2],
+                   ss=sum(!is.na(.)),
+                   wss=sum(wgtghhd[!is.na(.)])
+                 )) %>% 
+    mutate(police_div="National Average") %>%
+    bind_rows(df_wide_hhd,.) -> df_wide_hhd
+  
+  #this is because we're only looking at one household weighted variable.
+  if(length(hhd_vars)==1){
+    names(df_wide_hhd)[3:5]<-paste0(hhd_vars[1],"_",names(df_wide_hhd)[3:5])
+  }
+  #join the household weighted and individual weighted data
+  df_wide <- left_join(df_wide,df_wide_hhd)
+}
 
 ############### RESHAPE DATA #################  
 
@@ -305,39 +304,39 @@ left_join(pdtable, desfacts) %>%
     high = percentage+(ci*100)
   ) -> pdtable
 
-#tidyup
-rm(all_data2, all_data, prop_data,ss_data,wss_data,data_files,df_wide,df_wide_hhd,design_factors,hhd_vars,indiv_vars,recode_questions)
-
 
 ##################################################################################################################
 #MAKE DATA APP-READY
 #################
 #this will be the data for the app.
-df <- pdtable
-
 #read in the information on each variable (shorter versions etc)
 variable_info<-read.csv("data/variable_information.csv")
 variable_info$variable<-tolower(variable_info$variable)
 #join to proportion tables
-df<-left_join(df,variable_info)
+pdtable<-left_join(pdtable,variable_info)
 
 #make some wrapped variables (this is for plotting - it means variables are written on two lines rather than one.)
-df %>% mutate(
+pdtable %>% mutate(
   wrappedv = sapply(label, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")}),
   wrapped_name = sapply(name_trunc, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")})
-) -> df
+) -> pdtable
 
 #set variable 
-df$variable<-factor(df$label)
+pdtable$variable<-factor(pdtable$label)
 
 #set year
-df$year <- factor(df$year)
-levels(df$year)<-years
+pdtable$year <- factor(pdtable$year)
+levels(pdtable$year)<-years
 
 #save the data (just in case)
-saveRDS(df,"data/pdiv9.6.test.rds")
+saveRDS(pdtable,"data/pdiv9.7.rds")
 
-df<-readRDS("data/pdiv9.6.test.rds")
+###############
+#tidyup
+###############
+rm(list=ls())
+
+df<-readRDS("data/pdiv9.7.rds")
 
 #police division colours
 pdivcols=c("Argyll & West Dunbartonshire (L Division)"='#E41A1C',
@@ -381,6 +380,7 @@ getnames<-function(string){
     unique() %>%
     as.character()
 }
+
 #variables/variable groupings
 all_vars<-list('National Indicators'= getnames("PREVSURVEY|QS2AREA:|DCONF_03"),
                'Rates of Crime Victimisation'=getnames("PREV"),
