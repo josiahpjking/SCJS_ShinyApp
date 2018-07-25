@@ -58,6 +58,7 @@ p{
   font-weight: normal; 
   font-size: 16px 
 }
+
 /* for the rendered text objects */
 .shiny-html-output{
   text-align:left;
@@ -180,6 +181,7 @@ body{
 }
 .button-head h4{
   display: table-cell;
+  width: 100%;
   text-align: left;
   vertical-align: middle;
   color: #0065bd;
@@ -228,10 +230,16 @@ body{
   #natind1, #natind2, #natind3{
     display: block;
     width: 80%;
-    margin-left: 0;
+    margin-bottom: 10px;
+    border-bottom: none;
   }
   #indicators h5{
+    text-align: center;
+    margin: auto;
     max-width: 150px;
+  }
+  .ni{
+    margin: auto;
   }
 }
 
@@ -267,6 +275,11 @@ body{
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal; 
   font-size: 16px 
+}
+@media only screen and (max-width: 600px){
+  #home-toptext p{
+    text-align: center;
+  }
 }
 #map{
   display: inline-block;
