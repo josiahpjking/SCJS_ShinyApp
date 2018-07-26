@@ -40,9 +40,10 @@ all_data %>% mutate(
   gender = factor(qdgen,labels=c("Male","Female")),
   age = factor(ifelse(is.na(qdage),NA,
                       ifelse(qdage<16,"0-15",
+                             ifelse(qdage<0,NA,
                              ifelse(qdage<25,"16-24",
                                     ifelse(qdage<45,"25-44",
-                                           ifelse(qdage<60,"45-60","60+")))))),	
+                                           ifelse(qdage<60,"45-60","60+"))))))),	
   
   hba = factor(hba, labels=c("Ayrshire_Arran","Borders","Dumfries_Galloway","Fife","Forth_Valley","Grampian","Greater_Glasgow_Clyde","Highland","Lanarkshire","Lothian","Orkney","Shetland","Tayside","Eilean_Siar")),
   hba2pdiv = recode(hba, Ayrshire_Arran="Ayrshire (U Division)",
