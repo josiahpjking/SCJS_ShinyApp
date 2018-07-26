@@ -39,8 +39,8 @@ rowsum_partialstringmatch_variables(all_data,"_","_0") -> all_data
 all_data %>% mutate(
   gender = factor(qdgen,labels=c("Male","Female")),
   age = factor(ifelse(is.na(qdage),NA,
+                      ifelse(qdage<0,NA,
                       ifelse(qdage<16,"0-15",
-                             ifelse(qdage<0,NA,
                              ifelse(qdage<25,"16-24",
                                     ifelse(qdage<45,"25-44",
                                            ifelse(qdage<60,"45-60","60+"))))))),	
