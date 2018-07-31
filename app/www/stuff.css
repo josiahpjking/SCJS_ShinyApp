@@ -291,7 +291,8 @@ body{
 }
 #map .shiny-input-container:not(.shiny-input-container-inline){
   width: 100%;
-  max-width: 350px;
+  max-width: 400px;
+
 }
 .leaflet-container{
   background: #fff;
@@ -302,7 +303,7 @@ body{
   margin-bottom: 20px;
   display: inline-block;
   min-width: 200px;
-  max-width: 800px;
+  max-width: 700px;
 }
 #home{
   /*display: table;*/
