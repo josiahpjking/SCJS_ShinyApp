@@ -13,6 +13,7 @@
 #header-content{
   text-align: center;
   background-image: url("scotgovbanner.jpg");
+  margin-bottom: 10px;
 }
 #header-text{
   margin-top: 0;
