@@ -4,11 +4,11 @@ require(dplyr)
 require(ggplot2)
 require(magrittr)
 require(plotly)
-
 #load in functions
-source("setup/extract_name_data.R")
-source("setup/rowSums_na.R")
-source("setup/rowsum_partialstringmatch_variables.R")
+source("functions/extract_name_data.R")
+source("functions/load_scjs_data.R")
+source("functions/rowSums_na.R")
+source("functions/rowsum_partialstringmatch_variables.R")
 
 #####
 #DATA, YEARS, DESIGN - CHANGE FOR UPDATING
