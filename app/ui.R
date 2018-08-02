@@ -38,7 +38,7 @@ fluidPage(title="Scottish Crime and Justice Survey", #set title for easier reloc
              
              tabPanel("Home",icon = icon('home',lib="glyphicon"),
                       headpanel,
-                      tags$h1("THIS IS A DEV. VERSION. DATA/LAYOUT HAS NOT YET BEEN QUALITY ASSURED OR APPROVED"),
+                      tags$h4(style="color: black", "Disclaimer: This site is still in Beta. Layout and data have not yet been finalised and quality assured."),
                       home_page
              ),
              tabPanel("Breakdown by Police Divisions", value="main_divisions", icon = icon('bar-chart'),

@@ -439,6 +439,7 @@ div.tvar .selectize-input{
   opacity: 0.70;  
   z-index: 1;
   transition: opacity 500ms; 
+  width: 33.33%;
 } 
 #credits h5{
   padding-left: 2px;
