@@ -31,5 +31,6 @@ linkpanel<-mainPanel(id = "credits",
                    }
                    }(document, 'script', 'twitter-wjs');
                    </script>
-                   ")
+                   "),
+              tags$h6(id="josiah",a(target="_blank",href="http://josiahpjking.github.io","Josiah King"))
 )

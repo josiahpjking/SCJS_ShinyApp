@@ -445,6 +445,12 @@ div.tvar .selectize-input{
   margin: 0;
   letter-spacing: 4px;
 }
+#josiah h6, #josiah a{
+  color: black;
+  padding-left: 2px;
+  margin: 0;
+  letter-spacing: 3px;
+}
 .fb-share-button, .twitter-share-button{
     vertical-align: top;
 }
