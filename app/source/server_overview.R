@@ -1,5 +1,8 @@
 ######
-#DATA
+#DATA - this is not reactive. For each variable in each year it tests whether a division is signif different from national average and specifies the direction.
+# it also takes into account the direction of the variable (some are reverse coded).
+# the testing is done as per the current method for the SCJS, which asks |p1-p2| > sqrt(ci1^2 + ci2^2).
+# the CIs are calculated as SE(p)*1.96*design factor (pre defined for each year). This is all done in the loader.R script.
 ######
 
 #filter to just national average data
@@ -17,6 +20,10 @@ df %>% filter(police_div=="National Average") %>% mutate(
       c=sqrt((ci^2)+(nat_avgci^2)),
       change=ifelse(((abs(p_diff)/100)>c)==TRUE & p_direction=="More Positive","More Positive",
                     ifelse(((abs(p_diff)/100)>c)==TRUE & p_direction=="Less Positive","Less Positive","No difference")),
+      
+      #####
+      # TEXT wrapping (easiest way to make plotly show all the labels etc.)
+      #####
       wrapped_name = sapply(name_trunc, FUN = function(x) {paste(strwrap(x, width = 35), collapse = "<br>")}),
       
       #text for current_plot
@@ -149,6 +156,7 @@ output$ov_trendplot <- renderPlotly({
       filter(police_div %in% c("National Average")) -> linedata
     paste0("<b>",input$ov_pdiv,"</b><br>",paste(strwrap(input$ov_var, width = 40), collapse = "<br>")) -> plottitle
   } else if(input$ov_var %in% names(all_vars)){
+    #filter by ov_var2 because different level (survey section selected, so needs specific variable)
     overview_data %>% filter(variable %in% input$ov_var2) %>% 
       filter(police_div %in% input$ov_pdiv) -> bardata
     overview_data %>% filter(variable %in% input$ov_var2) %>%

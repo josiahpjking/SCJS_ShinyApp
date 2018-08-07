@@ -6,8 +6,11 @@ require(dplyr)
 require(magrittr)
 require(forcats)
 
-source("source/plotfunc.R")
-selected_pclick <- 0 #declare outside the server function
+
+#source("source/plotfunc.R") no longer used
+
+# these are for the plotly click hack. need to declare outside server function.
+selected_pclick <- 0 
 selected_y <- 0
 
 server <- function(input, output, session){

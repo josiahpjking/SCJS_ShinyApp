@@ -1,4 +1,5 @@
 comparison_page <- sidebarLayout(
+  # side bar - user input survey section. render info on selection. 
   sidebarPanel(
     div(class="sidebartext",
         tags$p("Choose a section of the survey (e.g. confidence in the local police) and test for significant differences (color coding) between specific divisions and/or across survey years.")
@@ -6,6 +7,8 @@ comparison_page <- sidebarLayout(
     selectizeInput("comp_var", label = "Choose a section of the survey", choices=list("Survey Sections"=names(all_vars)), selected=names(all_vars)[1], multiple=F),
     uiOutput("variable_info_comp")
   ),
+  
+  # main panel. inputs at the top = division, year, division, year. plot below.
   mainPanel(
     div(id="compare-top",
         div(class="compare-inputs",
@@ -20,6 +23,8 @@ comparison_page <- sidebarLayout(
             div(class="compare-row",selectizeInput("comp_year2",NULL,choices=years, selected=years[length(years)], multiple = F))
         )
     ),
+    
+    #plot
     div(id="compare-outputs",
         tags$p("Percentages on the either side of the figure below are compared", tags$b("against one another.")),
         tags$p("If significantly different, the more positive result is shown in", tags$b(style="color:LimeGreen","green"), "and the less positive result in",tags$b(style="color:#fb7171","red."), "If there is no significant difference between your two selections, the bars will be coloured",tags$b(style="color:grey","grey.")),

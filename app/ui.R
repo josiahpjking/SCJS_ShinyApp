@@ -5,12 +5,19 @@ require(tidyr)
 require(dplyr)
 require(magrittr)
 
+#home tab - text, indicator graphics, map, button links
 source("source/ui_home.R")
+#overview tab - sidebar inputs and variable info, main = plots.
 source("source/ui_overview.R")
+#comparison tab - sidebar input, main = input and plot
 source("source/ui_comparison.R")
+#trends tab - sidebar input, main = plot
 source("source/ui_trends.R")
+#tables tab - user inputs at top, table below
 source("source/ui_tables.R")
+#just text.
 source("source/ui_help.R")
+#credits (links to JAS, etc.)
 source("source/ui_links.R")
 
 headpanel<-div(id="header-content",

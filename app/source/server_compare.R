@@ -4,17 +4,19 @@
 ########
 # this subsets the data based on user inputs, checks for common variables, and tests proportions between two selections.
 compare_data <- reactive({
-  #data for plotting
+  #data for selection 1
   df %>% filter(variable %in% (all_vars[[input$comp_var]]) & police_div %in% input$comp_pdiv1 & year %in% input$comp_year1) -> conf_p1_data
-  #data for plot 2
+  #data for selection 2
   df %>% filter(variable %in% (all_vars[[input$comp_var]]) & police_div %in% input$comp_pdiv2 & year %in% input$comp_year2) -> conf_p2_data
   
+  # join, (can't remember what this filtering does. surely it replicates the above, so nothing??)
   bind_rows(conf_p1_data,conf_p2_data) %>% 
     filter((police_div==input$comp_pdiv1 & year==input$comp_year1) | (police_div==input$comp_pdiv2 & year==input$comp_year2)) %>% 
     mutate(
       wrapped_name = sapply(name_trunc, FUN = function(x) {paste(strwrap(x, width = 20), collapse = "<br>")})
     ) -> conf_temp_data
   
+  # check for which variables are present in both selections.
   conf_temp_data %>% 
     group_by(variable) %>% 
     summarise(var_occurrence=sum(!is.na(p))) %>% 
@@ -22,7 +24,8 @@ compare_data <- reactive({
   
   #calculate whether signif, output data
   left_join(conf_temp_data %>% 
-              filter(variable %in% valid_variables), 
+            filter(variable %in% valid_variables), 
+            #signif testing
             conf_temp_data %>%
               select(year,variable,p,ci,samplesize,des_fact,police_div,reverse_coded) %>%
               filter(variable %in% valid_variables) %>%

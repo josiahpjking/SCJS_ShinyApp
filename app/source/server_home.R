@@ -1,4 +1,6 @@
+
 ######## national indicator data #########
+# this is just the data which is used to assess whether the national indicators have gone up or down since last survey year.
 df %>% filter(police_div=="National Average", 
               year %in% c(currentyear,prevyear),
               variable %in% all_vars[[1]]) %>%
@@ -19,6 +21,7 @@ df %>% filter(police_div=="National Average",
     text2 = paste0(round(current_percentage,1),"% ",text1)
   ) %>% select(variable, current_percentage, current_ci, thisyear,text2) -> image_data
 
+#filter to each NI
 image_data %>% filter(grepl("Confident",variable)) -> ni_conf_data
 image_data %>% filter(grepl("Victim",variable)) -> ni_crime_data
 image_data %>% filter(grepl("Perceived",variable)) -> ni_perc_data
@@ -27,7 +30,7 @@ image_data %>% filter(grepl("Perceived",variable)) -> ni_perc_data
 ########
 # NATIONAL INDICATOR GRAPHICS
 ########
-# these are the divs which set up the indicator graphics. in loader.R script, it sets an object for each indicator which sets the image to source, and the text etc.
+# these are the divs which set up the indicator graphics. It uses the above to set text, and background graphic (arrows etc.)
 output$natind1<-renderUI({
   div(
       tags$h5("Crime Victimisation Rate"),
