@@ -27,30 +27,30 @@ This script is designed to accommodate those who have limited/no experience of R
 1 loader.R
 ----------
 The loader.R script does the following (in order):  
-    • Reads in the relevant variables from NVF datasets (all years)  
+- Reads in the relevant variables from NVF datasets (all years)  
 (because SG machines appear to give limited CPU resources to R, loading all variables was time-consuming)  
-    • Tidies demographic variables (police divisions, age etc.)  
+- Tidies demographic variables (police divisions, age etc.)  
 (not all of this is necessary, and is leftover from before the decision to focus on police divisions, but it's harmless, and may one day be useful)  
-    • Recodes the questions.  
+- Recodes the questions.  
 This involves separating out groups of variables which match patterns of responses we are interested in, and then recoding them in the data 
 (e.g. for polconf, dconf, polop questions, we are interested in responses of 1&2 compared to responses of -2,-1,3,4,&5. So we collapse these to just be 0s and 1s)  
-    • Checks to see what variables are present in which year.  
+- Checks to see what variables are present in which year.  
 (completely unnecessary for the app, but if you're working through it and not familiar with the survey, then useful)  
-    • Creates datasets of proportions, by police div and by year  
+- Creates datasets of proportions, by police div and by year  
 This involves:  
 	choosing the variables of interest (separated by individual vs household weighting)  
 	calculating sample sizes and weighted proportions for each variable/police division/year  
 	reshaping these into long format  
 	joining with design factors  
 	calculating confidence intervals  
-    • Gets the data ready for the app  
+- Gets the data ready for the app  
 This involves:  
 	joining information about the variables (contained in the data/variable_information.csv)  
 	setting up things like user input choices and colour schemes  
 	loading the map data (from data/pd_mapdata.RDS)  
-    • Updates/Overwrites the .Rdata file used in the app  
+- Updates/Overwrites the .Rdata file used in the app  
 The .Rdata file is the workspace which the app runs from.  
-    • Deploys the app locally (i.e. opens it on your machine)  
+- Deploys the app locally (i.e. opens it on your machine)  
 
 
 App components
