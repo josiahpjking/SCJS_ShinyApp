@@ -64,7 +64,7 @@ variable_info_list <- list(
              tags$li("Catch criminals")
       ),
       tags$p("In addition, the SCJS also measures the percentage of respondents who believe that:",
-             tags$li("The police in the local area are doing a fair or good job")
+             tags$li("The police in the local area are doing an excellent or good job")
       ),
       tags$p("All these variables measure the public confidence in the local police; higher percentages are better, indicating more confidence.")
   ),
@@ -109,7 +109,7 @@ variable_info_list <- list(
   ),
 ######################################################################################
   
-  "Perceptions of Crime Rates and Safety" = 
+  "Perceptions of Crime Rates and Fear of Crime" = 
   div(id=NULL,
       tags$h5("Perceptions of Crime Rates and Safety"),
       tags$p("The SCJS asks respondents about their perception of crime rates over the last 2 years, both in their local area and on a national level. Results represent the percentages of respondents who believe that:",
@@ -118,7 +118,7 @@ variable_info_list <- list(
       ),
       tags$p("Data is also captured on how safe the Scottish population feel, via measuring the percentage of respondents who indicate that they feel (either fairly or very) safe when:",
              tags$li("Alone in home at night"),
-             tags$li("Walking along in local area after dark")
+             tags$li("Walking alone in local area after dark")
       ),
       tags$p("For all these variables, higher results are better; indicating more people feeling safe/perceiving reducing crime rates.")
   ),
@@ -134,7 +134,8 @@ variable_info_list <- list(
              tags$li("People's homes being broken into"),
              tags$li("People being mugged or robbed"),
              tags$li("People being physically assaulted or attacked in the street or other public places"),
-             tags$li("People being physically attacked because of their skin colour etc"),
+             tags$li("People being physically attacked because of their skin colour, ethnic origin or religion"),
+             tags$li("People buying or selling smuggled or fake goods"),
              tags$li("People being sexually assaulted"),
              tags$li("Drug dealing and drug abuse"),
              tags$li("People behaving in an anti-social manner in public"),
@@ -148,9 +149,9 @@ variable_info_list <- list(
   ),
 ######################################################################################
   
-  "Perceptions of Local People" = 
+  "Perceptions of Local Community" = 
   div(id=NULL,
-      tags$h5("Perceptions of Local People"),
+      tags$h5("Perceptions of Local Community"),
       tags$p("The SCJS also asks the Scottish public a number of questions about their feelings towards people in their local area. Results represent the percentages of respondents who (either slightly or strongly) agreed with the statements people in the local area:",
              tags$li(tags$u("Cannot be trusted")),
              tags$li("Could be counted on to keep an eye on my home if it was empty"),

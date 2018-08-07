@@ -1,9 +1,9 @@
 library(shiny)
 library(leaflet)
 library(plotly)
-require(tidyr)
-require(dplyr)
-require(magrittr)
+library(tidyr)
+library(dplyr)
+library(magrittr)
 
 #home tab - text, indicator graphics, map, button links
 source("source/ui_home.R")

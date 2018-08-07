@@ -2,22 +2,22 @@ home_page <-
   div(id="home",
     # text summary of SCJS.  
     div(id="home-toptext",
-        tags$p("The Scottish Crime and Justice Survey (SCJS) is a large-scale social survey which asks people about their experiences and perceptions of crime. The survey is important because it provides a picture of crime in Scotland, including crimes that haven't been reported to/recorded by the police and captured in police recorded crime statistics."),
+        tags$p("The Scottish Crime and Justice Survey (SCJS) is a large-scale social survey which asks people about their experiences and perceptions of crime. The survey is important because it provides a picture of crime in Scotland, including crimes that haven't been reported to/recorded by the police and captured in police recorded crime statistics. More information and the entire questionnaire can be found on ",tags$a(target="_blank",tags$ins("the SCJS publication page."),href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications")),
         
         # National indicators info.
-        tags$h3("National Performance"),
+        tags$h3("National Performance ",currentyear),
         tags$p("The SCJS captures data on 3 National Indicators, which enable the measurement of progress towards acheiving of a safer, more successful and prosperous Scotland. For more information, visit the",tags$a(target="_blank",tags$ins("National Performance Framework website."),href="http://nationalperformance.gov.scot")),
         
         # National indicator graphics (see server_home.R)
         div(id="indicators",
             uiOutput("natind1"),
-            uiOutput("natind2"),
-            uiOutput("natind3")
+            uiOutput("natind3"),
+            uiOutput("natind2")
         ),
         
         #Button links to other tabs. (see server_home.R)
         tags$h3("Police Division Tools"),
-        tags$p("Using the tools below, you can investigate how responses differ between Police Divisions for a selection of survey areas, including rates of crime victimisation, confidence in/attitudes to the police, and perceptions of local people & crime."),
+        tags$p("Using the tools below, you can investigate how responses differ between Police Divisions for a selection of survey areas, including rates of crime victimisation, confidence in/attitudes to the police, and perceptions of crime."),
         div(class="home_allbuttons",
             actionLink("link_divisions",
                        div(class="home-button", 
@@ -32,7 +32,7 @@ home_page <-
                            div(class="button-head",
                                tags$h4("Comparison Tool"),
                                tags$img(src="comparisonicons.png")),
-                           tags$p("Compare responses between divisions and across survey years")
+                           tags$p("Compare responses between divisions and across survey years. Includes statistical significance tests.")
                        )
             ),
             actionLink("link_trends",

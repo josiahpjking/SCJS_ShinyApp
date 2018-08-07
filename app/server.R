@@ -1,10 +1,10 @@
 library(shiny)
 library(leaflet)
 library(plotly)
-require(tidyr)
-require(dplyr)
-require(magrittr)
-require(forcats)
+library(tidyr)
+library(dplyr)
+library(magrittr)
+library(forcats)
 
 
 #source("source/plotfunc.R") no longer used

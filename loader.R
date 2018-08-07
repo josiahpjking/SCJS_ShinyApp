@@ -166,9 +166,9 @@ all_data %>% mutate_at(vars(matches("polpres|qdcrime")),funs(recode(.,'1'=1,'2'=
 
 
 #QRATPOL: Taking everything into account, how good a job do you think the police IN THIS AREA are doing?
-# 1,2,3 = fair or good
-# -2,-1,4,5 = rf, dk, poor
-all_data %>% mutate_at(vars(matches("qratpol")),funs(recode(.,'1'=1,'2'=1,'3'=1, '4'=0,'5'=0,'-2'=0,'-1'=0,.default=NA_real_))) -> all_data
+# 1,2 = excellent or good
+# -2,-1,3,4,5 = rf, dk, poor, fair
+all_data %>% mutate_at(vars(matches("qratpol")),funs(recode(.,'1'=1,'2'=1,'3'=0, '4'=0,'5'=0,'-2'=0,'-1'=0,.default=NA_real_))) -> all_data
 
 
 tidy_df<-all_data
@@ -388,9 +388,9 @@ all_vars<-list('National Indicators'= getnames("PREVSURVEY|QS2AREA:|DCONF_03"),
                'Confidence in the Police'=getnames("POLCONF|RATPOL"),
                'Attitudes to the Police'=getnames("POLOP|POLPRES"),
                'Confidence in Scottish Criminal Justice System'=getnames("DCONF"),
-               'Perceptions of Crime Rates and Safety'=getnames("QS"),
+               'Perceptions of Crime Rates and Fear of Crime'=getnames("QS"),
                'Perceptions of Local Crime'=getnames("QACO"),
-               'Perceptions of Local People'=getnames("LCPEOP"),
+               'Perceptions of Local Community'=getnames("LCPEOP"),
                'Worries of Crime Victimisation'=getnames("QWORR"),
                'Worries of Being Harassed'=getnames("HWORR")
 )

@@ -12,7 +12,8 @@ output$pdiv_map <- renderLeaflet({
       wrapped_name = first(wrapped_name)
     ) %>% mutate(
       PDivName = police_div,
-      mytitle = paste0("<b>",PDivName,"</b><br>",wrapped_name,"<br>",signif(percentage,3),"%"),
+      mytext = paste0("<b>",PDivName,"</b><br>",wrapped_name,"<br>",signif(percentage,3),"%"),
+      mytitle = paste0("<b>",wrapped_name,"</b><br>",currentyear)
     ) %>% left_join(pd_latlon@data, .) -> pd_latlon@data
   
   #set map titles and color palettes

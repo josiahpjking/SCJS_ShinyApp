@@ -43,7 +43,7 @@ output$natind1<-renderUI({
   
 output$natind2<-renderUI({
   div(
-      tags$h5("Confident in access to Justice"),
+      tags$h5("Confident in Access to Justice"),
       div(class="ni",
           tags$img(src=paste0(ni_conf_data[,4],".png")),
           tags$h6(ni_conf_data[,5])
@@ -53,7 +53,7 @@ output$natind2<-renderUI({
 
 output$natind3<-renderUI({
   div(
-      tags$h5("Perceived Same or Less Local Crime"),
+      tags$h5("Believed Local Crime Rate has Stayed the Same or Reduced"),
       div(class="ni",
           tags$img(src=paste0(ni_perc_data[,4],".png")),
           tags$h6(ni_perc_data[,5])
