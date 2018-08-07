@@ -16,8 +16,8 @@ home_page <-
         ),
         
         #Button links to other tabs. (see server_home.R)
-        tags$h3("Police Division Tools"),
-        tags$p("Using the tools below, you can investigate how responses differ between Police Divisions for a selection of survey areas, including rates of crime victimisation, confidence in/attitudes to the police, and perceptions of crime."),
+        tags$h3("Explore the SCJS data"),
+        tags$p("Using the tools below, you can view results for various sections of the SCJS, including rates of crime victimisation, confidence in/attitudes to the police, and perceptions of crime. Different tools allow you to visualise the data in different ways, from trends over time to breakdowns of police divisions relative to the national average."),
         div(class="home_allbuttons",
             actionLink("link_divisions",
                        div(class="home-button", 
@@ -32,15 +32,17 @@ home_page <-
                            div(class="button-head",
                                tags$h4("Comparison Tool"),
                                tags$img(src="comparisonicons.png")),
-                           tags$p("Compare responses between divisions and across survey years. Includes statistical significance tests.")
+                           tags$p("Compare results between divisions and across survey years according to the SCJS method for testing statistical significance.")
                        )
-            ),
+            )
+        ),
+        div(class="home_allbuttons",
             actionLink("link_trends",
                        div(class="home-button",
                            div(class="button-head",
                                tags$h4("Trends"),
                                tags$img(src="trendsicons.png")),
-                           tags$p("See responses to the SCJS over time. Trends can be disaggregated by division")
+                           tags$p("See results of the SCJS over time.")
                        )
             ),
             actionLink("link_tables",
