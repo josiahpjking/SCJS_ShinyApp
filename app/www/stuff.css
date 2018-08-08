@@ -40,7 +40,7 @@
 /* GENERAL TEXT */
 h3{
   text-align: center;
-  margin-top: 45px;
+  margin-top: 25px;
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif; 
   color: #0065bd;
   letter-spacing: 4px;
@@ -222,24 +222,6 @@ body{
   vertical-align: top;
   border-bottom: 1px solid #b3b3b3;
 }
-@media only screen and (max-width: 600px){
-  #natind1, #natind2, #natind3{
-    display: block;
-    width: 80%;
-    margin-bottom: 10px;
-    border-bottom: none;
-  }
-  #indicators h5{
-    text-align: center;
-    margin: auto;
-    max-width: 150px;
-  }
-  .ni{
-    margin: auto;
-  }
-}
-
-
 .ni{
   vertical-align: top;
   position: relative;
@@ -265,47 +247,75 @@ body{
   opacity: .2;
   transition-delay: 0.25s;
 }
-#home-toptext p{
-  text-align: left;
-  color: #777;
-  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal; 
-  font-size: 16px 
-}
 @media only screen and (max-width: 600px){
-  #home-toptext p{
+  #indicators h5{
     text-align: center;
+    margin: auto;
+    max-width: 150px;
+    font-size: 12px;
+  }
+  .ni{
+    margin: auto;
+    width: 75px;
+  }
+  .ni h6{
+    font-size: 12px;
   }
 }
-#map{
-  display: inline-block;
-  vertical-align: top;
-  min-width: 200px;
-}
-#map .selectize-dropdown, #map .selectize-dropdown.form-control{
-  z-index: 1001;
-}
-#map .shiny-input-container:not(.shiny-input-container-inline){
-  width: 100%;
-  max-width: 400px;
 
-}
-.leaflet-container{
-  background: #fff;
-}
+
 #home-toptext{
   /*margin-left: 20px;*/
   margin-right: 20px;
   margin-bottom: 20px;
   display: inline-block;
-  min-width: 200px;
-  max-width: 700px;
+  width: 55%;
 }
 #home{
   /*display: table;*/
   margin: auto;
   border-bottom: 1px solid #b3b3b3;
 }
+#home p{
+  text-align: left;
+  color: #777;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: normal; 
+  font-size: 16px 
+}
+#map{
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+  width: 35%;
+  margin-top: 65px;
+  display: inline-block;
+  min-width: 300px;
+}
+#map .selectize-dropdown, #map .selectize-dropdown.form-control{
+  z-index: 1001;
+}
+#map .shiny-input-container:not(.shiny-input-container-inline){
+  width: 100%;
+}
+.leaflet-container{
+  background: #fff;
+}
+@media only screen and (max-width: 800px){
+  #home p{
+    text-align: center;
+  }
+  #home-toptext{
+    width: 100%;
+  }
+  #map{
+    width: 100%;
+    margin-top: 5px;
+  }
+}
+
+
+
 /* overview tab */ 
 
 #ov_var2 .shiny-input-container:not(.shiny-input-container-inline){
@@ -449,6 +459,7 @@ div.tvar .selectize-input{
 }
 .fb-share-button, .twitter-share-button{
     vertical-align: top;
+    transition: opacity 500ms;
 }
 #credits:hover { 
   /* Fade in while hovering */ 
