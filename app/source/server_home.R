@@ -17,9 +17,9 @@ df %>% filter(police_div=="National Average",
                              "same")),
     thisyear_direction = factor(ifelse(rev_coded==1 & thisyear=="up","down",
                           ifelse(rev_coded==1 & thisyear=="down","up", thisyear))),
-    text1 = fct_recode(thisyear_direction, "IMPROVING"="up","WORSENING"="down","MAINTAINING"="same"),
+    text1 = as.character(fct_recode(thisyear_direction, "IMPROVING"="up","WORSENING"="down","MAINTAINING"="same")),
     text2 = paste0(round(current_percentage,1),"% ",text1)
-  ) %>% select(variable, current_percentage, current_ci, thisyear,text2) -> image_data
+  ) %>% select(variable, current_percentage, current_ci, thisyear, text1, text2) -> image_data
 
 #filter to each NI
 image_data %>% filter(grepl("Confident",variable)) -> ni_conf_data
@@ -35,8 +35,8 @@ output$natind1<-renderUI({
   div(
       tags$h5("Crime Victimisation Rate"),
       div(class="ni",
-          tags$img(src=paste0(ni_crime_data[,4],".png")),
-          tags$h6(ni_crime_data[,5])
+          tags$img(src=paste0(ni_crime_data[,4],ni_crime_data[,5],".png")),
+          tags$h6(ni_crime_data[,6])
       )
   )
 })
@@ -45,8 +45,8 @@ output$natind2<-renderUI({
   div(
       tags$h5("Confident in Access to Justice"),
       div(class="ni",
-          tags$img(src=paste0(ni_conf_data[,4],".png")),
-          tags$h6(ni_conf_data[,5])
+          tags$img(src=paste0(ni_conf_data[,4],ni_conf_data[,5],".png")),
+          tags$h6(ni_conf_data[,6])
       )
   )
 })
@@ -55,8 +55,8 @@ output$natind3<-renderUI({
   div(
       tags$h5("Believed Local Crime Rate has Stayed the Same or Reduced"),
       div(class="ni",
-          tags$img(src=paste0(ni_perc_data[,4],".png")),
-          tags$h6(ni_perc_data[,5])
+          tags$img(src=paste0(ni_perc_data[,4],ni_perc_data[,5],".png")),
+          tags$h6(ni_perc_data[,6])
       )
   )
 })
