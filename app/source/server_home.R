@@ -7,6 +7,7 @@ df %>% filter(police_div=="National Average",
   group_by(variable) %>%
   summarise(
     current_percentage = percentage[which(year==currentyear)],
+    prev_percentage = round(percentage[which(year==prevyear)],1),
     current_ci = ci[which(year==currentyear)],
     p_diff=abs(diff(p)),
     c=sqrt(sum(ci^2)),
@@ -27,6 +28,25 @@ image_data %>% filter(grepl("Victim",variable)) -> ni_crime_data
 image_data %>% filter(grepl("Perceived",variable)) -> ni_perc_data
 
 
+
+###this is a little extra bit. hover over the infograpics to see a plot :)
+df %>% filter(police_div=="National Average", 
+              variable %in% all_vars[[1]]) -> plot_ni_data
+
+output$conf_plot<-renderPlot({
+  ggplot(plot_ni_data %>% filter(grepl("Confident",variable)), aes(x=year,y=percentage, group=1))+
+  geom_bar(stat="identity")+theme_void()
+})
+output$crime_plot<-renderPlot({
+  ggplot(plot_ni_data %>% filter(grepl("Victim",variable)), aes(x=year,y=percentage, group=1))+
+  geom_bar(stat="identity")+theme_void()
+})
+output$perc_plot<-renderPlot({
+  ggplot(plot_ni_data %>% filter(grepl("Perceived",variable)), aes(x=year,y=percentage, group=1))+
+  geom_bar(stat="identity")+theme_void()
+})
+
+
 ########
 # NATIONAL INDICATOR GRAPHICS
 ########
@@ -35,8 +55,9 @@ output$natind1<-renderUI({
   div(
       tags$h5("Crime Victimisation Rate"),
       div(class="ni",
-          tags$img(src=paste0(ni_crime_data[,4],ni_crime_data[,5],".png")),
-          tags$h6(ni_crime_data[,6])
+          div(class="ni-icon",tags$img(src=paste0(ni_crime_data[,4],ni_crime_data[,5],".png"))),
+          tags$h6(ni_crime_data[,6]),
+          div(class="ni-plot",plotOutput("crime_plot",height="60px"))
       )
   )
 })
@@ -45,8 +66,9 @@ output$natind2<-renderUI({
   div(
       tags$h5("Confident in Access to Justice"),
       div(class="ni",
-          tags$img(src=paste0(ni_conf_data[,4],ni_conf_data[,5],".png")),
-          tags$h6(ni_conf_data[,6])
+          div(class="ni-icon",tags$img(src=paste0(ni_conf_data[,4],ni_conf_data[,5],".png"))),
+          tags$h6(ni_conf_data[,6]),
+          div(class="ni-plot",plotOutput("conf_plot",height="60px"))
       )
   )
 })
@@ -55,8 +77,9 @@ output$natind3<-renderUI({
   div(
       tags$h5("Believed Local Crime Rate has Stayed the Same or Reduced"),
       div(class="ni",
-          tags$img(src=paste0(ni_perc_data[,4],ni_perc_data[,5],".png")),
-          tags$h6(ni_perc_data[,6])
+          div(class="ni-icon",tags$img(src=paste0(ni_perc_data[,4],ni_perc_data[,5],".png"))),
+          tags$h6(ni_perc_data[,6]),
+          div(class="ni-plot",plotOutput("perc_plot",height="60px"))
       )
   )
 })

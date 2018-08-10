@@ -235,8 +235,6 @@ body{
   width: 100%;
   height: 100%;
   opacity: .6;
-  transition: opacity 500ms; 
-  
 }
 .ni h6{
   /*background-color: rgba(255,255,255,.5);*/
@@ -247,10 +245,25 @@ body{
   text-align: center;
   top: 0;
 }
-.ni:hover img{
-  opacity: .2;
+.ni-plot{
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  opacity: 0;
+  transition: opacity 500ms; 
+}
+.ni-icon{
+  transition: opacity 500ms; 
+}
+.ni:hover .ni-icon{
+  opacity: 0.4;
   transition-delay: 0.25s;
 }
+.ni:hover .ni-plot{
+  opacity: 0.9;
+  transition-delay: 0.25s;
+}
+
 @media only screen and (max-width: 600px){
   #indicators h5{
     text-align: center;
