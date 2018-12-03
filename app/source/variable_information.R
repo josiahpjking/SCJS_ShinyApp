@@ -35,7 +35,7 @@ variable_info_list <- list(
              tags$li("Perceived local crime rate to be the same or less than 2 years ago"),
              tags$li("Confident in access to the Criminal Justice System for all")
       ),
-      tags$p("For underlined variables, lower percentages are better."),
+      #tags$p("For underlined variables, lower percentages are better."),
       tags$a(target="_blank",tags$ins("Click here for more information on the National Performance Framework."),href="http://nationalperformance.gov.scot")
   ),
 ######################################################################################
@@ -48,7 +48,7 @@ variable_info_list <- list(
              tags$li("Victims of violent crime"),
              tags$li("Victims of property crime")
       ),
-      tags$p("For these variables, lower percentages are better as they represent less crime victimisation.")
+      tags$p("For these variables, lower percentages indicate less crime victimisation.")
   ),
 ######################################################################################
   
@@ -66,7 +66,7 @@ variable_info_list <- list(
       tags$p("In addition, the SCJS also measures the percentage of respondents who believe that:",
              tags$li("The police in the local area are doing an excellent or good job")
       ),
-      tags$p("All these variables measure the public confidence in the local police; higher percentages are better, indicating more confidence.")
+      tags$p("All these variables measure the public confidence in the local police; higher percentages indicate more confidence.")
   ),
 ######################################################################################
   
@@ -84,7 +84,7 @@ variable_info_list <- list(
       tags$p("In addition, the SCJS also measures the percentage of respondents who believe that:",
              tags$li(tags$u("There is not enough police presence in the local area"))
       ),
-      tags$p("Some of these variables (underlined) are not positive measures. For these variables, lower percentages are better. For others, higher percentages are better, indicating agreement with positive statements about the local police."),
+      tags$p("For most of these variables, higher percentages indicate more positive attitudes towards the police. This is reversed for some variables (underlined) as they reflect respondents' agreement with negative statements."),
       tags$p(tags$i("Due to changes in the survey, some questions might not be present in all years."))
   ),
 ######################################################################################
@@ -104,7 +104,7 @@ variable_info_list <- list(
              tags$li("Provides witnesses with the services and support they need"),
              tags$li("Treats those accused of crime as innocent until proven guilty")
       ),
-      tags$p("All the above variables measure confidence in the criminal justice system, so higher percentages are better."),
+      tags$p("All the above variables measure confidence in the criminal justice system, so higher percentages indicate more confidence."),
       tags$p(tags$i("Due to changes in the survey, some questions might not be present in all years."))
   ),
 ######################################################################################
@@ -120,7 +120,7 @@ variable_info_list <- list(
              tags$li("Alone in home at night"),
              tags$li("Walking alone in local area after dark")
       ),
-      tags$p("For all these variables, higher results are better; indicating more people feeling safe/perceiving reducing crime rates.")
+      tags$p("For all these variables, higher percentages indicate more people feeling safe/perceiving reducing crime rates.")
   ),
 ######################################################################################
   
@@ -144,7 +144,7 @@ variable_info_list <- list(
              tags$li("Deliberate damage to cars or other vehicles"),
              tags$li("Deliberate damage to people's homes by vandals")
       ),
-      tags$p("These variables all represent perceived frequences of local crime; lower percentages are better."),
+      tags$p("These variables all represent perceived frequences of local crime; lower percentages indicate less perceived crime."),
       tags$p(tags$i("Due to changes in the survey, some questions might not be present in all years."))
   ),
 ######################################################################################
@@ -159,12 +159,12 @@ variable_info_list <- list(
              tags$li("Can be turned to for advice and support"),
              tags$li("Pull together to prevent crime")
       ),
-      tags$p("Some of these statements (underlined) are not positive. For these variables, lower percentages are better. For others, higher percentages are better, indicating agreement with positive statements about local people."),
+      tags$p("For most of these variables, higher percentages indicate more positive perceptions of the local community. This is reversed for some variables (underlined) as they reflect respondents' agreement with negative statements."),
       tags$p(tags$i("Due to changes in the survey, some questions might not be present in all years."))
   ),
 #######################################################################################
 
-  "Worries of Crime" = 
+  "Worries of Crime Victimisation" = 
   div(id=NULL,
       tags$h5("Worries of Crime"),
       tags$p("Complimentary to measuring both crime vicitimsation rates and public perceptions of crime rates, the SCJS asks a set of questions aimed to measure how worried the public are about specific types of crime. Results represent the percentage of respondents who are (either fairly or very) worried about the following events:",
@@ -180,7 +180,7 @@ variable_info_list <- list(
              tags$li("They will be involved or caught up in violence between groups of individuals or gangs"),
              tags$li("They will be sexually assaulted")
       ),
-      tags$p("These variables all represent the amount of worry the public has for different crimes. Lower percentages are better, indicating less worry."),
+      tags$p("These variables all represent the amount of worry the public has for different crimes. Lower percentages indicate less worry of crime."),
       tags$p(tags$i("Due to changes in the survey, some questions might not be present in all years."))
   ),
 ######################################################################################
@@ -197,7 +197,7 @@ variable_info_list <- list(
              tags$li("A disability / condition"),
              tags$li("Age")
       ),
-      tags$p("These variables all represent the amount of worry the public has for different crimes. Lower percentages are better, indicating less worry."),
+      tags$p("These variables all represent the amount of worry the public has for different crimes. Lower percentages are indicate less worry of crime."),
       tags$p(tags$i("Due to changes in the survey, some questions might not be present in all years."))
   )                    
 ######################################################################################

@@ -21,8 +21,7 @@ source("source/ui_help.R")
 source("source/ui_links.R")
 
 headpanel<-div(id="header-content",
-                tags$h1(id = "header-text", a(target="_blank",href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey","SCOTTISH CRIME & JUSTICE SURVEY"))
-)
+                tags$h1(id = "header-text", a(target="_blank",href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey","SCOTTISH CRIME & JUSTICE SURVEY"),tags$img(style="max-width: 50px; margin-left: 5px", src="natstat.png")))
 
 
 fluidPage(title="Scottish Crime and Justice Survey", #set title for easier relocating on browser.
@@ -38,9 +37,8 @@ fluidPage(title="Scottish Crime and Justice Survey", #set title for easier reloc
              position="fixed-top", 
              collapsible=TRUE,
              
-             header = div(id = "header-blank",
-                          div(id="beta",
-                              tags$img(src="beta.png"))
+             header = div(id = "header-blank"
+                          ,div(id="beta",tags$img(src="beta.png"))
                           ),
              
              tabPanel("Home",icon = icon('home',lib="glyphicon"),
@@ -48,7 +46,7 @@ fluidPage(title="Scottish Crime and Justice Survey", #set title for easier reloc
                       tags$h4(style="color: black", "Disclaimer: This site is still in Beta. Layout and data have not yet been finalised and quality assured."),
                       home_page
              ),
-             tabPanel("Breakdown by Police Divisions", value="main_divisions", icon = icon('bar-chart'),
+             tabPanel("Police Division Breakdowns", value="main_divisions", icon = icon('bar-chart'),
                       headpanel,
                       overview_page
              ),
@@ -56,7 +54,7 @@ fluidPage(title="Scottish Crime and Justice Survey", #set title for easier reloc
                       headpanel,
                       comparison_page
              ),
-             tabPanel("Visualise Trends", value="main_trends", icon = icon('line-chart'),
+             tabPanel("Trends", value="main_trends", icon = icon('line-chart'),
                       headpanel,
                       trends_page
              ),

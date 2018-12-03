@@ -38,7 +38,7 @@ output$table_p <- renderTable({
   #change column = if signif YES, otherwise NO
   td$change<-ifelse(td$diff==TRUE,"Yes","No")
   #rename change column to indicate which years
-  names(td)[grepl("change",names(td))]=paste0(input$table_year[1]," change from ",input$table_year[2])
+  names(td)[grepl("change",names(td))]=paste0("Significant change from ",input$table_year[1]," to ",input$table_year[2])
   
   #rename, arrange
   td %>% select(-matches("ci|SampleSize|diff")) %>%
@@ -85,7 +85,7 @@ observe({
     updateSelectizeInput(session, "table_pdiv", selected = pdivis)
   }
   if("Select All" %in% input$table_var){
-    updateSelectizeInput(session, "table_var", selected = names(all_vars)[1])
+    updateSelectizeInput(session, "table_var", selected = names(all_vars))
   }
 })
 

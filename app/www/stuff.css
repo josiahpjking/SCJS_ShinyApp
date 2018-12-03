@@ -5,10 +5,18 @@
   z-index: 3000;
 }
 
+
+
 /* HEADER */
 #header-blank{
   height: 70px;
 }
+@media only screen and (max-width: 880px) and (min-width: 754px){
+  #header-blank{
+    height: 170px;
+  }
+}
+
 
 #header-content{
   text-align: center;
@@ -76,13 +84,13 @@ p{
   background-color: #fff;
 }
 
+
 .navbar-default .navbar-nav > li > a{
   color: #333;
 } 
 .navbar-default .navbar-nav > li > a:hover{
   background-color: #f8f8f8;
 }
-
 
 /* body background */
 

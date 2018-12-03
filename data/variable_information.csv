@@ -76,5 +76,5 @@ QHWORR_05,"QHWORR_05: How much, if at all, do you, personally, worry about being
 QHWORR_06,"QHWORR_06: How much, if at all, do you, personally, worry about being insulted, pestered or intimidated on the basis of: A disability / condition you have?",% Worried,"How much, if at all, do you, personally, worry about being insulted, pestered or intimidated on the basis of:","Worried about being insulted, pestered or intimidated on the basis of a disability / condition you have",1
 QHWORR_07,"QHWORR_07: How much, if at all, do you, personally, worry about being insulted, pestered or intimidated on the basis of: Your age?",% Worried,"How much, if at all, do you, personally, worry about being insulted, pestered or intimidated on the basis of:","Worried about being insulted, pestered or intimidated on the basis of your age",1
 PREVPROPERTY,PREVPROPERTY: Victim of property crime (prevalence),%,Victim of,Victim of property crime,1
-PREVVIOLENT,PREVVIOLENT: Victim of violent crime including attempted assault (prevalence),%,Victim of,Victim of violent crime including attempted assault,1
+PREVVIOLENT,PREVVIOLENT: Victim of violent crime including attempted assault (prevalence),%,Victim of,Victim of violent crime,1
 PREVSURVEYCRIME,PREVSURVEYCRIME: Victim of a crime within the scope of the survey (prevalence),%,Victim of,Victim of any crime within the scope of the survey,1
