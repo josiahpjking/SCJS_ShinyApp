@@ -1,13 +1,13 @@
 home_page <- 
   div(id="home",
     # text summary of SCJS.
-    tags$p(style="text-align: center; ","The Scottish Crime and Justice Survey (SCJS) is a large-scale social survey which asks people about their experiences and perceptions of crime. The survey is important because it provides a picture of crime in Scotland, including crimes that haven't been reported to/recorded by the police and captured in police recorded crime statistics. This site currently presents SCJS data from 2008/09 to ",currentyear,", and will be updated with new data in due course. More information and the entire questionnaire can be found on ",tags$a(target="_blank",tags$ins("the SCJS publication page."),href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications")),
+    tags$p(style="text-align: center; ","The Scottish Crime and Justice Survey (SCJS) is a large-scale social survey which asks people about their experiences and perceptions of crime. The survey is important because it provides a picture of crime in Scotland, including crimes that haven't been reported to/recorded by the police and captured in police recorded crime statistics. This site currently presents SCJS data from 2008/09 to ",currentyear,". The site will be updated in early 2019 with new police division data for 2016/17 and 2017/18. More information and the entire questionnaire can be found on ",tags$a(target="_blank",tags$ins("the SCJS publication page."),href="http://www.gov.scot/Topics/Statistics/Browse/Crime-Justice/crime-and-justice-survey/publications")),
     
     div(id="home-toptext",
         
         # National indicators info.
         tags$h3("National Performance "),
-        tags$p("The SCJS captures data on 3 National Indicators, which enable the measurement of progress towards acheiving of a safer, more successful and prosperous Scotland. The graphics below represent the progress of these indicators from the ",currentyear," SCJS data, reflecting whether they have changed from or stayed the same as the previous survey year. For more information, visit the",tags$a(target="_blank",tags$ins("National Performance Framework website."),href="http://nationalperformance.gov.scot")),
+        tags$p("The SCJS captures data on 3 National Indicators, which support the measurement of progress towards acheiving of a safer, more successful and prosperous Scotland. The graphics below present the progress of these indicators following the ",currentyear," SCJS data, reflecting whether they have changed from or stayed the same as the previous survey year (",prevyear,"). Data for 2016/17 and 2017/18 will be added in early 2019 alongside new police division data. For more information, visit the",tags$a(target="_blank",tags$ins("National Performance Framework website."),href="http://nationalperformance.gov.scot")),
         # National indicator graphics (see server_home.R)
         div(id="indicators",
             uiOutput("natind1"),
