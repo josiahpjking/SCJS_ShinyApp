@@ -50,9 +50,6 @@ compare_data <- reactive({
 
 
 
-
-
-
 ########
 # PLOT
 ########
@@ -69,6 +66,7 @@ output$compar_plot <- renderPlotly({
             text=~paste0(round(percentage,digits=1),"%"), 
             hoverinfo="y", 
             textposition="auto", 
+            textfont = list(color=toRGB("black")),
             type = "bar", 
             color=~change, 
             legendgroup=~change, 
@@ -77,13 +75,17 @@ output$compar_plot <- renderPlotly({
             height=(visible_vars*110)+100
     ) %>% 
     layout(
+      annotations=list(text=paste0(paste(strwrap(input$comp_pdiv1, width = 25), collapse = "<br>"),"<br><b>",input$comp_year1,"</b>"),
+                       xref="paper",x=0,align="center",xanchor="center",
+                       yref="paper",y=1,yshift=30,showarrow=FALSE, 
+                       font=list(size=10,color='rgb(0,0,0)')),
       yaxis=list(title="",
                  showticklabels = FALSE,
                  categoryarray=~rev(wrapped_name),categoryorder="array"), 
       xaxis=list(range=c(0,100),ticksuffix = "%",showticklabels = FALSE)
     ) %>% add_annotations(x = 0, y = ~wrapped_name,
                       xanchor = 'right', text = ~wrapped_name,
-                      font = list(family = 'sans serif', size = 10),
+                      font =list(size=10,color='rgb(0,0,0)'),
                       showarrow = FALSE, align = 'right') -> p1
   
   #plot RIGHT
@@ -93,6 +95,7 @@ output$compar_plot <- renderPlotly({
             text=~paste0(round(percentage,digits=1),"%"), 
             hoverinfo="y", 
             textposition="auto", 
+            textfont = list(color=toRGB("black")),
             type = "bar",
             color=~change, 
             showlegend=FALSE,
@@ -100,6 +103,10 @@ output$compar_plot <- renderPlotly({
             height=(visible_vars*110)+100
     ) %>% 
     layout(
+      annotations=list(text=paste0(paste(strwrap(input$comp_pdiv2, width = 25), collapse = "<br>"),"<br><b>",input$comp_year2,"</b>"),
+                       xref="paper",x=0,align="center",xanchor="center",
+                       yref="paper",y=1,yshift=30,showarrow=FALSE, 
+                       font=list(size=10,color='rgb(0,0,0)')),
       yaxis=list(title="",
                  categoryarray=~rev(wrapped_name),categoryorder="array",
                  showticklabels = FALSE),
@@ -133,7 +140,10 @@ output$compar_plot <- renderPlotly({
 # this updates the text information on the selected area of the survey (see variable_information.R for text)
 output$variable_info_comp<-renderUI({
   div(class="variable_info",
-      variable_info_list[[input$comp_var]]
+      tags$body(includeScript("./www/moreclick2.js")),
+      HTML(paste0("<h5>",input$ov_var,"</h5>",
+                  '<span class="more2">',variable_info_list[[input$ov_var]],"</span>"))
+      
   )
 })
 

@@ -16,11 +16,11 @@ table_data<-reactive({
 #####
 table_downloaddata<-reactive({
   table_data() %>%
-    select(year,Variable,Police_Division,Percentage,SampleSize) %>%
+    select(year,Variable,Police_Division,Percentage,SampleSize,varcode) %>%
     mutate(
       Percentage=round(Percentage,digits=1)
     ) %>%
-    reshape(timevar="year",idvar=c("Police_Division","Variable"),direction="wide") %>% 
+    reshape(timevar="year",idvar=c("Police_Division","Variable","varcode"),direction="wide") %>% 
     arrange(Variable)
 })
 
@@ -74,7 +74,7 @@ output$downloadData <- downloadHandler(
 #####
 observeEvent(input$reset_tables, {
   updateSelectizeInput(session, "table_pdiv", selected = "National Average")
-  updateSelectizeInput(session, "table_var", selected = names(all_vars)[1])
+  updateSelectizeInput(session, "table_var", selected = names(all_vars)[2])
 })
 
 #####

@@ -17,7 +17,7 @@ rowsum_partialstringmatch_variables<-function(df,partial,full){
   )] -> mismatchnames
   
   for (i in gsub(partial,full,mismatchnames)){
-    df[,i]<-rowSums_na(cbind(df[,i],df[,gsub("0","",i)]))
+    df[,i]<-rowSums_na(cbind(df[,i],df[,gsub(full,partial,i)]))
   }
   cat("these variables",mismatchnames,"have been collapsed into",gsub(partial,full,mismatchnames),sep=" ")
   return(df %>% dplyr::select(-one_of(mismatchnames)))

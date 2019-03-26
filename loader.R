@@ -4,102 +4,49 @@ require(dplyr)
 require(ggplot2)
 require(magrittr)
 require(plotly)
+require(foreign)
 #load in functions
 source("functions/extract_name_data.R")
 source("functions/load_scjs_data.R")
 source("functions/rowSums_na.R")
 source("functions/rowsum_partialstringmatch_variables.R")
-
+source("functions/tidydemographics.R")
 #####
 #DATA, YEARS, DESIGN - CHANGE FOR UPDATING
 #####
 
 #these are all the years of the survey
-years<-c("2008/09","2009/10","2010/11","2012/13","2014/15")
+years<-c("2008-09","2009-10","2010-11","2012-13","2014-15","2016-18*")
 #these are all the design factors
-design_factors = c(1.5, 1.5, 1.5, 1.3, 1.2)
+design_factors = c(1.5, 1.5, 1.5, 1.3, 1.2, 1.28)
 
-data_files <- dir(path = "data/", pattern='SCJS*', recursive = T,full.names = T)
-
+data_files <- dir(path = "../data/", pattern='SCJS*', recursive = T,full.names = T)
+print(data_files)
 # READ IN DATA. 
 # if you want more variables, you need to add in the string (lowercase) to identify those questions.
-all_data <- bind_rows(lapply(data_files, function(x) extract_name_data(x,"serial|age|laa|hba|cjaa|gen|urb|tenure|soc|nssec|simd|wgtg|prev|qpolconf|qs2area|qsfdark|qsfnigh|qratpol|polop|compol|polpres|qworr|numcar|nummot|qaco_|lcpeop|qhworr|qswem|dconf")), .id = "year")
+all_data <- bind_rows(lapply(data_files[1:6], function(x) extract_name_data(x,"serial|age|laa|hba|cjaa|gen|urb|tenure|soc|nssec|simd|wgtg|prev|qpolconf|qs2area|qsfdark|qsfnigh|qratpol|polop|compol|polpres|qworr|numcar|nummot|qaco_|lcpeop|qhworr|qswem|dconf|polpatr|pcon")), .id = "year")
 
 #check that years are in the correct order.
 with(all_data, table(year,sourcefile))
 
 #set the year variable
-all_data$year<-factor(all_data$year)
-levels(all_data$year)<-years
+all_data$year<-factor(all_data$year, labels=years)
 
 #some variables were named differently in the first year (e.g. qpolconf_01 was qpolconf_1). this will look for names which match when replacing _ with _0, and combines them.
 rowsum_partialstringmatch_variables(all_data,"_","_0") -> all_data
+rowsum_partialstringmatch_variables(all_data,"compol","compol2") -> all_data
 
 #this tidies up all the all_dataic breaks (age, gender, police division etc)
-all_data %>% mutate(
-  gender = factor(qdgen,labels=c("Male","Female")),
-  age = factor(ifelse(is.na(qdage),NA,
-                      ifelse(qdage<0,NA,
-                      ifelse(qdage<16,"0-15",
-                             ifelse(qdage<25,"16-24",
-                                    ifelse(qdage<45,"25-44",
-                                           ifelse(qdage<60,"45-60","60+"))))))),	
-  
-  hba = factor(hba, labels=c("Ayrshire_Arran","Borders","Dumfries_Galloway","Fife","Forth_Valley","Grampian","Greater_Glasgow_Clyde","Highland","Lanarkshire","Lothian","Orkney","Shetland","Tayside","Eilean_Siar")),
-  hba2pdiv = recode(hba, Ayrshire_Arran="Ayrshire (U Division)",
-                    Borders="Lothians & Scottish Borders (J Division)",
-                    Dumfries_Galloway="Dumfries & Galloway (V Division)",
-                    Fife="Fife (P Division)",
-                    Forth_Valley="Forth Valley (C Division)",
-                    Grampian="North East (A Division)",
-                    Greater_Glasgow_Clyde="Greater Glasgow (G Division)",
-                    Highland="Highlands & Islands (N Division)",
-                    Lanarkshire="Lanarkshire (Q Division)",
-                    Lothian="Lothians & Scottish Borders (J Division)",
-                    Orkney="Highlands & Islands (N Division)",
-                    Shetland="Highlands & Islands (N Division)",
-                    Tayside="Tayside (D Division)",
-                    Eilean_Siar="Highlands & Islands (N Division)"
-  ),
-  
-  police_div = factor(ifelse(laa==5|laa==14|laa==30,"Forth Valley (C Division)", ifelse(
-    laa==15,"Fife (P Division)", ifelse(
-      laa==9|laa==11|laa==16,"Greater Glasgow (G Division)", ifelse(
-        laa==18|laa==25,"Renfrewshire & Inverclyde (K Division)", ifelse(
-          laa==4|laa==31,"Argyll & West Dunbartonshire (L Division)", ifelse(
-            laa==22|laa==29,"Lanarkshire (Q Division)", ifelse(
-              laa==8|laa==21|laa==28,"Ayrshire (U Division)", ifelse(
-                laa==12,"Edinburgh City (E Division)", ifelse(
-                  laa==10|laa==19|laa==26|laa==32,"Lothians & Scottish Borders (J Division)", ifelse(
-                    laa==6,"Dumfries & Galloway (V Division)", ifelse(
-                      laa==3|laa==7|laa==24,"Tayside (D Division)", ifelse(
-                        laa==13|laa==17|laa==23|laa==27,"Highlands & Islands (N Division)", ifelse(
-                          laa==1|laa==2|laa==20,"North East (A Division)",as.character(hba2pdiv))))))))))))))),
-  
-  
-  cjaa = factor(cjaa, labels=c("Fife & Forth Valley","Glasgow","Lanarkshire","Edinburgh & Lothians","North Strathclyde","Northern","South-West Scotland","Tayside")),
-  urbrur2 = factor(ifelse(urbrur<=5,"Urban","Rural")),
-  tenure = factor(tenure),
-  tabnssec = factor(tabnssec),
-  simd_top = factor(ifelse(simd_top==1, "15% most deprived","Remainder"))
-) -> all_data
+tidydemographics(all_data) -> all_data
 
-#recode tenure
-all_data %>% mutate_at(vars("tenure"), funs(recode(.,'1'="Owner Occupied",'2'="Social Rented",'3'="Private Rented",'4'="Other",.default=NA_character_))) -> all_data
-
-#recode SES group
-all_data %>% mutate_at(vars("tabnssec"), funs(recode(.,'1'="Management & Prof.",'2'="Intermediate",'3'="Routine & Man.",'4'="NW & LTUE",.default=NA_character_))) -> all_data
-
-#save another version of current data (safety measure: avoids reading in again)
-all_data2 <- all_data
-
-#####################################################################################################
+####################################
 #RECODE QUESTIONS
-#######
 #we need to recode the questions to binary 1 or 0. 
 
 #all prev variables (prevsureycrime, prevviolent etc) need to be coded such that 2's become 0's.
 all_data %>% mutate_at(vars(starts_with("prev")),funs(replace(.,.==2,0))) -> all_data
+#same with the polpatr_0
+all_data %>% mutate_at(vars(starts_with("polatr_0")),funs(replace(.,.==2,0))) -> all_data
 
 
 #QS2AREA: Perceived change in crime rate in local area in last two years
@@ -142,27 +89,44 @@ all_data %>% mutate_at(vars(c(matches("qs2area"))),funs(recode(.,'1'=0,'2'=0,'3'
 recode_questions="qpolconf|qdconf|compol|lcpeop|polop|qworr|qhworr|qaco|qsfdark|qsfnigh"
 all_data %>% mutate_at(vars(c(matches(recode_questions))),funs(recode(.,'1'=1,'2'=1,'3'=0,'4'=0,'5'=0,'-2'=0,'-1'=0,.default=NA_real_))) -> all_data
 
-
-###########
-#the qworr_01,02,03 questions need to be set to NA when there is <1 motor vehicle in the househole
-#(they were asked even to people who don't have cars)
-all_data %>% mutate(
-  anyvehicle = ifelse(numcar>0 | nummot>0, 1, 0),
-  qworr_01 = ifelse(anyvehicle==1,qworr_01,NA),
-  qworr_02 = ifelse(anyvehicle==1,qworr_02,NA),
-  qworr_03 = ifelse(anyvehicle==1,qworr_03,NA)
-) -> all_data
-############
+#polpatrf is 1,2,3,4 = 1, 
+all_data %>% mutate_at(vars(c(matches("polpatrf"))),funs(recode(.,'1'=1,'2'=1,'3'=1,'4'=1,'5'=0,'6'=0,'-2'=0,'-1'=0,.default=NA_real_))) -> all_data
 
 
-
+#QPCONINT: How much interest did the police show in what you had to say (most recent contact in last year)?
+# 1 = as much as you thought they should
+# -2,-1,2 = rf, dk, less
 #POLPRES: Police presence in local area is:
 # 1 = not enough
 # -2,-1,2,3 = rf, dk, about right, too much
 #QDCRIME2: Excluding motoring offences, have you ever been convicted of a crime?
 # 1 = yes
 # -2,-1,2 = rf, dk, no
-all_data %>% mutate_at(vars(matches("polpres|qdcrime")),funs(recode(.,'1'=1,'2'=0,'3'=0,'-2'=0,'-1'=0,.default=NA_real_))) -> all_data
+all_data %>% mutate_at(vars(matches("polpres|qdcrime|qpconint")),funs(recode(.,'1'=1,'2'=0,'3'=0,'-2'=0,'-1'=0,.default=NA_real_))) -> all_data
+
+#QPCON: Have you PERSONALLY had any contact with the police service in the last year?
+# 1 = yes
+# -2,-1,2 = rf, dk, no
+all_data %>% mutate_at(vars(qpcon),funs(recode(.,'1'=1,'2'=0,'3'=0,'-2'=0,'-1'=0,.default=NA_real_))) -> all_data
+
+#QPCONPOL: How polite were they in dealing with you (most recent contact in last year)?
+# 1,2 = very fairly polite
+# -2,-1,3,4 = rf, dk, fairly very impolite
+#QPCONFAIR: How fairly would you say the police treated you on this occasion (most recent contact in last year)?
+# 1,2 = very quite fairly
+# -2,-1,3,4 = rf, dk, quite very unfairly
+all_data %>% mutate_at(vars(matches("qpconfair|qpconpol")),funs(recode(.,'1'=1,'2'=1,'3'=0,'4'=0,'-2'=0,'-1'=0,.default=NA_real_))) -> all_data
+
+#QPCONSAT: Overall, were you satisfied or dissatisfied with the way the police handled the matter (most recent contact in last year)? 
+# 1,2 = very quite satisfied
+# -2,-1,3,4,5,7 = rf, dk, quite very disatisfied, neither, too early
+all_data %>% mutate_at(vars(qpconsat),funs(recode(.,'1'=1,'2'=1,'3'=0,'4'=0,'-2'=0,'5'=0,'7'=0,'-1'=0,.default=NA_real_))) -> all_data
+
+
+#QPCONVIEW: Did this incident change your view of the police at all (most recent contact in last year)?  Did you view them: 
+# 1,3 = no change, more favourable
+# -2,-1,2 = rf, dk, less favourably
+all_data %>% mutate_at(vars(qpconview),funs(recode(.,'1'=1,'3'=1,'2'=0,'-2'=0,'-1'=0,.default=NA_real_))) -> all_data
 
 
 #QRATPOL: Taking everything into account, how good a job do you think the police IN THIS AREA are doing?
@@ -171,7 +135,35 @@ all_data %>% mutate_at(vars(matches("polpres|qdcrime")),funs(recode(.,'1'=1,'2'=
 all_data %>% mutate_at(vars(matches("qratpol")),funs(recode(.,'1'=1,'2'=1,'3'=0, '4'=0,'5'=0,'-2'=0,'-1'=0,.default=NA_real_))) -> all_data
 
 
-tidy_df<-all_data
+##########
+#Fixes across years
+#the qworr_01,02,03 questions need to be set to NA when there is <1 motor vehicle in the househole
+#(they were asked even to people who don't have cars)
+#these were changed in wordings, and became 12,13,14. so we need to do it for them too.
+all_data %>% mutate(
+  anyvehicle = ifelse(numcar>0 | nummot>0, 1, 0),
+  qworr_01 = ifelse(anyvehicle==1,qworr_01,NA),
+  qworr_02 = ifelse(anyvehicle==1,qworr_02,NA),
+  qworr_03 = ifelse(anyvehicle==1,qworr_03,NA),
+  qworr_12 = ifelse(anyvehicle==1,qworr_12,NA),
+  qworr_13 = ifelse(anyvehicle==1,qworr_13,NA),
+  qworr_14 = ifelse(anyvehicle==1,qworr_14,NA)
+) -> all_data
+
+#so, qworr_01,2,3 and 12,13,14 are the same. (basically, the filtering of cars is now done post-hoc, rather than questions being asked conditionally upon car ownership)
+#wording is the same, so we'll collapse them.
+all_data %>% mutate(
+  qworr_01 = ifelse(is.na(qworr_01) & !is.na(qworr_12), qworr_12, qworr_01),
+  qworr_02 = ifelse(is.na(qworr_02) & !is.na(qworr_13), qworr_13, qworr_02),
+  qworr_03 = ifelse(is.na(qworr_03) & !is.na(qworr_14), qworr_14, qworr_03)
+) -> all_data
+
+
+
+
+
+#okay, we're done with question recoding. let's get rid of some unnecessary variables which have been picked up along the way by accident
+tidy_df<-all_data %>% select(-matches("qpconvf|qpconwh|qpconyr|_dk|_rf"))
 
 #####################################################################################################
 ##check variables are present across years.
@@ -189,23 +181,31 @@ year_counts %>% group_by(variable) %>%
     no_na = !(any(number_obs==0))
   ) -> variable_across_years
 
-
-
-
 ######
 #CREATE TABLES OF PROPORTIONS FOR USE IN SHINY APP
-######
+
+#first, this is an alteration because contractors gave us weights with different names for the combined years
+tidy_df %>%
+  mutate(
+    wgtghhd = ifelse(year=="2016-18*",wgtghhd_comb, wgtghhd),
+    wgtgindiv = ifelse(year=="2016-18*",wgtgindiv_comb, wgtgindiv),
+    qdconf_08 = ifelse(year=="2016-18*",NA,qdconf_08),
+    qdconf_15 = ifelse(year=="2016-18*",NA,qdconf_15)
+  ) -> tidy_df
+tidy_df %>% select(-qdconf_15) -> tidy_df
+
 
 ############### VARIABLE WEIGHTINGS #################
 # these variables are the ones which are weighted by individual weighting
-tidy_df %>% 
-  select(prevproperty, prevviolent, prevsurveycrime, polpres, qsfdark, matches("qpolconf|qs2area|qsfnigh|qratpol|polop|compol|qworr|qaco_|lcpeop|qhworr|dconf")) %>% 
+tidy_df %>% select(-matches("qpconvf|qpconwh|qpconyr|_dk|_rf")) %>%
+  select(prevproperty, prevviolent, prevsurveycrime, polpres, qsfdark, matches("qpolconf|qs2area|qsfnigh|qratpol|polop|compol|qworr|qaco_|lcpeop|qhworr|dconf|qpcon|polpatr")) %>% 
   names() -> indiv_vars
 
 # are there any variables which are weighted by household weighting?
 tidy_df %>% 
   select() %>%
   names() -> hhd_vars
+
 
 ########################################################
 #calculate weighted proportions (individual weightings)
@@ -226,7 +226,6 @@ tidy_df %>%
                )) %>% 
   mutate(police_div="National Average") %>%
   bind_rows(df_wide,.) -> df_wide
-
 
 
 ########################################################
@@ -316,43 +315,42 @@ variable_info$variable<-tolower(variable_info$variable)
 #join to proportion tables
 pdtable<-left_join(pdtable,variable_info)
 
+
+
 #make some wrapped variables (this is for plotting - it means variables are written on two lines rather than one.)
 pdtable %>% mutate(
   wrappedv = sapply(label, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")}),
-  wrapped_name = sapply(name_trunc, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")})
+  wrapped_name = sapply(name_trunc, FUN = function(x) {paste(strwrap(x, width = 25), collapse = "<br>")}),
+  my_text_trend = paste0("<b>",police_div,"</b><br>",year,"<br>",wrapped_name,"<br><b>",round(percentage, digits=1),"</b>% +/-",round(ci*100, digits=1),", N = ",samplesize)
 ) -> pdtable
 
 #set variable 
 pdtable$variable<-factor(pdtable$label)
 
-#set year
-pdtable$year <- factor(pdtable$year)
-levels(pdtable$year)<-years
-
 #save the data (just in case)
-saveRDS(pdtable,"data/pdiv10.1.rds")
+saveRDS(pdtable,"data/pdiv_v2.4.rds")
 
 ###############
 #tidyup
 ###############
 rm(list=ls())
 
-df<-readRDS("data/pdiv10.1.rds")
+df<-readRDS("data/pdiv_v2.4.rds")
 
 #police division colours
-pdivcols=c("Argyll & West Dunbartonshire (L Division)"='#E41A1C',
-           "Ayrshire (U Division)"='#377EB8',
-           "Dumfries & Galloway (V Division)"='#4DAF4A',
-           "Edinburgh City (E Division)"='#984EA3',
-           "Fife (P Division)"='#FF7F00',
-           "Forth Valley (C Division)"='#FFFF33',
-           "Greater Glasgow (G Division)"='#A65628',
-           "Highlands & Islands (N Division)"='#F781BF',
-           "Lanarkshire (Q Division)"='#1B9E77',
-           "Lothians & Scottish Borders (J Division)"='#D95F02',
-           "North East (A Division)"='#7570B3',
-           "Renfrewshire & Inverclyde (K Division)"='#66A61E',
-           "Tayside (D Division)"='#E6AB02',
+pdivcols=c("Argyll & West Dunbartonshire (L Division)"='#a6cee3',
+           "Ayrshire (U Division)"='#1f78b4',
+           "Dumfries & Galloway (V Division)"='#b2df8a',
+           "Edinburgh City (E Division)"='#33a02c',
+           "Fife (P Division)"='#fb9a99',
+           "Forth Valley (C Division)"='#e31a1c',
+           "Greater Glasgow (G Division)"='#fdbf6f',
+           "Highlands & Islands (N Division)"='#ff7f00',
+           "Lanarkshire (Q Division)"='#cab2d6',
+           "Lothians & Scottish Borders (J Division)"='#6a3d9a',
+           "North East (A Division)"='#d9d989',
+           "Renfrewshire & Inverclyde (K Division)"='#b15928',
+           "Tayside (D Division)"='#e627ac',
            "National Average"='#000000')
 
 #colours for overview page (national avg = black, and better/worse/none is included)
@@ -360,6 +358,12 @@ overview_cols=c(pdivcols,
                 "No difference"="#BDBDBD",
                 "More Positive"="#95fb71",
                 "Less Positive"="#fb7171")
+
+overview_cols=c(pdivcols,
+                "No difference"="#BDBDBD",
+                "More Positive"="#6baed6",
+                "Less Positive"="#045a8d")
+
 
 #modebar icons to remove (these are the little buttons on the plots.)
 modebar_remove <- c('hoverClosestCartesian','hoverCompareCartesian','zoom2d','pan2d','toggleSpikelines','select2d','lasso2d','zoomIn2d','zoomOut2d')
@@ -386,7 +390,9 @@ getnames<-function(string){
 all_vars<-list('National Indicators'= getnames("PREVSURVEY|QS2AREA:|DCONF_03"),
                'Rates of Crime Victimisation'=getnames("PREV"),
                'Confidence in the Police'=getnames("POLCONF|RATPOL"),
-               'Attitudes to the Police'=getnames("POLOP|POLPRES"),
+               'Attitudes to the Police'=getnames("POLOP"),
+               'Police Presence'=getnames("COMPOL|POLPATR|POLPRES"),
+               'Police Contact'=getnames("QPCON"),
                'Confidence in Scottish Criminal Justice System'=getnames("DCONF"),
                'Perceptions of Crime Rates and Fear of Crime'=getnames("QS"),
                'Perceptions of Local Crime'=getnames("QACO"),
@@ -394,20 +400,40 @@ all_vars<-list('National Indicators'= getnames("PREVSURVEY|QS2AREA:|DCONF_03"),
                'Worries of Crime Victimisation'=getnames("QWORR"),
                'Worries of Being Harassed'=getnames("HWORR")
 )
+
+df %>% separate(variable,c("varcode","vars"),sep=":") %>%
+  select(police_div,wrappedv,year,varcode) %>%
+    left_join(df,.) -> df
 #now overwrite variable with more user-friendly input
 df$variable<-df$name_trunc
 
 ######## map data ##########
 pd_latlon <- readRDS("data/pd_mapdata.RDS")
 
+df %>% filter(year==currentyear) %>% filter(variable %in% all_vars[[1]]) %>%
+  group_by(police_div, variable) %>% 
+  summarise(
+    percentage = first(percentage),
+    wrapped_name = first(wrapped_name)
+  ) %>% mutate(
+    PDivName = police_div
+  ) %>% ungroup %>% select(PDivName, variable, percentage) %>%
+  spread(., key=variable, value=percentage) %>%
+  left_join(pd_latlon@data, .) -> pd_latlon@data
+
 ############ save Rdata to the app directory ############
 ungroup(df) -> df
+
+
+#any thing with sample size of less than 50, remove.
+df %>% mutate_at(vars(p,percentage,ci,low,high),funs(ifelse(samplesize<=50,NA,.))) -> df
+source("data/overviewpage_data.R")
 
 #update the app data.
 save.image(file = "./app/.RData")
 
 ####################### RUN THE APP ############################
-#load("app/.RData")
+load("app/.RData")
 shiny::runApp(appDir="./app/")
 
 

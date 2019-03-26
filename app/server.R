@@ -10,10 +10,12 @@ library(forcats)
 #source("source/plotfunc.R") no longer used
 
 # these are for the plotly click hack. need to declare outside server function.
-selected_pclick <- 0 
-selected_y <- 0
+selected_pclick <- NULL
 
 server <- function(input, output, session){
+  #suppressing warnings. for some reason the app was throwing an explicit id warning message. after researching it seems that suppressing the message won't have any adverse effect. See this for more details:
+  # https://github.com/hrbrmstr/metricsgraphics/issues/49
+  options(warn = -1)
   
   source("source/variable_information.R", local = TRUE)
   
